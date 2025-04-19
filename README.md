@@ -1,9 +1,9 @@
-# Ragaik: Math-specific QA based on OCR
+# Ragaik: A Math-Specific QA System Based on OCR
 
-_Currently developing_
+_Currently in development_
 
-**Abstract**. This project will help to create QA-system, based on hand-written math documents database. It will include features for building vector text database (with OCR) and deploy on-demand server with interface to communicate with QA-system.
+**Abstract**. This project aims to create a QA system based on a database of handwritten mathematical documents. It will include features for building a vectorized text database using OCR, and for deploying an on-demand server with an interface to interact with the QA system.
 
-**Authors**: Leontjev Michael ([@Leamich](https:github.com/Leamich)), Anisimov Konstantin ([@TheKostins](https:github.com/TheKostins)), Shorohov Sergey ([@le9endwp]([url](https://github.com/le9endwp/))), Seroglazov Pavel (_TODO: url_).
+**Authors**: Michael Leontjev ([@Leamich](https:github.com/Leamich)), Konstantin Anisimov ([@TheKostins](https:github.com/TheKostins)), Sergey Shorohov ([@le9endwp]([url](https://github.com/le9endwp/))), Pavel Seroglazov (_TODO: url_).
 
-Project was created as first-year banchelor project at HSE Saint-Petersburg, Applied Data Analysis & Artifical Intelligence.
+The project was created as a first-year bachelor’s project at HSE Saint Petersburg in the Applied Data Analysis and Artificial Intelligence program.
