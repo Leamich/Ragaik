@@ -1,0 +1,6 @@
+data/*
+.DS_Store
+.idea/*
+.ipynb_checkpoints/*
+.ropeproject/*
+.virtual_documents/*
