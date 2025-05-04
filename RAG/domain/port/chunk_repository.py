@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from typing import Any, List
 from .chunk import Chunk
 
-class DataStore(ABC):
+class ChunkRepository(ABC):
     """
     Abstract base class for storing and querying chunks.
     """

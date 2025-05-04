@@ -1,5 +1,5 @@
 from typing import Any, List
-from .port import DocumentLoader, Chunk, Chunker, DataStore, Retriever, Generator
+from .port import DocumentLoader, Chunk, Chunker, ChunkRepository, Generator
 
 class RAGService:
     """
@@ -9,17 +9,13 @@ class RAGService:
         self,
         loader: DocumentLoader,
         chunker: Chunker,
-        datastore: DataStore,
-        retriever: Retriever,
+        chunk_repository: ChunkRepository,
         generator: Generator,
-        top_k: int = 5,
     ) -> None:
         self.loader = loader
         self.chunker = chunker
-        self.datastore = datastore
-        self.retriever = retriever
+        self.chunk_repository = chunk_repository
         self.generator = generator
-        self.top_k = top_k
 
     def ingest(self, source: Any) -> None:
         """Load documents, chunk them, and add to the datastore."""
@@ -27,9 +23,9 @@ class RAGService:
         chunks: List[Chunk] = []
         for doc in docs:
             chunks.extend(self.chunker.chunk(doc))
-        self.datastore.add(chunks)
+        self.chunk_repository.add(chunks)
 
-    def ask(self, query: str) -> str:
+    def ask(self, query: str, top_k: int = 5) -> str:
         """Retrieve top_k chunks and generate a response."""
-        contexts = self.retriever.retrieve(query, self.top_k)
+        contexts = self.chunk_repository.query(query, top_k)
         return self.generator.generate(query, contexts)
