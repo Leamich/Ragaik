@@ -4,7 +4,7 @@ from .chunk import Chunk
 
 class Retriever(ABC):
     """
-    Abstract base class for retrieving relevant chunks.
+    Abstract port class for retrieving relevant chunks.
     """
     @abstractmethod
     def retrieve(self, query: str, top_k: int) -> List[Chunk]:

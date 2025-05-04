@@ -3,7 +3,7 @@ from typing import List
 
 class Embedder(ABC):
     """
-    Abstract base class for generating embeddings from texts.
+    Abstract port class for generating embeddings from texts.
     """
     @abstractmethod
     def embed(self, texts: List[str]) -> List[List[float]]:
