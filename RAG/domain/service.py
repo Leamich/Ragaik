@@ -1,5 +1,6 @@
 from typing import Any, List
-from .port import DocumentLoader, Chunk, Chunker, ChunkRepository, Generator
+from .port import DocumentLoader, ChunkRepository, Generator
+from .chunk import Chunk, Chunker
 
 class RAGService:
     """
