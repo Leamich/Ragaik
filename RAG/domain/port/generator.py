@@ -4,7 +4,7 @@ from .chunk import Chunk
 
 class Generator(ABC):
     """
-    Abstract base class for generating answers from contexts.
+    Abstract port class for generating answers from contexts.
     """
     @abstractmethod
     def generate(self, query: str, contexts: List[Chunk]) -> str:

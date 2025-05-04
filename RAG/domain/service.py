@@ -1,13 +1,9 @@
 from typing import Any, List
-from .loader import DocumentLoader
-from .chunk import Chunk, Chunker
-from .datastore import DataStore
-from .retriever import Retriever
-from .generator import Generator
+from .port import DocumentLoader, Chunk, Chunker, DataStore, Retriever, Generator
 
 class RAGService:
     """
-    RAGService for managing RAG documents.
+    Service for managing RAG documents.
     """
     def __init__(
         self,

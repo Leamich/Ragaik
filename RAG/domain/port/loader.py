@@ -4,7 +4,7 @@ from langchain.schema import Document
 
 class DocumentLoader(ABC):
     """
-    Abstract base class for loading source documents.
+    DocumentLoader port class for loading documents from various sources.
     """
     @abstractmethod
     def load(self, source: Any) -> List[Document]:
