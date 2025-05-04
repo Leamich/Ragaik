@@ -5,9 +5,9 @@ from .datastore import DataStore
 from .retriever import Retriever
 from .generator import Generator
 
-class RAGManager:
+class RAGService:
     """
-    Manager orchestrates the end-to-end RAG pipeline.
+    RAGService for managing RAG documents.
     """
     def __init__(
         self,
