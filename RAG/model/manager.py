@@ -1,9 +1,9 @@
 from typing import Any, List
-from RAG.loader import DocumentLoader
-from RAG.chunk import Chunk, Chunker
-from RAG.datastore import DataStore
-from retriever import Retriever
-from RAG.generator import Generator
+from .loader import DocumentLoader
+from .chunk import Chunk, Chunker
+from .datastore import DataStore
+from .retriever import Retriever
+from .generator import Generator
 
 class RAGManager:
     """

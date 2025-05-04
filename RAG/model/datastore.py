@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import Any, List
-from RAG.chunk import Chunk
+from .chunk import Chunk
 
 class DataStore(ABC):
     """
