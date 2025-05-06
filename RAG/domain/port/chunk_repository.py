@@ -16,6 +16,6 @@ class ChunkRepository(ABC):
         pass
 
     @abstractmethod
-    def query(self, key: any, top_k: int, strategy: list[VectorStoringStrategy]) -> list[list[Chunk]]:
+    def query(self, key: any, top_k: int, strategy: list[VectorStoringStrategy]) -> dict[VectorStoringStrategy, list[Chunk]]:
         """Return top_k chunks matching the query key."""
         pass
