@@ -1,6 +1,8 @@
-from typing import Any, List
-from .port import DocumentLoader, ChunkRepository, Generator
-from .chunk import Chunk, Chunker
+from typing import Any
+
+from .chunk_repo_ensemble import ChunkRepositoryEnsemble
+from .port import DocumentLoader, Generator
+
 
 class RAGService:
     """
@@ -9,24 +11,20 @@ class RAGService:
     def __init__(
         self,
         loader: DocumentLoader,
-        chunker: Chunker,
-        chunk_repository: ChunkRepository,
+            chunk_repository_ensemble: ChunkRepositoryEnsemble,
         generator: Generator,
     ) -> None:
         self.loader = loader
-        self.chunker = chunker
-        self.chunk_repository = chunk_repository
+        self.chunk_repository_ensemble = chunk_repository_ensemble
         self.generator = generator
 
     def ingest(self, source: Any) -> None:
         """Load documents, chunk them, and add to the datastore."""
-        docs = self.loader.load(source)
-        chunks: List[Chunk] = []
-        for doc in docs:
-            chunks.extend(self.chunker.chunk(doc))
-        self.chunk_repository.add(chunks)
+        documents = self.loader.load(source)
+        self.chunk_repository_ensemble.add_batch(documents)
 
     def ask(self, query: str, top_k: int = 5) -> str:
         """Retrieve top_k chunks and generate a response."""
-        contexts = self.chunk_repository.query(query, top_k)
-        return self.generator.generate(query, contexts)
+        context_a, context_b = self.chunk_repository_ensemble.query(query, top_k)
+        # FIXME how to handle the two contexts?
+        return self.generator.generate(query, context_a)
