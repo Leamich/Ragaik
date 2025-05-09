@@ -1,8 +1,6 @@
 from abc import ABC, abstractmethod
-from typing import Any, List
 
-from .vector_storing_strategy import VectorStoringStrategy
-from ..chunk import Chunk
+from ..chunk import Chunk, Document
 
 
 class ChunkRepository(ABC):
@@ -11,11 +9,11 @@ class ChunkRepository(ABC):
     """
 
     @abstractmethod
-    def add(self, chunks: List[Chunk], strategies: list[VectorStoringStrategy]) -> None:
+    def add(self, document: Document) -> None:
         """Add chunks to the store. Implementation defines handling."""
         pass
 
     @abstractmethod
-    def query(self, key: any, top_k: int, strategy: list[VectorStoringStrategy]) -> dict[VectorStoringStrategy, list[Chunk]]:
+    def query(self, key: any, top_k: int) -> list[Chunk]:
         """Return top_k chunks matching the query key."""
         pass
