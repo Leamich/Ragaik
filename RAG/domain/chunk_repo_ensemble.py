@@ -21,6 +21,12 @@ class ChunkRepositoryEnsemble:
         self._repository_a.add(document)
         self._repository_b.add(document)
 
+    def add_batch(self, documents: list[Document]) -> None:
+        """
+        Add a batch of documents to both repositories.
+        """
+        [self.add(document) for document in documents]
+
     def query(self, key: any, top_k: int) -> tuple[list[Chunk], list[Chunk]]:
         """
         Query both repositories and return the results.

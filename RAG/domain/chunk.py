@@ -1,7 +1,7 @@
-from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Any
 
+type DocumentMetadata = dict[str, Any]
 
 @dataclass
 class Document:
@@ -9,7 +9,7 @@ class Document:
     Document value class representing a document with content and metadata.
     """
     content: str
-    metadata: dict[str, Any]
+    metadata: DocumentMetadata
 
 
 # This is more of a value class as it identity is fully described by its content and metadata.
@@ -21,14 +21,3 @@ class Chunk:
     """
     content: str
     metadata: dict[str, Any]
-
-
-class Chunker(ABC):
-    """
-    Abstract base class for splitting a Document into chunks.
-    """
-
-    @abstractmethod
-    def chunk(self, document: Document) -> list[Chunk]:
-        """Split a Document into a list of Chunk instances."""
-        pass
