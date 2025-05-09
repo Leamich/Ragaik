@@ -5,7 +5,7 @@ from typing import Any, Dict, List
 
 from langchain.schema import Document
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from transformers import AutoTokenizer
+from transformers import PreTrainedTokenizer
 
 
 # This is more of a value class as it identity is fully described by its content and metadata.
@@ -31,13 +31,14 @@ class Chunker(ABC):
 
 class RecursiveChunker(Chunker):
     """
-    Recursive realization of chunker via BAAI/bge-base-en-v1.5 model.
+    Recursive realization of chunker via given tokenizer.
     Chunk size = 512 tokens.
     """
-    def __init__(self) -> None:
-        self._CHUNK_SIZE = 512
+    def __init__(self, tokenizer: PreTrainedTokenizer) -> None:
+        self._CHUNK_SIZE: int = 512
+        self._tokenizer: PreTrainedTokenizer = tokenizer
         self._text_splitter = RecursiveCharacterTextSplitter.from_huggingface_tokenizer(
-            AutoTokenizer.from_pretrained('BAAI/bge-base-en-v1.5 model'),
+            self._tokenizer,
             chunk_size=self._CHUNK_SIZE,
             chunk_overlap=int(self._CHUNK_SIZE / 10),
             add_start_index=True,
