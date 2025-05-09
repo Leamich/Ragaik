@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from domain.chunk import Document, DocumentMetadata
+from domain.chunk import Document, Chunk
 from domain.port import ChunkRepository
 from infrastructure.chunk_repository.chunker import Chunker
 from infrastructure.chunk_repository.embedder import AbstractEmbedder, Embedding
@@ -17,7 +17,7 @@ class AbstractChunkRepository(ChunkRepository, ABC):
         self._embedder = embedder
 
     @abstractmethod
-    def _add(self, document_meta: DocumentMetadata, chunks: list[Embedding]) -> None:
+    def _add(self, chunks: list[Chunk], embeddings: list[Embedding]) -> None:
         """Add chunks to the store. Implementation defines handling."""
         pass
 
@@ -28,7 +28,7 @@ class AbstractChunkRepository(ChunkRepository, ABC):
         """
         chunks = self._chunker.chunk(document)
         embeddings = self._embedder.embed_batch(chunks)
-        self._add(document.metadata, embeddings)
+        self._add(document.metadata, chunks, embeddings)
 
     def add_batch(self, documents: list[Document]) -> None:
         """

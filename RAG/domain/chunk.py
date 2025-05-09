@@ -3,6 +3,7 @@ from typing import Any
 
 type DocumentMetadata = dict[str, Any]
 
+
 @dataclass
 class Document:
     """
@@ -20,4 +21,4 @@ class Chunk:
     Chunk value class representing a part, no more than 512 tokens, of a Document.
     """
     content: str
-    metadata: dict[str, Any]
+    metadata: DocumentMetadata
