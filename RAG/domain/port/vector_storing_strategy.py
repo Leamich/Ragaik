@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod
+
 from ..chunk import Chunk
+
 
 class VectorStoringStrategy(ABC):
     """Strategy for storing chunks."""
@@ -11,11 +13,3 @@ class VectorStoringStrategy(ABC):
     @abstractmethod
     def query_vector(self, key: any, top_k: int) -> any:
         pass
-
-
-
-class FaissStoringStrategy(VectorStoringStrategy):
-    pass
-
-class PineconeStoringStrategy(VectorStoringStrategy):
-    pass
