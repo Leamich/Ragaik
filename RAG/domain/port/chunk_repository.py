@@ -1,6 +1,7 @@
+from typing import List, Any
 from abc import ABC, abstractmethod
 
-from ..chunk import Chunk, Document
+from langchain.schema import Document
 
 
 class ChunkRepository(ABC):
@@ -10,10 +11,15 @@ class ChunkRepository(ABC):
 
     @abstractmethod
     def add(self, document: Document) -> None:
-        """Add chunks to the store. Implementation defines handling."""
+        """Add document to the store. Implementation defines handling."""
         pass
+    
+    def add_batch(self, documents: List[Document]) -> None:
+        """
+        Adds a batch of documents to the current collection.
+        """
+        [self.add(document) for document in documents]
 
     @abstractmethod
-    def query(self, key: any, top_k: int) -> list[Chunk]:
-        """Return top_k chunks matching the query key."""
+    def get_retriever(self) -> Any:
         pass

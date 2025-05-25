@@ -1,6 +1,7 @@
+from typing import List
 from abc import ABC, abstractmethod
 
-from domain.chunk import Document, Chunk
+from langchain.schema import Document
 
 
 class Chunker(ABC):
@@ -9,6 +10,6 @@ class Chunker(ABC):
     """
 
     @abstractmethod
-    def chunk(self, document: Document) -> list[Chunk]:
+    def chunk(self, document: Document) -> List[str]:
         """Split a Document into a list of Chunk instances."""
         pass
