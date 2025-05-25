@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Any
 
-from ..chunk import Document
+from langchain.schema import Document
 
 
 class DocumentLoader(ABC):
