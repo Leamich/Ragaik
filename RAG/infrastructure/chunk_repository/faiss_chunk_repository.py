@@ -18,13 +18,11 @@ class FaissChunkRepository(ChunkRepository):
         self,
         documents: List[Document] = None,
         strategy: DistanceStrategy = DistanceStrategy.COSINE,
-        top_k: int = 5,
         embedder = HuggingFaceEmbeddings(model_name="intfloat/multilingual-e5-large"), 
         chunker: Chunker = RecursiveChunker()
     ):
         self._embedder = embedder
         self._chunker = chunker
-        self._top_k = top_k
         self._strategy = strategy
 
         if documents is None:
@@ -37,7 +35,7 @@ class FaissChunkRepository(ChunkRepository):
 
     def _init_from_documents(self, documents: List[Document]) -> None:
         self._vectorstore = FAISS.from_documents(documents, embedding=self._embedder, distance_strategy=self._strategy)
-        self._retriever = self._vectorstore.as_retriever(search_kwargs={"k": self._top_k})
+        self._retriever = self._vectorstore.as_retriever()
 
 
     def add(self, document: Document) -> None:

@@ -16,11 +16,9 @@ class BM25ChunkRepository(ChunkRepository):
     def __init__(
         self,
         documents: List[Document] = None,
-        top_k: int = 5,
         chunker: Chunker = RecursiveChunker()
     ):
         self._chunker = chunker
-        self._top_k = top_k
 
         if documents is None:
             self._chunks: List[Document] = []
@@ -32,7 +30,7 @@ class BM25ChunkRepository(ChunkRepository):
 
     def add(self, document: Document) -> None:
         self._chunks += self._chunker.chunk(document)
-        self._retriever = BM25Retriever.from_documents(self._texts)
+        self._retriever = BM25Retriever.from_documents(self._chunks)
 
     def get_retriever(self):
         return self._retriever
