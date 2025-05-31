@@ -6,7 +6,14 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "asyncio>=3.4.3",
+    "faiss-cpu>=1.11.0",
     "fastapi[standard]>=0.115.12",
-    "langchain>=0.3.25",
+    "langchain-community>=0.3.24",
+    "langchain-huggingface>=0.2.0",
+    "langchain[ollama]>=0.3.25",
+    "rank-bm25>=0.2.2",
     "requests>=2.32.3",
+    "sentence-transformers>=4.1.0",
+    "torch>=2.7.0",
+    "transformers>=4.52.4",
 ]
