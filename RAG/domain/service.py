@@ -11,11 +11,12 @@ class RAGService:
     """
     Service for managing RAG documents.
     """
+
     def __init__(
         self,
         loader: DocumentLoader,
         generator: Generator = RussianPhi4Generator(),
-        chunk_repository=FaissAndBM25EnsembleRetriever()
+        chunk_repository=FaissAndBM25EnsembleRetriever(),
     ) -> None:
         self._loader = loader
         self._chunk_repository = chunk_repository
@@ -29,9 +30,10 @@ class RAGService:
     def ask(self, query: str) -> str:
         """Retrieve top_k chunks and generate a response."""
         context: List[Document] | None = self._chunk_repository.query(query)
-        return self._generator.generate(query, context)
 
+        return self._generator.generate(query, context)
 
 
 if __name__ == "__main__":
     test = RAGService()
+
