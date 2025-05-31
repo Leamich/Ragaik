@@ -8,13 +8,13 @@ from .chunk_repository.chunker import Chunker
 class RecursiveChunker(Chunker):
     """
     Recursive realization of Chunker using tokenizer compatible with multilingual-e5-large.
-    Chunk size = 450 tokens by default.
+    Chunk size = 400 tokens by default.
     """
 
     def __init__(
         self,
         tokenizer: PreTrainedTokenizer = AutoTokenizer.from_pretrained("intfloat/multilingual-e5-large"),
-        chunk_size: int = 450
+        chunk_size: int = 400
     ) -> None:
         self._CHUNK_SIZE = chunk_size
         self._tokenizer: PreTrainedTokenizer = tokenizer
