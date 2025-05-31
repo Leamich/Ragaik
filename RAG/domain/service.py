@@ -29,6 +29,7 @@ class RAGService:
 
     def ask(self, query: str) -> str:
         """Retrieve top_k chunks and generate a response."""
+        # TODO add chat context
         context: List[Document] | None = self._chunk_repository.query(query)
 
         return self._generator.generate(query, context)
