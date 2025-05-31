@@ -14,7 +14,6 @@ class Chunker(ABC):
         """Split a Document into a list of Chunk instances."""
         pass
     
-    @abstractmethod
     def chunk_many(self, documents: list[Document]) -> List[Document]:
         """Split many Documents into a list of Chunk instances."""
         res: List[Document] = []
