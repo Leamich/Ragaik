@@ -1,12 +1,16 @@
 from typing import List
 from .port import ChunkRepository
-from ..infrastructure.chunk_repository.faiss_chunk_repository import FaissChunkRepository
+from ..infrastructure.chunk_repository.faiss_chunk_repository import (
+    FaissChunkRepository,
+)
 from ..infrastructure.chunk_repository.bm25_chunk_repository import BM25ChunkRepository
 from langchain.schema import Document
 from langchain.retrievers.ensemble import EnsembleRetriever
 
 from .port import ChunkRepository
-from ..infrastructure.chunk_repository.faiss_chunk_repository import FaissChunkRepository
+from ..infrastructure.chunk_repository.faiss_chunk_repository import (
+    FaissChunkRepository,
+)
 from ..infrastructure.chunk_repository.bm25_chunk_repository import BM25ChunkRepository
 
 
@@ -20,8 +24,8 @@ class FaissAndBM25EnsembleRetriever:
         self,
         faiss_repo: ChunkRepository = FaissChunkRepository(),
         bm_repo: ChunkRepository = BM25ChunkRepository(),
-        faiss_weight: int = 0.7,
-        bm_weight: int = 0.3
+        faiss_weight: float = 0.7,
+        bm_weight: float = 0.3,
     ) -> None:
         """
         Initialize the ensemble with two chunk repositories.
@@ -32,14 +36,17 @@ class FaissAndBM25EnsembleRetriever:
         self._faiss_repo = faiss_repo
         self._bm_repo = bm_repo
         self._ensemble = None
-        
+
         self._try_init_ensemble()
 
     def _try_init_ensemble(self):
         if self._faiss_repo.is_init() and self._bm_repo.is_init():
             self._ensemble = EnsembleRetriever(
-                retrievers=[self._faiss_repo.get_retriever(), self._bm_repo.get_retriever()],
-                weights=[self._faiss_weight, self._bm_weight]
+                retrievers=[
+                    self._faiss_repo.get_retriever(),
+                    self._bm_repo.get_retriever(),
+                ],
+                weights=[self._faiss_weight, self._bm_weight],
             )
 
     def add(self, document: Document) -> None:
@@ -51,12 +58,21 @@ class FaissAndBM25EnsembleRetriever:
         self._bm_repo.add(document)
         self._try_init_ensemble()
 
+    def add_batch(self, documents: List[Document]) -> None:
+        """
+        Add a document list to both repositories.
+        Initialize ensemble retriever if necessary.
+        """
+        self._faiss_repo.add_batch(documents)
+        self._bm_repo.add_batch(documents)
+        self._try_init_ensemble()
+
     def query(self, query: str) -> List[Document] | None:
         """
         Query both repositories and return the results.
         Raises error if ensemble is not initialized.
         """
         if self._ensemble is None:
-           return None
+            return None
 
         return self._ensemble.invoke(query)
