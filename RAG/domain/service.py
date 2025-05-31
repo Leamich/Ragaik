@@ -3,7 +3,7 @@ from typing import Any, List
 from langchain.schema import Document
 
 from .port import DocumentLoader, Generator
-from chunk_repo_ensemble import FaissAndBM25EnsembleRetriever
+from .chunk_repo_ensemble import FaissAndBM25EnsembleRetriever
 from .port.generator import RussianPhi4Generator
 
 
@@ -30,3 +30,8 @@ class RAGService:
         """Retrieve top_k chunks and generate a response."""
         context: List[Document] | None = self._chunk_repository.query(query)
         return self._generator.generate(query, context)
+
+
+
+if __name__ == "__main__":
+    test = RAGService()
