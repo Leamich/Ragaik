@@ -1,7 +1,7 @@
 from typing import List
 from langchain_community.vectorstores import FAISS
 from langchain_community.vectorstores.utils import DistanceStrategy
-from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings
 from langchain.schema import Document
 
 from ...domain.port import ChunkRepository
