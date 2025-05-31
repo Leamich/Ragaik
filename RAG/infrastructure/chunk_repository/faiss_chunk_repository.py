@@ -5,7 +5,7 @@ from langchain_huggingface import HuggingFaceEmbeddings
 from langchain.schema import Document
 
 from ...domain.port import ChunkRepository
-from ..recursive_chunker import RecursiveChunker
+from ..recursive_chunker import TokenChunker
 from .chunker import Chunker
 
 
@@ -19,7 +19,7 @@ class FaissChunkRepository(ChunkRepository):
         documents: List[Document] = None,
         strategy: DistanceStrategy = DistanceStrategy.COSINE,
         embedder = HuggingFaceEmbeddings(model_name="intfloat/multilingual-e5-large"), 
-        chunker: Chunker = RecursiveChunker()
+        chunker: Chunker = TokenChunker()
     ):
         self._embedder = embedder
         self._chunker = chunker

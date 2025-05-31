@@ -4,3 +4,6 @@ transformers
 sentence_transformers
 torch
 langchain-huggingface
+faiss-cpu
+langchain_ollama
+rank_bm25
