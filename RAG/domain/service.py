@@ -35,5 +35,5 @@ class RAGService:
 
 
 if __name__ == "__main__":
-    test = RAGService()
-
+    test = RAGService(loader=None)
+    print(test.ask("Реши уравнение квадратное уравнение: 17x^2 + 6x > 0."))

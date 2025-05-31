@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import List
 from langchain.schema import Document
-from langchain_community.llms import Ollama
+from langchain_ollama import OllamaLLM
 
 
 class Generator(ABC):
@@ -21,7 +21,7 @@ class RussianPhi4Generator(Generator):
         system_prompt: str = "Ты помощник по математике. Отвечай на русском и, по возможности, ссылайся на представленный контекст. Решай задачу пошагово (Chain-of-Thoughts).",
     ):
         self._system_prompt = system_prompt
-        self._llm = Ollama(model="phi4")
+        self._llm = OllamaLLM(model="phi4")
 
     def _format_prompt(self, query: str, contexts: List[Document] | None) -> str:
         if contexts is None:
