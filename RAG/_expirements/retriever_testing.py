@@ -1,7 +1,6 @@
-import os
 import requests
 from langchain.schema import Document
-from .. domain.chunk_repo_ensemble import FaissAndBM25EnsembleRetriever
+from ..domain.chunk_repo_ensemble import FaissAndBM25EnsembleRetriever
 
 REPO_OWNER = "Leamich"
 REPO_NAME = "hse_conspects_course1"
