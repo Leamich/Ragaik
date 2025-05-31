@@ -1,10 +1,46 @@
 <script lang="ts">
-	// Sample messages for design purposes
+	import { askQuery } from '../../api';
+	import type { QuerySchema, ResponseSchema } from '../../types/schema';
+
 	let messages = [
-		{ id: 1, user: 'bot', text: 'Hello! How can I assist you today?' },
-		{ id: 2, user: 'user', text: 'I want to learn more about SvelteKit.' },
-		{ id: 3, user: 'bot', text: 'Sure! SvelteKit is a powerful framework ...' }
+		{ id: 1, user: 'bot', text: 'Hello! How can I assist you today?' }
 	];
+
+	let input = '';
+	let loading = false;
+	let nextId = 2;
+
+	async function handleSubmit(event: Event) {
+		event.preventDefault();
+		const question = input.trim();
+		if (!question) return;
+
+		// Add user message
+		messages = [
+			...messages,
+			{ id: nextId++, user: 'user', text: question }
+		];
+
+		input = '';
+		loading = true;
+
+		try {
+			const payload: QuerySchema = { query: question };
+			const res: ResponseSchema = await askQuery(payload);
+
+			messages = [
+				...messages,
+				{ id: nextId++, user: 'bot', text: res.response }
+			];
+		} catch (err) {
+			messages = [
+				...messages,
+				{ id: nextId++, user: 'bot', text: 'Sorry, there was an error contacting the backend.' }
+			];
+		} finally {
+			loading = false;
+		}
+	}
 </script>
 
 <div class="relative h-screen bg-gray-50">
@@ -21,21 +57,29 @@
 				<p>{@html msg.text}</p>
 			</div>
 		{/each}
+		{#if loading}
+			<div class="mb-4 p-3 rounded-lg shadow-sm bg-gray-100 opacity-70">
+				<p>Bot is typing…</p>
+			</div>
+		{/if}
 	</div>
 
 	<!-- Prompt overlay -->
 	<div class="absolute bottom-0 left-0 right-0 bg-white bg-opacity-90 backdrop-blur-md p-4">
-		<form class="flex items-center space-x-2">
+		<form class="flex items-center space-x-2" on:submit|preventDefault={handleSubmit}>
 			<textarea
+				bind:value={input}
 				rows="1"
 				placeholder="Type your message..."
 				class="flex-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-indigo-200 resize-none"
+				disabled={loading}
 			></textarea>
 			<button
 				type="submit"
 				class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring focus:ring-indigo-200"
+				disabled={loading || !input.trim()}
 			>
-				Send
+				{loading ? 'Sending...' : 'Send'}
 			</button>
 		</form>
 	</div>

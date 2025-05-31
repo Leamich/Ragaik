@@ -7,4 +7,6 @@ requires-python = ">=3.12"
 dependencies = [
     "asyncio>=3.4.3",
     "fastapi[standard]>=0.115.12",
+    "langchain>=0.3.25",
+    "requests>=2.32.3",
 ]

@@ -50,5 +50,3 @@ if __name__ == "__main__":
 
     retr.add_batch(documents)
     retr.query("Что такое бинарные отношения? Какие у них бывают свойства?")
-
-    
