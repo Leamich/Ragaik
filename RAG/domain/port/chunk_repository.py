@@ -23,3 +23,7 @@ class ChunkRepository(ABC):
     @abstractmethod
     def get_retriever(self) -> Any:
         pass
+
+    @abstractmethod
+    def is_init(self)-> bool: 
+        pass

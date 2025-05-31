@@ -1,7 +1,10 @@
-from typing import Any
+from typing import Any, List
+
+from langchain.schema import Document
 
 from .port import DocumentLoader, Generator
-from chunk_repo_ensemble import EnsembleRetriever
+from chunk_repo_ensemble import FaissAndBM25EnsembleRetriever
+from .port.generator import RussianPhi4Generator
 
 
 class RAGService:
@@ -11,8 +14,8 @@ class RAGService:
     def __init__(
         self,
         loader: DocumentLoader,
-        generator: Generator,
-        chunk_repository=EnsembleRetriever
+        generator: Generator = RussianPhi4Generator(),
+        chunk_repository=FaissAndBM25EnsembleRetriever()
     ) -> None:
         self._loader = loader
         self._chunk_repository = chunk_repository
@@ -25,5 +28,5 @@ class RAGService:
 
     def ask(self, query: str) -> str:
         """Retrieve top_k chunks and generate a response."""
-        context = self._chunk_repository.query(query)
+        context: List[Document] | None = self._chunk_repository.query(query)
         return self._generator.generate(query, context)
