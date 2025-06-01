@@ -36,7 +36,7 @@
 		{
 			id: 5,
 			user: 'bot',
-			text: 'To solve for \\( x \\): \n\n 1. Subtract 3 from both sides: \n\n\\[ 2x = 4 \\] \n\n 2. Divide both sides by 2:\n\n\\[ x = 2 \\] \n\n'
+			text: 'To solve for \\( x \\): \n\n 1. Subtract 3 from both sides: \n \\[ 2x = 4 \\] \n\n 2. Divide both sides by 2:\n \\[ x = 2 \\] \n\n'
 		},
 		{
 			id: 6,
