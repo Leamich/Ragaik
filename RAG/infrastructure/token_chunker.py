@@ -19,7 +19,7 @@ class TokenChunker(Chunker):
         self._tokenizer = tokenizer
 
 
-        text_splitter = TokenTextSplitter.from_huggingface_tokenizer(
+        self._text_splitter = TokenTextSplitter.from_huggingface_tokenizer(
             tokenizer=self._tokenizer,
             chunk_size=self._CHUNK_SIZE,
             chunk_overlap=int(self._CHUNK_SIZE / 10),
