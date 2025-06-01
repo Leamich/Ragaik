@@ -11,6 +11,44 @@
 		}
 	];
 
+	let testMessages = [
+		{
+			id: 1,
+			user: 'bot',
+			text: 'Hello! I am RAGaik, your personal assistant for studying. How can I help you today?'
+		},
+		{
+			id: 2,
+			user: 'user',
+			text: 'Can you explain the Pythagorean theorem?'
+		},
+		{
+			id: 3,
+			user: 'bot',
+			text: 'Certainly! The **Pythagorean theorem** states that for a right triangle:\n\n\\[ a^2 + b^2 = c^2 \\]\n\nwhere \\( a \\) and \\( b \\) are the legs and \\( c \\) is the hypotenuse.'
+		},
+		{
+			id: 4,
+			user: 'user',
+			text: 'How do I solve for \\( x \\) in the equation \\( 2x + 3 = 7 \\)?'
+		},
+		{
+			id: 5,
+			user: 'bot',
+			text: 'To solve for \\( x \\): \n\n 1. Subtract 3 from both sides: \n\n\\[ 2x = 4 \\] \n\n 2. Divide both sides by 2:\n\n\\[ x = 2 \\] \n\n'
+		},
+		{
+			id: 6,
+			user: 'user',
+			text: 'What is the derivative of \\( f(x) = x^2 \\)?'
+		},
+		{
+			id: 7,
+			user: 'bot',
+			text: "The derivative of \\( f(x) = x^2 \\) is:\n\n\\[ f'(x) = 2x \\]"
+		}
+	];
+
 	let input = '';
 	let loading = false;
 	let nextId = 2;
@@ -31,7 +69,7 @@
 			const res: ResponseSchema = await askQuery(payload);
 
 			messages = [...messages, { id: nextId++, user: 'bot', text: res.response }];
-		} catch (err) {
+		} catch {
 			messages = [
 				...messages,
 				{ id: nextId++, user: 'bot', text: 'Sorry, there was an error contacting the backend.' }
@@ -45,7 +83,7 @@
 <div class="relative h-screen bg-gray-50">
 	<!-- Chat messages with typography styling -->
 	<div class="prose prose-slate max-w-full px-4 py-6 overflow-y-auto h-full chat-container pb-32">
-		{#each messages as msg (msg.id)}
+		{#each testMessages as msg (msg.id)}
 			<div
 				id="msg-{msg.id}"
 				class="mb-4 p-3 rounded-lg shadow-sm"
