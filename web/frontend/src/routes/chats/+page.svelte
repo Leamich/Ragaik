@@ -7,7 +7,7 @@
 		{
 			id: 1,
 			user: 'bot',
-			text: 'Hello! I am RAGaik, your personal assistant for studying. How can I help you today?Euler’s identity is \\( e^{i\\pi} + 1 = 0 \\). '
+			text: 'Hello! I am RAGaik, your personal assistant for studying. How can I help you today?'
 		}
 	];
 
