@@ -4,7 +4,7 @@ from langchain_community.retrievers import BM25Retriever
 from langchain.schema import Document
 
 from ...domain.port import ChunkRepository
-from ..recursive_chunker import RecursiveChunker
+from ..token_chunker import TokenChunker
 from .chunker import Chunker
 
 
@@ -16,7 +16,7 @@ class BM25ChunkRepository(ChunkRepository):
     def __init__(
         self,
         documents: List[Document] = None,
-        chunker: Chunker = RecursiveChunker()
+        chunker: Chunker = TokenChunker()
     ):
         self._chunker = chunker
 
