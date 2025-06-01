@@ -13,11 +13,11 @@
 			errorColor: '#cc0000',
 			displayMode: true
 		},
-		delimiters: 'brackets'
+		delimiters: ['dollars', 'brackets']
 	});
 	export let text: string;
+	text = text.replace(/(?<!\n\n)\\\[/g, '\n\n\\[');
 	let actualText = md.render(text);
-	actualText.replaceAll('\\[', '\n\n\\[');
 </script>
 
 <main>
