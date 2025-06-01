@@ -1,9 +1,15 @@
 <script lang="ts">
+	import MarkdownWithMath from '$lib/MarkdownWithMath.svelte';
+	import { text } from '@sveltejs/kit';
 	import { askQuery } from '../../api';
 	import type { QuerySchema, ResponseSchema } from '../../types/schema';
 
 	let messages = [
-		{ id: 1, user: 'bot', text: 'Hello! How can I assist you today?' }
+		{
+			id: 1,
+			user: 'bot',
+			text: 'Hello! I am RAGaik, your personal assistant for studying. How can I help you today?'
+		}
 	];
 
 	let input = '';
@@ -16,10 +22,7 @@
 		if (!question) return;
 
 		// Add user message
-		messages = [
-			...messages,
-			{ id: nextId++, user: 'user', text: question }
-		];
+		messages = [...messages, { id: nextId++, user: 'user', text: question }];
 
 		input = '';
 		loading = true;
@@ -28,10 +31,7 @@
 			const payload: QuerySchema = { query: question };
 			const res: ResponseSchema = await askQuery(payload);
 
-			messages = [
-				...messages,
-				{ id: nextId++, user: 'bot', text: res.response }
-			];
+			messages = [...messages, { id: nextId++, user: 'bot', text: res.response }];
 		} catch (err) {
 			messages = [
 				...messages,
@@ -54,7 +54,7 @@
 				class:bg-blue-50={msg.user === 'user'}
 			>
 				<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-				<p>{@html msg.text}</p>
+				<MarkdownWithMath text={msg.text} />
 			</div>
 		{/each}
 		{#if loading}
