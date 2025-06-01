@@ -1,6 +1,5 @@
 <script lang="ts">
 	import MarkdownWithMath from '$lib/MarkdownWithMath.svelte';
-	import { text } from '@sveltejs/kit';
 	import { askQuery } from '../../api';
 	import type { QuerySchema, ResponseSchema } from '../../types/schema';
 
@@ -8,7 +7,7 @@
 		{
 			id: 1,
 			user: 'bot',
-			text: 'Hello! I am RAGaik, your personal assistant for studying. How can I help you today?'
+			text: 'Hello! I am RAGaik, your personal assistant for studying. How can I help you today?Euler’s identity is \\( e^{i\\pi} + 1 = 0 \\). '
 		}
 	];
 
