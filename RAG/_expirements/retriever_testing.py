@@ -1,4 +1,8 @@
 import requests
+import os
+import hashlib
+import asyncio
+import aiohttp
 from langchain.schema import Document
 from ..domain.chunk_repo_ensemble import FaissAndBM25EnsembleRetriever
 
@@ -28,16 +32,40 @@ def get_all_md_files(path):
     return md_files
 
 def download_and_create_documents(md_urls):
-    documents = []
-    for url in md_urls:
-        print(f"Загрузка: {url}")
-        response = requests.get(url)
-        if response.status_code == 200:
-            text = response.text
-            doc = Document(page_content=text, metadata={"url": url})
-            documents.append(doc)
+
+    def get_local_path(url):
+        hash_object = hashlib.md5(url.encode())
+        filename = f"{hash_object.hexdigest()}.md"
+        return os.path.join("cached_documents", filename)
+
+    async def download_document(url):
+        local_path = get_local_path(url)
+        if os.path.exists(local_path):
+            print(f"Загрузка из локального кэша: {local_path}")
+            with open(local_path, "r", encoding="utf-8") as file:
+                text = file.read()
         else:
-            print(f"Не удалось загрузить {url}")
+            print(f"Загрузка: {url}")
+            async with aiohttp.ClientSession() as session:
+                async with session.get(url) as response:
+                    if response.status == 200:
+                        text = await response.text()
+                        os.makedirs("cached_documents", exist_ok=True)
+                        with open(local_path, "w", encoding="utf-8") as file:
+                            file.write(text)
+                    else:
+                        print(f"Не удалось загрузить {url}")
+                        return None
+        return Document(page_content=text, metadata={"url": url})
+
+    documents = []
+    async def download_all_documents(urls):
+        tasks = [download_document(url) for url in urls]
+        results = await asyncio.gather(*tasks)
+        return [doc for doc in results if doc is not None]
+
+    documents = asyncio.run(download_all_documents(md_urls))
+
     return documents
 
 if __name__ == "__main__":
@@ -49,4 +77,4 @@ if __name__ == "__main__":
     print(f"Создано {len(documents)} документов.")
 
     retr.add_batch(documents)
-    retr.query("Что такое бинарные отношения? Какие у них бывают свойства?")
+    print(retr.query("Что такое бинарные отношения? Какие у них бывают свойства?"))
