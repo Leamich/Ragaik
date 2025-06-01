@@ -51,3 +51,9 @@ class FaissChunkRepository(ChunkRepository):
     
     def is_init(self) -> bool:
         return self._retriever is not None
+
+    def add_batch(self, documents: List[Document]) -> None:
+        """
+        Adds a batch of documents to the current collection.
+        """
+        [self.add(document) for document in documents]

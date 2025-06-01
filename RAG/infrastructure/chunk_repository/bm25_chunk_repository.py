@@ -37,3 +37,9 @@ class BM25ChunkRepository(ChunkRepository):
     
     def is_init(self) -> bool:
         return self._retriever is not None
+    
+
+    def add_batch(self, documents: List[Document]) -> None:
+        for document in documents:
+            self._chunks += self._chunker.chunk(document)
+        self._retriever = BM25Retriever.from_documents(self._chunks)
