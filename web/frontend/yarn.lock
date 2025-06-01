@@ -1735,6 +1735,11 @@ markdown-it-katex@^2.0.3:
   dependencies:
     katex "^0.6.0"
 
+markdown-it-texmath@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/markdown-it-texmath/-/markdown-it-texmath-1.0.0.tgz#65703b235d07a8f96bc58cbf9d478af57154e5f0"
+  integrity sha512-4hhkiX8/gus+6e53PLCUmUrsa6ZWGgJW2XCW6O0ASvZUiezIK900ZicinTDtG3kAO2kon7oUA/ReWmpW2FByxg==
+
 markdown-it@^14.1.0:
   version "14.1.0"
   resolved "https://registry.yarnpkg.com/markdown-it/-/markdown-it-14.1.0.tgz#3c3c5992883c633db4714ccb4d7b5935d98b7d45"
