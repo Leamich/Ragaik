@@ -1,3 +1,4 @@
+from langchain_core import embeddings
 import pandas as pd
 from ragas.metrics import (
     AnswerRelevancy,
@@ -7,31 +8,49 @@ from ragas.metrics import (
     ResponseGroundedness,
 )
 from ragas.evaluation import evaluate
+from ragas.run_config import RunConfig
 from ragas.utils import Dataset
 from transformers.models.gptj.modeling_gptj import get_embed_positions
 from ..domain.chunk_repo_ensemble import FaissAndBM25EnsembleRetriever
 from ..domain.port.generator import RussianPhi4Generator
 from .load_local import load_documents
 
+from ragas.llms import LangchainLLMWrapper
+from ragas.embeddings import LangchainEmbeddingsWrapper
+from langchain_ollama import OllamaLLM
+from langchain_huggingface import HuggingFaceEmbeddings
 
-def run_ragas_evaluation(system_name: str, retriever, generator):
+
+def run_ragas_evaluation(
+    system_name: str, retriever: FaissAndBM25EnsembleRetriever, generator
+):
+    critic_llm = OllamaLLM(model="phi4")
+    wrapped_critic = LangchainLLMWrapper(critic_llm)
+
+    embedder = HuggingFaceEmbeddings(model_name="intfloat/multilingual-e5-large")
+    embedder_wrapped = LangchainEmbeddingsWrapper(embedder)
+
+    run_config = RunConfig(max_workers=1, timeout=500)
+
     df = pd.read_csv("test.tsv", sep="\t", names=["question", "answer"])
     datasamples = {"question": [], "answer": [], "contexts": [], "ground_truth": []}
 
     for _, row in df.iterrows():
-        query = row["question"]
-        gt_answer = row["answer"]
+        query = str(row["question"])
+        gt_answer = str(row["answer"])
 
         contexts = retriever.query(query)
+        if contexts is None:
+            contexts = []
         generated = generator.generate(query, contexts)
 
         datasamples["question"].append(query)
         datasamples["answer"].append(generated)
-        datasamples["contexts"].append(contexts)
+        datasamples["contexts"].append([doc.page_content for doc in contexts])
         datasamples["ground_truth"].append(gt_answer)
 
     dataset = Dataset.from_dict(datasamples)
-    results = evaluate(
+    results: pd.DataFrame = evaluate(
         dataset,
         metrics=[
             AnswerRelevancy(),
@@ -41,23 +60,12 @@ def run_ragas_evaluation(system_name: str, retriever, generator):
             ResponseGroundedness(),
         ],
         raise_exceptions=False,
+        llm=wrapped_critic,
+        embeddings=embedder_wrapped,
+        run_config=run_config,
     ).to_pandas()
 
-    mean_scores = results.scores.mean()
-    mean_scores["system"] = system_name
-
-    try:
-        existing_df = pd.read_csv("result.tsv", sep="\t")
-        result_df = pd.concat(
-            [existing_df, mean_scores.to_frame().T], ignore_index=True
-        )
-    except FileNotFoundError:
-        result_df = mean_scores.to_frame().T
-
-    result_df.to_csv("result.tsv", sep="\t", index=False)
-
-    print(f"\n--- RAGAS Evaluation Summary: {system_name} ---")
-    print(mean_scores)
+    results.to_pickle("res.pkl")
 
 
 def evaluate_faiss_bm25_phi4():
