@@ -1,4 +1,3 @@
-from typing import List
 from langchain_community.vectorstores import FAISS
 from langchain_community.vectorstores.utils import DistanceStrategy
 from langchain_huggingface import HuggingFaceEmbeddings
@@ -16,10 +15,10 @@ class FaissChunkRepository(ChunkRepository):
 
     def __init__(
         self,
-        documents: List[Document] = None,
+        documents: list[Document] | None = None,
         strategy: DistanceStrategy = DistanceStrategy.COSINE,
-        embedder = HuggingFaceEmbeddings(model_name="intfloat/multilingual-e5-large"), 
-        chunker: Chunker = TokenChunker()
+        embedder=HuggingFaceEmbeddings(model_name="intfloat/multilingual-e5-large"),
+        chunker: Chunker = TokenChunker(),
     ):
         self._embedder = embedder
         self._chunker = chunker
@@ -31,12 +30,13 @@ class FaissChunkRepository(ChunkRepository):
 
         else:
             self._init_from_documents(documents)
-            
 
-    def _init_from_documents(self, documents: List[Document]) -> None:
-        self._vectorstore = FAISS.from_documents(documents, embedding=self._embedder, distance_strategy=self._strategy)
+    def _init_from_documents(self, documents: list[Document]) -> None:
+        chunks: list[Document] = self._chunker.chunk_many(documents)
+        self._vectorstore = FAISS.from_documents(
+            chunks, embedding=self._embedder, distance_strategy=self._strategy
+        )
         self._retriever = self._vectorstore.as_retriever()
-
 
     def add(self, document: Document) -> None:
         """Add document to the store."""
@@ -48,11 +48,11 @@ class FaissChunkRepository(ChunkRepository):
 
     def get_retriever(self):
         return self._retriever
-    
+
     def is_init(self) -> bool:
         return self._retriever is not None
 
-    def add_batch(self, documents: List[Document]) -> None:
+    def add_batch(self, documents: list[Document]) -> None:
         """
         Adds a batch of documents to the current collection.
         """

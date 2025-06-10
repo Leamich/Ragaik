@@ -175,4 +175,4 @@ cython_debug/
 .DS_Store
 
 cached_documents/*
-
+.idea

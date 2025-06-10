@@ -1,13 +1,14 @@
 from ..domain.chunk_repo_ensemble import FaissAndBM25EnsembleRetriever
-from .load_documents import get_all_md_files, download_and_create_documents
+from .load_local import load_documents
 
 
 if __name__ == "__main__":
     retr = FaissAndBM25EnsembleRetriever()
-    start_path = "hse/ma/conspects"
-    md_urls = get_all_md_files(start_path)
-    print(f"Найдено {len(md_urls)} md файлов.")
-    documents = download_and_create_documents(md_urls)
+    start_path = "RAG/_expirements/hse_conspects_course1/"
+    documents = load_documents(start_path)
+    for doc in documents:
+        if doc is None:
+            print("SHIT")
     print(f"Создано {len(documents)} документов.")
 
     retr.add_batch(documents)
