@@ -42,7 +42,8 @@ class FaissChunkRepository(ChunkRepository):
         """Add document to the store."""
         if self._vectorstore is not None:
             chunks = self._chunker.chunk(document)
-            self._vectorstore.add_documents(chunks)
+            if chunks:
+                self._vectorstore.add_documents(chunks)
         else:
             self._init_from_documents([document])
 
