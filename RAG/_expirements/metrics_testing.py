@@ -1,12 +1,14 @@
 import pandas as pd
 from ragas.metrics import (
-    answer_relevancy,
-    context_precision,
-    context_recall,
-    faithfulness,
+    AnswerRelevancy,
+    ContextPrecision,
+    ContextRecall,
+    Faithfulness,
     ResponseGroundedness,
 )
 from ragas.evaluation import evaluate
+from ragas.utils import Dataset
+from transformers.models.gptj.modeling_gptj import get_embed_positions
 from ..domain.chunk_repo_ensemble import FaissAndBM25EnsembleRetriever
 from ..domain.port.generator import RussianPhi4Generator
 from .load_local import load_documents
@@ -14,7 +16,7 @@ from .load_local import load_documents
 
 def run_ragas_evaluation(system_name: str, retriever, generator):
     df = pd.read_csv("test.tsv", sep="\t", names=["question", "answer"])
-    ragas_inputs = []
+    datasamples = {"question": [], "answer": [], "contexts": [], "ground_truth": []}
 
     for _, row in df.iterrows():
         query = row["question"]
@@ -23,28 +25,25 @@ def run_ragas_evaluation(system_name: str, retriever, generator):
         contexts = retriever.query(query)
         generated = generator.generate(query, contexts)
 
-        ragas_inputs.append(
-            {
-                "question": query,
-                "answer": generated,
-                "contexts": contexts,
-                "ground_truth": gt_answer,
-            }
-        )
+        datasamples["question"].append(query)
+        datasamples["answer"].append(generated)
+        datasamples["contexts"].append(contexts)
+        datasamples["ground_truth"].append(gt_answer)
 
+    dataset = Dataset.from_dict(datasamples)
     results = evaluate(
-        ragas_inputs,
+        dataset,
         metrics=[
-            answer_relevancy,
-            context_precision,
-            context_recall,
-            faithfulness,
-            ResponseGroundedness,
+            AnswerRelevancy(),
+            ContextPrecision(),
+            ContextRecall(),
+            Faithfulness(),
+            ResponseGroundedness(),
         ],
         raise_exceptions=False,
-    )
+    ).to_pandas()
 
-    mean_scores = results.mean()
+    mean_scores = results.scores.mean()
     mean_scores["system"] = system_name
 
     try:
