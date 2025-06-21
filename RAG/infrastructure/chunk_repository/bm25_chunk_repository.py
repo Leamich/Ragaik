@@ -1,5 +1,6 @@
 from langchain_community.retrievers import BM25Retriever
 from langchain.schema import Document
+from langchain_core.runnables import RunnableConfig
 
 from ...domain.port import ChunkRepository
 from ..token_chunker import TokenChunker
@@ -37,3 +38,8 @@ class BM25ChunkRepository(ChunkRepository):
     def add_batch(self, documents: list[Document]) -> None:
         self._chunks += self._chunker.chunk_many(documents)
         self._retriever = BM25Retriever.from_documents(self._chunks)
+
+    def query(self, query: str, k: int) -> list[Document] | None:
+        if self.is_init():
+            return self._retriever.invoke(query, config=RunnableConfig(configurable={"k": k}))
+        return None
