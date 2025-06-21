@@ -57,4 +57,9 @@ class FaissChunkRepository(ChunkRepository):
         """
         Adds a batch of documents to the current collection.
         """
-        [self.add(document) for document in documents]
+        if self._vectorstore is not None:
+            chunks = self._chunker.chunk_many(documents)
+            if chunks:
+                self._vectorstore.add_documents(chunks)
+        else:
+            self._init_from_documents(documents)
