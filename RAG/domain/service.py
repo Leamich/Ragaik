@@ -5,6 +5,7 @@ from langchain.schema import Document
 from .port import DocumentLoader, Generator
 from .chunk_repo_ensemble import FaissAndBM25EnsembleRetriever
 from .port.generator import RussianPhi4Generator
+from ..infrastructure.chunk_repository.bm25_chunk_repository import BM25ChunkRepository
 
 
 class RAGService:
@@ -14,27 +15,42 @@ class RAGService:
 
     def __init__(
         self,
-        loader: DocumentLoader,
-        generator: Generator = RussianPhi4Generator(),
-        chunk_repository=FaissAndBM25EnsembleRetriever(),
+        notes_loader: DocumentLoader, #TODO add loader 
+        photos_loader: DocumentLoader, #TODO add loader
+        notes_repository=FaissAndBM25EnsembleRetriever(),
+        photos_repository=BM25ChunkRepository(),
+        generator: Generator = RussianPhi4Generator()
     ) -> None:
-        self._loader = loader
-        self._chunk_repository = chunk_repository
+        self._notes_loader = notes_loader
+        self._photos_loader = photos_loader
+
+        self._notes_repository = notes_repository
+        self._photos_repository = photos_repository
+
         self._generator = generator
 
-    def ingest(self, source: Any) -> None:
-        """Load documents, chunk them, and add to the datastore."""
-        documents = self._loader.load(source)
-        self._chunk_repository.add_batch(documents)
 
-    def ask(self, query: str) -> str:
+    def ingest_notes(self, source: Any) -> None:
+        """Load notes, and add to the datastore."""
+        notes = self._notes_loader.load(source)
+        self._notes_repository.add_batch(notes)
+
+    def ingest_photos(self, source: Any) -> None:
+        """Load documents, maded from photos, and add to the datastore."""
+        photos = self._photos_loader.load(source)
+        self._photos_repository.add_batch(photos)
+
+
+    def ask(self, query: str) -> tuple[str, str] | tuple[str, None]:
         """Retrieve top_k chunks and generate a response."""
         # TODO add chat context
-        context: List[Document] | None = self._chunk_repository.query(query)
+        notes_context: List[Document] | None = self._notes_repository.query(query)
+        photos_context: List[Document] | None = self._photos_repository.query(query, 1)
+        if photos_context is not None:
+            id = photos_context[0].metadata['id']
+        else:
+            id = None
+        
+        return self._generator.generate(query, notes_context), id
 
-        return self._generator.generate(query, context)
 
-
-if __name__ == "__main__":
-    test = RAGService(loader=None)
-    print(test.ask("Реши уравнение квадратное уравнение: 17x^2 + 6x > 0."))
