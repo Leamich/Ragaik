@@ -1,12 +1,14 @@
 from abc import ABC, abstractmethod
 from typing import List
-from langchain.schema import Document
+from langchain_core.documents import Document
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_ollama import OllamaLLM
 
 
 class Generator(ABC):
     """
-    Abstract port class for generating answers from contexts.
+    Abstract class for generating answers from contexts.
     """
 
     @abstractmethod
@@ -18,43 +20,30 @@ class Generator(ABC):
 class RussianPhi4Generator(Generator):
     def __init__(
         self,
-        system_prompt: str = "Ты помощник по математике. Отвечай на русском и, по возможности, ссылайся на представленный контекст. Решай задачу пошагово (Chain-of-Thoughts).",
+        system_prompt: str = "Ты помощник по математике. Отвечай на русском. Решай задачу пошагово (Chain-of-Thoughts).",
     ):
         self._system_prompt = system_prompt
         self._llm = OllamaLLM(model="phi4")
+        self._prompt_template = ChatPromptTemplate.from_messages([
+            SystemMessage(content=self._system_prompt),
+            SystemMessage(content="Контекст:\n{context}"),
+            HumanMessage(content="{question}")
+        ])
 
-    def _format_prompt(self, query: str, contexts: List[Document] | None) -> str:
-        if contexts is None:
-            context_texts = "Контекст отсутствует."
+    def _format_contexts(self, contexts: List[Document] | None) -> str:
+        if not contexts:
+            return "Контекст отсутствует."
 
-        else:
-            context_texts = "\n\n".join(
-                [
-                    f"Источник {i + 1} ({doc.metadata.get('url', 'неизвестно')}):\n{doc.page_content}"
-                    for i, doc in enumerate(contexts)
-                ]
-            )
-
-        return (
-            f"{self._system_prompt}\n\n"
-            f"Контекст:\n{context_texts}\n\n"
-            f"Вопрос: {query}\n"
-            f"Ответ:"
+        return "\n\n".join(
+            f"Источник {i + 1}:\n{doc.page_content}"
+            for i, doc in enumerate(contexts)
         )
 
     def generate(self, query: str, contexts: List[Document] | None) -> str:
-        prompt = self._format_prompt(query, contexts)
-        raw_response = self._llm.invoke(prompt)
+        context_block = self._format_contexts(contexts)
+        messages = self._prompt_template.invoke({
+            "context": context_block,
+            "question": query
+        })
 
-        if contexts is None:
-            return raw_response
-
-        urls = [
-            str(doc.metadata.get("url")) for doc in contexts if "url" in doc.metadata
-        ]
-
-        unique_urls = list(set(urls))
-        sources_text = (
-            "\n\nИсточники:\n" + "\n".join(unique_urls) if unique_urls else ""
-        )
-        return raw_response + sources_text
+        return self._llm.invoke(messages)
