@@ -15,4 +15,4 @@ def query(query: QuerySchema, rag_service: Annotated[RAGService, Depends(get_rag
     """
     # Here you would typically process the query and return a response.
     # For now, we will just return the query as a placeholder.
-    return ResponseSchema(response=rag_service.ask(query.query))
+    return ResponseSchema(response=rag_service.ask(query.query)[0])

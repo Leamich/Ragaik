@@ -15,11 +15,11 @@ class RAGService:
 
     def __init__(
         self,
-        notes_loader: DocumentLoader, #TODO add loader 
-        photos_loader: DocumentLoader, #TODO add loader
+        notes_loader: DocumentLoader,  # TODO add loader
+        photos_loader: DocumentLoader,  # TODO add loader
         notes_repository=FaissAndBM25EnsembleRetriever(),
         photos_repository=BM25ChunkRepository(),
-        generator: Generator = RussianPhi4Generator()
+        generator: Generator = RussianPhi4Generator(),
     ) -> None:
         self._notes_loader = notes_loader
         self._photos_loader = photos_loader
@@ -28,7 +28,6 @@ class RAGService:
         self._photos_repository = photos_repository
 
         self._generator = generator
-
 
     def ingest_notes(self, source: Any) -> None:
         """Load notes, and add to the datastore."""
@@ -40,17 +39,14 @@ class RAGService:
         photos = self._photos_loader.load(source)
         self._photos_repository.add_batch(photos)
 
-
     def ask(self, query: str) -> tuple[str, str] | tuple[str, None]:
         """Retrieve top_k chunks and generate a response."""
         # TODO add chat context
         notes_context: List[Document] | None = self._notes_repository.query(query)
         photos_context: List[Document] | None = self._photos_repository.query(query, 1)
         if photos_context is not None:
-            id = photos_context[0].metadata['id']
+            id = photos_context[0].metadata["id"]
         else:
             id = None
-        
+
         return self._generator.generate(query, notes_context), id
-
-
