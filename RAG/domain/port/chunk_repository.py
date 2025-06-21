@@ -13,6 +13,11 @@ class ChunkRepository(ABC):
     def add(self, document: Document) -> None:
         """Add document to the store. Implementation defines handling."""
         pass
+
+    @abstractmethod
+    def add_batch(self, documents: list[Document]) -> None:
+        """Add batch of documents to the store. Implementation defines handling."""
+        pass
     
 
     @abstractmethod
