@@ -23,15 +23,14 @@ class Generator(ABC):
 class RussianPhi4Generator(Generator):
     def __init__(
         self,
-        system_prompt: str = "Ты помощник по математике. Отвечай на русском. Решай задачу пошагово (Chain-of-Thoughts). Контест может содержать несколько источников, которые могут быть полезны для ответа на вопрос. Если контекст не содержит информации, необходимой для ответа на вопрос, сообщи об этом. Если контекст содержит информацию, которая может помочь в ответе на вопрос, используй её. Если конктест остутствует, то забей, не собо то и нжуно.",
+        system_prompt: str = "Ты помощник по математике. Отвечай на русском. Решай задачу пошагово (Chain-of-Thoughts). Контест может содержать несколько источников, которые могут быть полезны для ответа на вопрос. Если контекст содержит информацию, которая может помочь в ответе на вопрос, используй её. Если конктест остутствует, то отвечай на основании своих знаний"
     ):
         system_prompt = system_prompt
         llm = OllamaLLM(model="phi4")
         prompt_template = ChatPromptTemplate.from_messages(
             [
                 SystemMessage(content=system_prompt),
-                SystemMessage(content="Контекст:\n{context}"),
-                HumanMessage(content="Вопрос: {question}"),
+                SystemMessage(content="Контекст:\n{context}")
             ]
         )
         chain = LLMChain(
@@ -42,14 +41,14 @@ class RussianPhi4Generator(Generator):
             chain,
             get_session_history=self._get_message_history,
             input_messages_key="question",
-            history_messages_key="history",
+            history_messages_key="history"
         )
 
     def _get_message_history(self, session_id: str):
         return RedisChatMessageHistory(
             session_id=session_id,
             url="redis://localhost:6379",
-            ttl=3600 * 24,
+            ttl=3600 * 24
         )
 
     def _format_contexts(self, contexts: List[Document] | None) -> str:
