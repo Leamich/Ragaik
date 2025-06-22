@@ -2,10 +2,10 @@ from abc import ABC, abstractmethod
 from typing import List
 from langchain_core.documents import Document
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.messages import HumanMessage, SystemMessage
+from langchain_core.messages import SystemMessage
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_ollama import OllamaLLM
-from langchain.memory.chat_message_histories.redis import RedisChatMessageHistory
+from langchain_community.chat_message_histories import RedisChatMessageHistory
 from langchain.chains import LLMChain
 
 
@@ -66,3 +66,6 @@ class RussianPhi4Generator(Generator):
             config={"configurable": {"session_id": "66687"}}
         )
         return str(response)
+    
+
+
