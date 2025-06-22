@@ -30,7 +30,8 @@ class RussianPhi4Generator(Generator):
         prompt_template = ChatPromptTemplate.from_messages(
             [
                 SystemMessage(content=system_prompt),
-                SystemMessage(content="Контекст:\n{context}")
+                SystemMessage(content="Контекст:\n{context}"),
+                ("human", "{question}")
             ]
         )
         chain = LLMChain(
