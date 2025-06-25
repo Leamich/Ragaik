@@ -20,6 +20,16 @@ class Generator(ABC):
         """Generate a response given a query and list of chunk contexts."""
         pass
 
+    @abstractmethod
+    def get_message_history_messages(self, session_id: str) -> list[str]:
+        """Get message history for a given session."""
+        pass
+
+    @abstractmethod
+    def clear_message_history(self, session_id: str) -> None:
+        """Clear message history for a given session."""
+        pass
+
 
 class RussianPhi4Generator(Generator):
     def __init__(
@@ -47,10 +57,18 @@ class RussianPhi4Generator(Generator):
         )
 
     @staticmethod
-    def _get_message_history(session_id: str):
+    def _get_message_history(session_id: str) -> RedisChatMessageHistory:
         return RedisChatMessageHistory(
             session_id=session_id, url="redis://localhost:6379", ttl=3600 * 24
         )
+
+    def get_message_history_messages(self, session_id: str) -> list[str]:
+        history = self._get_message_history(session_id)
+        return [msg.content for msg in history.messages if msg.content]
+
+    def clear_message_history(self, session_id: str) -> None:
+        history = self._get_message_history(session_id)
+        history.clear()
 
     @staticmethod
     def _format_contexts(contexts: List[Document] | None) -> str:

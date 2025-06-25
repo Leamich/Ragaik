@@ -50,3 +50,11 @@ class RAGService:
             photo_id = None
 
         return self._generator.generate(query, session_id, notes_context), photo_id
+
+    def get_history(self, session_id: str) -> list[str]:
+        """Get message history for a given session."""
+        return self._generator.get_message_history_messages(session_id)
+
+    def clear_history(self, session_id: str) -> None:
+        """Clear message history for a given session."""
+        self._generator.clear_message_history(session_id)

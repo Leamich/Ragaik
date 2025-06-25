@@ -27,3 +27,28 @@ def query(
     response, _ = rag_service.ask(query_schema.query, request.session["session_id"])
     print(f"Session ID: {request.session['session_id']}")
     return ResponseSchema(response=response)
+
+@ask_router.get("/history")
+def get_history(
+    rag_service: Annotated[RAGService, Depends(get_rag_service)],
+    request: Request,
+) -> list[str]:
+    """
+    Endpoint to retrieve message history for a given session.
+    """
+    if "session_id" not in request.session:
+        return []
+
+    return rag_service.get_history(request.session["session_id"])
+
+@ask_router.delete("/history")
+def clear_history(
+    rag_service: Annotated[RAGService, Depends(get_rag_service)],
+    request: Request,
+) -> None:
+    """
+    Endpoint to clear message history for a given session.
+    """
+    if "session_id" in request.session:
+        rag_service.clear_history(request.session["session_id"])
+        del request.session["session_id"]
