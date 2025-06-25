@@ -1,7 +1,8 @@
 <script lang="ts">
 	import MarkdownWithMath from '$lib/MarkdownWithMath.svelte';
-	import { askQuery } from '../../api';
+	import {askQuery, loadHistory} from '../../api';
 	import type { QuerySchema, ResponseSchema } from '../../types/schema';
+	import {onMount} from "svelte";
 
 	let messages = [
 		{
@@ -53,6 +54,18 @@
 	let input = '';
 	let loading = false;
 	let nextId = 2;
+
+	onMount(async () => {
+		const loadedMessages = await loadHistory()
+		if (loadedMessages && loadedMessages.length > 0) {
+			messages = loadedMessages.map((msg, index) => ({
+				id: nextId + index - 1,
+				user: index % 2 === 0 ? 'user' : 'bot',
+				text: msg
+			}));
+			nextId = messages.length + 1;
+		}
+	});
 
 	async function handleSubmit(event: Event) {
 		event.preventDefault();
