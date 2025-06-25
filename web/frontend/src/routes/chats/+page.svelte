@@ -1,53 +1,20 @@
 <script lang="ts">
 	import MarkdownWithMath from '$lib/MarkdownWithMath.svelte';
-	import {askQuery, loadHistory} from '../../api';
+	import {askQuery, deleteHistory, loadHistory} from '../../api';
 	import type { QuerySchema, ResponseSchema } from '../../types/schema';
 	import {onMount} from "svelte";
 
-	let messages = [
-		{
-			id: 1,
-			user: 'bot',
-			text: 'Hello! I am RAGaik, your personal assistant for studying. How can I help you today?'
-		}
-	];
+	interface message {
+		id: number;
+		user: 'user' | 'bot';
+		text: string;
+	}
 
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	let testMessages = [
+	let messages: message[] = [
 		{
 			id: 1,
 			user: 'bot',
 			text: 'Hello! I am RAGaik, your personal assistant for studying. How can I help you today?'
-		},
-		{
-			id: 2,
-			user: 'user',
-			text: 'Can you explain the Pythagorean theorem?'
-		},
-		{
-			id: 3,
-			user: 'bot',
-			text: 'Certainly! The **Pythagorean theorem** states that for a right triangle:\n\n\\[ a^2 + b^2 = c^2 \\]\n\nwhere \\( a \\) and \\( b \\) are the legs and \\( c \\) is the hypotenuse.'
-		},
-		{
-			id: 4,
-			user: 'user',
-			text: 'How do I solve for \\( x \\) in the equation \\( 2x + 3 = 7 \\)?'
-		},
-		{
-			id: 5,
-			user: 'bot',
-			text: 'To solve for \\( x \\): \n\n 1. Subtract 3 from both sides: \n \\[ 2x = 4 \\] \n\n 2. Divide both sides by 2:\n \\[ x = 2 \\] \n\n'
-		},
-		{
-			id: 6,
-			user: 'user',
-			text: 'What is the derivative of \\( f(x) = x^2 \\)?'
-		},
-		{
-			id: 7,
-			user: 'bot',
-			text: "The derivative of \\( f(x) = x^2 \\) is:\n\n\\[ f'(x) = 2x \\]"
 		}
 	];
 
@@ -58,11 +25,12 @@
 	onMount(async () => {
 		const loadedMessages = await loadHistory()
 		if (loadedMessages && loadedMessages.length > 0) {
-			messages = loadedMessages.map((msg, index) => ({
-				id: nextId + index - 1,
+			const new_messages: message[] = loadedMessages.map((msg, index) => ({
+				id: nextId + index,
 				user: index % 2 === 0 ? 'user' : 'bot',
 				text: msg
-			}));
+			}))
+			messages = [ ...messages, ...new_messages];
 			nextId = messages.length + 1;
 		}
 	});
@@ -92,9 +60,24 @@
 			loading = false;
 		}
 	}
+
+	async function handleEraseSession() {
+		await deleteHistory()
+		window.location.reload()
+	}
 </script>
 
 <div class="relative max-h-fit min-h-full bg-white">
+	<!-- Erase session button -->
+	<div class="flex justify-end px-4 pt-4">
+		<button
+			on:click={handleEraseSession}
+			class="px-3 py-1 bg-red-100 text-red-700 rounded-lg shadow hover:bg-red-200 transition text-sm font-semibold border border-red-200"
+		>
+			Erase Session
+		</button>
+	</div>
+
 	<!-- Chat messages with typography styling -->
 	<div
 		class="prose prose-blue max-w-full max-h-[calc(100vh-80px)] min-h-[calc(100vh-80px)] px-4 py-6 overflow-y-scroll h-full chat-container pb-32"

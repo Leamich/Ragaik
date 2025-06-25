@@ -29,3 +29,14 @@ export async function loadHistory(): Promise<string[]> {
 
 	return response.json();
 }
+
+export async function deleteHistory(): Promise<void> {
+	const response = await fetch('/api/v1/ask/history', {
+		method: 'DELETE',
+		credentials: 'same-origin'
+	});
+
+	if (!response.ok) {
+		throw new Error(`API error: ${response.status} ${response.statusText}`);
+	}
+}
