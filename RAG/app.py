@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from .application.routers.api.v1.api_v1 import api_v1_router
 
 from starlette.middleware.sessions import SessionMiddleware
-import config as config
+import RAG.config as config
 app = FastAPI()
 
 app.add_middleware(
