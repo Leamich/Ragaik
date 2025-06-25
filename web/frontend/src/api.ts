@@ -3,6 +3,7 @@ import type { QuerySchema, ResponseSchema } from './types/schema';
 export async function askQuery(payload: QuerySchema): Promise<ResponseSchema> {
 	const response = await fetch('/api/v1/ask/query', {
 		method: 'POST',
+		credentials: 'same-origin',
 		headers: {
 			'Content-Type': 'application/json'
 		},

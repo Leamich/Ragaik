@@ -35,18 +35,18 @@ class RAGService:
         self._notes_repository.add_batch(notes)
 
     def ingest_photos(self, source: Any) -> None:
-        """Load documents, maded from photos, and add to the datastore."""
+        """Load documents, made from photos, and add to the datastore."""
         photos = self._photos_loader.load(source)
         self._photos_repository.add_batch(photos)
 
-    def ask(self, query: str) -> tuple[str, str] | tuple[str, None]:
+    def ask(self, query: str, session_id: str) -> tuple[str, str] | tuple[str, None]:
         """Retrieve top_k chunks and generate a response."""
         # TODO add chat context
         notes_context: List[Document] | None = self._notes_repository.query(query)
         photos_context: List[Document] | None = self._photos_repository.query(query, 1)
         if photos_context is not None:
-            id = photos_context[0].metadata["id"]
+            photo_id = photos_context[0].metadata["id"]
         else:
-            id = None
+            photo_id = None
 
-        return self._generator.generate(query, notes_context), id
+        return self._generator.generate(query, session_id, notes_context), photo_id
