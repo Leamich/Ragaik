@@ -1,11 +1,10 @@
 from langchain_core import embeddings
 import pandas as pd
 from ragas.metrics import (
-    AnswerRelevancy,
+    ResponseRelevancy,
     ContextPrecision,
     ContextRecall,
-    Faithfulness,
-    ResponseGroundedness,
+    Faithfulness
 )
 from ragas.evaluation import evaluate
 from ragas.run_config import RunConfig
@@ -53,11 +52,10 @@ def run_ragas_evaluation(
     results: pd.DataFrame = evaluate(
         dataset,
         metrics=[
-            AnswerRelevancy(),
+            ResponseRelevancy(),
             ContextPrecision(),
             ContextRecall(),
-            Faithfulness(),
-            ResponseGroundedness(),
+            Faithfulness()
         ],
         raise_exceptions=False,
         llm=wrapped_critic,
