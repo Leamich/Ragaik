@@ -3,7 +3,7 @@ from fastapi import APIRouter, Request
 from uuid import uuid4
 
 from .....application.schema.ask_schema import QuerySchema, ResponseSchema
-from .....domain.service import RAGService
+from .....domain.model_chat_service import ModelChatService
 from fastapi.params import Depends
 from ....deps import get_rag_service
 
@@ -13,7 +13,7 @@ ask_router = APIRouter()
 @ask_router.post("/query")
 def query(
     query_schema: QuerySchema,
-    rag_service: Annotated[RAGService, Depends(get_rag_service)],
+    rag_service: Annotated[ModelChatService, Depends(get_rag_service)],
     request: Request,
 ) -> ResponseSchema:
     """
@@ -30,7 +30,7 @@ def query(
 
 @ask_router.get("/history")
 def get_history(
-    rag_service: Annotated[RAGService, Depends(get_rag_service)],
+    rag_service: Annotated[ModelChatService, Depends(get_rag_service)],
     request: Request,
 ) -> list[str]:
     """
@@ -43,7 +43,7 @@ def get_history(
 
 @ask_router.delete("/history")
 def clear_history(
-    rag_service: Annotated[RAGService, Depends(get_rag_service)],
+    rag_service: Annotated[ModelChatService, Depends(get_rag_service)],
     request: Request,
 ) -> None:
     """
