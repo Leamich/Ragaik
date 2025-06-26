@@ -1,9 +1,8 @@
 import pandas as pd
 from ragas.metrics import (
     ResponseRelevancy,
-    ContextPrecision,
-    ContextRecall,
-    Faithfulness,
+    LLMContextPrecisionWithoutReference,
+    Faithfulness
 )
 from ragas.evaluation import evaluate
 from ragas.run_config import RunConfig
@@ -18,6 +17,7 @@ from langchain_ollama import OllamaLLM
 from langchain_huggingface import HuggingFaceEmbeddings
 
 from tqdm import tqdm
+
 
 
 def run_ragas_evaluation(
@@ -41,10 +41,8 @@ def run_ragas_evaluation(
 
     datasamples = {"question": [], "answer": [], "contexts": []}
 
-    for question in tqdm(questions, desc="Generating shit ton of answers"):
+    for question in tqdm(questions, desc="Generating answers"):
         contexts = retriever.query(question)
-        if contexts is None:
-            contexts = []
         generated = generator.generate(question, contexts)
 
         datasamples["question"].append(question)
@@ -53,14 +51,15 @@ def run_ragas_evaluation(
 
 
     dataset = Dataset.from_dict(datasamples)
+    pd.DataFrame(datasamples).to_excel(f"{system_name}_answers.xlsx")
+    
     print("INFO: generating dataset")
     results: pd.DataFrame = evaluate(
         dataset,
         metrics=[
             ResponseRelevancy(),
-            ContextPrecision(),
-            ContextRecall(),
-            Faithfulness(),
+            LLMContextPrecisionWithoutReference(),
+            Faithfulness()
         ],
         raise_exceptions=False,
         llm=wrapped_critic,
@@ -68,8 +67,8 @@ def run_ragas_evaluation(
         run_config=run_config,
     ).to_pandas()
 
-    results.to_pickle("res.pkl")
-    results.to_excel("res.xlsx")
+    results.to_pickle(f"{system_name}_res.pkl")
+    results.to_excel(f"{system_name}_res.xlsx")
 
 
 def evaluate_faiss_bm25_phi4():
@@ -88,7 +87,7 @@ def evaluate_faiss_bm25_phi4():
     retriever.add_batch(documents)
 
     print("INFO: running evaluation")
-    run_ragas_evaluation("FaissAndBM25EnsembleRetriever + Phi4", retriever, generator)
+    run_ragas_evaluation("FaissAndBM25EnsembleRetriever_Phi4", retriever, generator)
 
 
 if __name__ == "__main__":
