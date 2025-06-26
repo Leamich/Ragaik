@@ -1,6 +1,6 @@
 from .context_service import ContextService, Context
-from .port import Generator
-from .port.generator import RussianPhi4Generator
+from .port import LLMChatAdapter
+from .port.llmchatadapter import RussianPhi4LLMChatAdapter
 
 class ModelChatService:
     """
@@ -10,7 +10,7 @@ class ModelChatService:
     def __init__(
         self,
         context_service: ContextService,
-        generator: Generator = RussianPhi4Generator(),
+        generator: LLMChatAdapter = RussianPhi4LLMChatAdapter(),
     ) -> None:
         self._generator = generator
         self._context_service = context_service
