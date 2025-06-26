@@ -1,24 +1,24 @@
 import os
+
 import pandas as pd
-from ragas.metrics import (
-    ResponseRelevancy,
-    LLMContextPrecisionWithoutReference,
-    Faithfulness
-)
+from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_ollama import OllamaLLM
+from ragas.embeddings import LangchainEmbeddingsWrapper
 from ragas.evaluation import evaluate
+from ragas.llms import LangchainLLMWrapper
+from ragas.metrics import (
+    Faithfulness,
+    LLMContextPrecisionWithoutReference,
+    ResponseRelevancy,
+)
 from ragas.run_config import RunConfig
 from ragas.utils import Dataset
-from ..domain.chunk_repo_ensemble import FaissAndBM25EnsembleRetriever
-from ..domain.port.llmchatadapter import RussianPhi4LLMChatAdapter
-from .load_local import load_documents
-
-from ragas.llms import LangchainLLMWrapper
-from ragas.embeddings import LangchainEmbeddingsWrapper
-from langchain_ollama import OllamaLLM
-from langchain_huggingface import HuggingFaceEmbeddings
-
 from tqdm import tqdm
 
+from RAG.infrastructure.ollama_llm_chat_adapter import OllamaLLMChatAdapter
+
+from ..domain.chunk_repo_ensemble import FaissAndBM25EnsembleRetriever
+from .load_local import load_documents
 
 
 def run_ragas_evaluation(
@@ -86,7 +86,7 @@ def evaluate_faiss_bm25_phi4():
     retriever = FaissAndBM25EnsembleRetriever()
 
     print("INFO: initializing generator")
-    generator = RussianPhi4LLMChatAdapter()
+    generator = OllamaLLMChatAdapter()
 
     print("INFO: loading documents")
     start_path = "RAG/tests/hse_conspects_course1/"

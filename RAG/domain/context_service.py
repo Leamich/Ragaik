@@ -1,12 +1,12 @@
 from typing import Any
 
+from langchain.schema import Document
+
 from RAG.domain.chunk_repo_ensemble import FaissAndBM25EnsembleRetriever
-from RAG.domain.port import DocumentLoader
+from RAG.domain.port.loader import DocumentLoader
 from RAG.infrastructure.chunk_repository.bm25_chunk_repository import (
     BM25ChunkRepository,
 )
-
-from langchain.schema import Document
 
 type Context = list[Document]
 
