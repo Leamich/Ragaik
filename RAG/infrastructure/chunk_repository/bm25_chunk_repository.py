@@ -40,6 +40,6 @@ class BM25ChunkRepository(ChunkRepository):
         self._retriever = BM25Retriever.from_documents(self._chunks)
 
     def query(self, query: str, k: int) -> list[Document] | None:
-        if self.is_init():
+        if self._retriever is not None:
             return self._retriever.invoke(query, config=RunnableConfig(configurable={"k": k}))
         return None
