@@ -44,15 +44,13 @@ class ContextService:
         Retrieve context based on the query.
         Returns a list of documents that match the query.
         """
-        notes_context = self._notes_repository.query(query)
-        return notes_context if notes_context else []
+        return self._notes_repository.query(query)
 
     def retrieve_photo_context(self, query: str, top_k: int = 1) -> Context:
         """
         Returns the top_k photo contexts based on the query.
         """
-        photos_context = self._photos_repository.query(query, top_k)
-        return photos_context if photos_context else []
+        return self._photos_repository.query(query, top_k)
 
     @staticmethod
     def get_context_photo_ids(photos_context: Context) -> list[str]:

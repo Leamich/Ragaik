@@ -1,17 +1,14 @@
 from typing import List
-from .port import ChunkRepository
-from ..infrastructure.chunk_repository.faiss_chunk_repository import (
-    FaissChunkRepository,
-)
-from ..infrastructure.chunk_repository.bm25_chunk_repository import BM25ChunkRepository
-from langchain.schema import Document
-from langchain.retrievers.ensemble import EnsembleRetriever
 
-from .port import ChunkRepository
+from langchain.retrievers.ensemble import EnsembleRetriever
+from langchain.schema import Document
+
+from ..infrastructure.chunk_repository.bm25_chunk_repository import BM25ChunkRepository
 from ..infrastructure.chunk_repository.faiss_chunk_repository import (
     FaissChunkRepository,
 )
-from ..infrastructure.chunk_repository.bm25_chunk_repository import BM25ChunkRepository
+from .context_service import Context
+from .port import ChunkRepository
 
 
 class FaissAndBM25EnsembleRetriever:
@@ -67,12 +64,9 @@ class FaissAndBM25EnsembleRetriever:
         self._bm_repo.add_batch(documents)
         self._try_init_ensemble()
 
-    def query(self, query: str) -> List[Document] | None:
+    def query(self, query: str) -> Context:
         """
         Query both repositories and return the results.
         Raises error if ensemble is not initialized.
         """
-        if self._ensemble is None:
-            return None
-
-        return self._ensemble.invoke(query)
+        return self._ensemble.invoke(query) if self._ensemble is not None else []
