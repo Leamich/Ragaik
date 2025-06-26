@@ -19,5 +19,5 @@ def load_documents(root_path: str) -> list[Document]:
 
 
 if __name__ == "__main__":
-    docs = load_documents("RAG/_expirements/hse_conspects_course1/")
+    docs = load_documents("RAG/tests/hse_conspects_course1/")
     print(docs[0].page_content)

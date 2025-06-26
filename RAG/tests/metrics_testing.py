@@ -1,4 +1,3 @@
-from langchain_core import embeddings
 import pandas as pd
 from ragas.metrics import (
     ResponseRelevancy,
@@ -9,9 +8,8 @@ from ragas.metrics import (
 from ragas.evaluation import evaluate
 from ragas.run_config import RunConfig
 from ragas.utils import Dataset
-from transformers.models.gptj.modeling_gptj import get_embed_positions
 from ..domain.chunk_repo_ensemble import FaissAndBM25EnsembleRetriever
-from ..domain.port.generator import RussianPhi4Generator
+from ..domain.port.llmchatadapter import RussianPhi4LLMChatAdapter
 from .load_local import load_documents
 
 from ragas.llms import LangchainLLMWrapper
@@ -31,22 +29,21 @@ def run_ragas_evaluation(
 
     run_config = RunConfig(max_workers=1, timeout=500)
 
-    df = pd.read_csv("test.tsv", sep="\t", names=["question", "answer"])
-    datasamples = {"question": [], "answer": [], "contexts": [], "ground_truth": []}
 
-    for _, row in df.iterrows():
-        query = str(row["question"])
-        gt_answer = str(row["answer"])
+    with open('RAG/tests/questions.md') as f:
+        questions = [s[3:] for s in f.readlines()]
 
-        contexts = retriever.query(query)
+    datasamples = {"question": [], "answer": [], "contexts": []}
+
+    for question in questions:
+        contexts = retriever.query(question)
         if contexts is None:
             contexts = []
-        generated = generator.generate(query, contexts)
+        generated = generator.generate(question, contexts)
 
-        datasamples["question"].append(query)
+        datasamples["question"].append(question)
         datasamples["answer"].append(generated)
         datasamples["contexts"].append([doc.page_content for doc in contexts])
-        datasamples["ground_truth"].append(gt_answer)
 
     dataset = Dataset.from_dict(datasamples)
     results: pd.DataFrame = evaluate(
@@ -64,13 +61,14 @@ def run_ragas_evaluation(
     ).to_pandas()
 
     results.to_pickle("res.pkl")
+    results.to_excel("res.xlsx")
 
 
 def evaluate_faiss_bm25_phi4():
     retriever = FaissAndBM25EnsembleRetriever()
-    generator = RussianPhi4Generator()
+    generator = RussianPhi4LLMChatAdapter()
 
-    start_path = "RAG/_expirements/hse_conspects_course1/"
+    start_path = "RAG/tests/hse_conspects_course1/"
     documents = load_documents(start_path)
     retriever.add_batch(documents)
 

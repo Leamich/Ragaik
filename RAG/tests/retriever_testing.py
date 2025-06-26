@@ -4,7 +4,7 @@ from .load_local import load_documents
 
 if __name__ == "__main__":
     retr = FaissAndBM25EnsembleRetriever()
-    start_path = "RAG/_expirements/hse_conspects_course1/"
+    start_path = "RAG/tests/hse_conspects_course1/"
     documents = load_documents(start_path)
     for doc in documents:
         if doc is None:
