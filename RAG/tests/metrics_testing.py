@@ -17,24 +17,31 @@ from ragas.embeddings import LangchainEmbeddingsWrapper
 from langchain_ollama import OllamaLLM
 from langchain_huggingface import HuggingFaceEmbeddings
 
+from tqdm import tqdm
+
 
 def run_ragas_evaluation(
     system_name: str, retriever: FaissAndBM25EnsembleRetriever, generator
 ):
-    critic_llm = OllamaLLM(model="phi3.5")
+    print("INFO: initializing critic LLM")
+    critic_llm = OllamaLLM(model="phi4")
     wrapped_critic = LangchainLLMWrapper(critic_llm)
 
+    print("INFO: initializing embedder")
     embedder = HuggingFaceEmbeddings(model_name="intfloat/multilingual-e5-large")
     embedder_wrapped = LangchainEmbeddingsWrapper(embedder)
 
     run_config = RunConfig(max_workers=1, timeout=500)
 
+    print("INFO: loading questions")
     with open("RAG/tests/questions.md") as f:
         questions = [s[3:] for s in f.readlines()]
 
+    print("INFO: loaded", len(questions), "questions")
+
     datasamples = {"question": [], "answer": [], "contexts": []}
 
-    for question in questions:
+    for question in tqdm(questions, desc="Generating shit ton of answers"):
         contexts = retriever.query(question)
         if contexts is None:
             contexts = []
@@ -44,7 +51,9 @@ def run_ragas_evaluation(
         datasamples["answer"].append(generated)
         datasamples["contexts"].append([doc.page_content for doc in contexts])
 
+
     dataset = Dataset.from_dict(datasamples)
+    print("INFO: generating dataset")
     results: pd.DataFrame = evaluate(
         dataset,
         metrics=[
@@ -64,13 +73,21 @@ def run_ragas_evaluation(
 
 
 def evaluate_faiss_bm25_phi4():
+    print("INFO: initializing retriever")
     retriever = FaissAndBM25EnsembleRetriever()
+
+    print("INFO: initializing generator")
     generator = RussianPhi4LLMChatAdapter()
 
+    print("INFO: loading documents")
     start_path = "RAG/tests/hse_conspects_course1/"
     documents = load_documents(start_path)
+    print("INFO: loaded", len(documents), "documents")
+
+    print("INFO: adding documents to retriever")
     retriever.add_batch(documents)
 
+    print("INFO: running evaluation")
     run_ragas_evaluation("FaissAndBM25EnsembleRetriever + Phi4", retriever, generator)
 
 

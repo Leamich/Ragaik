@@ -25,6 +25,7 @@ dependencies = [
     { name = "redis" },
     { name = "requests" },
     { name = "sentence-transformers" },
+    { name = "tdqm" },
     { name = "tiktoken" },
     { name = "torch" },
     { name = "transformers" },
@@ -51,6 +52,7 @@ requires-dist = [
     { name = "redis", specifier = ">=6.2.0" },
     { name = "requests", specifier = ">=2.32.3" },
     { name = "sentence-transformers", specifier = ">=4.1.0" },
+    { name = "tdqm", specifier = ">=0.0.1" },
     { name = "tiktoken", specifier = ">=0.9.0" },
     { name = "torch", specifier = ">=2.7.0" },
     { name = "transformers", specifier = ">=4.52.4" },
@@ -2122,6 +2124,15 @@ sdist = { url = "https://files.pythonhosted.org/packages/83/d3/803453b36afefb7c2
 wheels = [
     { url = "https://files.pythonhosted.org/packages/a2/09/77d55d46fd61b4a135c444fc97158ef34a095e5681d0a6c10b75bf356191/sympy-1.14.0-py3-none-any.whl", hash = "sha256:e091cc3e99d2141a0ba2847328f5479b05d94a6635cb96148ccb3f34671bd8f5", size = 6299353 },
 ]
+
+[[package]]
+name = "tdqm"
+version = "0.0.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "tqdm" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/5a/38/58c9e22b95e98666fe29f35e217ab6126a03798dadf3f4f8f3e5f898510b/tdqm-0.0.1.tar.gz", hash = "sha256:f050004a76b1d22f70b78209b48781353c82440215b6ba7d22b1f499b05a0101", size = 1388 }
 
 [[package]]
 name = "tenacity"
