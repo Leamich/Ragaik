@@ -1,13 +1,16 @@
 from abc import ABC, abstractmethod
 from typing import List
+
+from langchain.chains import LLMChain
+from langchain_community.chat_message_histories import RedisChatMessageHistory
 from langchain_core.documents import Document
-from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.messages import SystemMessage
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.runnables import RunnableConfig
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_ollama import OllamaLLM
-from langchain_community.chat_message_histories import RedisChatMessageHistory
-from langchain.chains import LLMChain
+
+from RAG.domain.context_service import Context
 
 
 class Generator(ABC):
@@ -16,7 +19,7 @@ class Generator(ABC):
     """
 
     @abstractmethod
-    def generate(self, query: str, session_id: str, contexts: List[Document] | None) -> str:
+    def generate(self, query: str, session_id: str, contexts: Context) -> str:
         """Generate a response given a query and list of chunk contexts."""
         pass
 
@@ -33,8 +36,8 @@ class Generator(ABC):
 
 class RussianPhi4Generator(Generator):
     def __init__(
-            self,
-            system_prompt: str = "Ты помощник по математике. Отвечай на русском. Решай задачу пошагово (Chain-of-Thoughts). Контест может содержать несколько источников, которые могут быть полезны для ответа на вопрос. Если контекст содержит информацию, которая может помочь в ответе на вопрос, используй её. Если конктест остутствует, то отвечай на основании своих знаний",
+        self,
+        system_prompt: str = "Ты помощник по математике. Отвечай на русском. Решай задачу пошагово (Chain-of-Thoughts). Контест может содержать несколько источников, которые могут быть полезны для ответа на вопрос. Если контекст содержит информацию, которая может помочь в ответе на вопрос, используй её. Если конктест остутствует, то отвечай на основании своих знаний",
     ):
         llm = OllamaLLM(model="phi3.5")
         prompt_template = ChatPromptTemplate.from_messages(
@@ -71,7 +74,7 @@ class RussianPhi4Generator(Generator):
         history.clear()
 
     @staticmethod
-    def _format_contexts(contexts: List[Document] | None) -> str:
+    def _format_contexts(contexts: Context) -> str:
         if not contexts:
             return "Контекст отсутствует."
 
@@ -79,7 +82,9 @@ class RussianPhi4Generator(Generator):
             f"Источник {i + 1}:\n{doc.page_content}" for i, doc in enumerate(contexts)
         )
 
-    def generate(self, query: str, session_id: str, contexts: List[Document] | None) -> str:
+    def generate(
+        self, query: str, session_id: str, contexts: List[Document] | None
+    ) -> str:
         context_block = self._format_contexts(contexts)
         response = self._chain.invoke(
             {"context": context_block, "question": query},
