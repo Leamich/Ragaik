@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 from ragas.metrics import (
     ResponseRelevancy,
@@ -41,18 +42,27 @@ def run_ragas_evaluation(
 
     datasamples = {"question": [], "answer": [], "contexts": []}
 
-    for question in tqdm(questions, desc="Generating answers"):
-        contexts = retriever.query(question)
-        generated = generator.generate(question, contexts)
+    if not os.path.exists("answers.pkl"):
+        for question in tqdm(questions, desc="Generating answers"):
+            contexts = retriever.query(question)
+            generated = generator.generate(question, contexts)
 
-        datasamples["question"].append(question)
-        datasamples["answer"].append(generated)
-        datasamples["contexts"].append([doc.page_content for doc in contexts])
+            datasamples["question"].append(question)
+            datasamples["answer"].append(generated)
+            datasamples["contexts"].append([doc.page_content for doc in contexts])
+            datasamples["referense"].append([""])
 
+        answers = pd.DataFrame.from_dict(datasamples)
+        answers.to_pickle("answers.pkl")
+        dataset = Dataset.from_dict(datasamples)
+
+    else:
+        answers = pd.read_pickle("answers.pkl")
+        dataset = Dataset.from_pandas(answers)
 
     dataset = Dataset.from_dict(datasamples)
     pd.DataFrame(datasamples).to_excel(f"{system_name}_answers.xlsx")
-    
+
     print("INFO: generating dataset")
     results: pd.DataFrame = evaluate(
         dataset,
