@@ -1,9 +1,9 @@
+from langchain.schema import Document
 from langchain_community.vectorstores import FAISS
 from langchain_community.vectorstores.utils import DistanceStrategy
 from langchain_huggingface import HuggingFaceEmbeddings
-from langchain.schema import Document
 
-from ...domain.port import ChunkRepository
+from ...domain.port.chunk_repository import ChunkRepository
 from ..token_chunker import TokenChunker
 from .chunker import Chunker
 

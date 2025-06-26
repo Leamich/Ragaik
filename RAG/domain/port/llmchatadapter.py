@@ -1,14 +1,12 @@
 from abc import ABC, abstractmethod
 
-from langchain.chains import LLMChain
+from langchain.schema import Document
 from langchain_community.chat_message_histories import RedisChatMessageHistory
 from langchain_core.messages import SystemMessage
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.runnables import RunnableConfig
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_ollama import OllamaLLM
-
-from RAG.domain.context_service import Context
 
 
 class LLMChatAdapter(ABC):
@@ -17,7 +15,9 @@ class LLMChatAdapter(ABC):
     """
 
     @abstractmethod
-    def generate(self, query: str, session_id: str, contexts: Context) -> str:
+    def generate(
+        self, query: str, contexts: list[Document], session_id: str = None
+    ) -> str:
         """Generate a response given a query and list of chunk contexts."""
         pass
 
@@ -39,7 +39,7 @@ class RussianPhi4LLMChatAdapter(LLMChatAdapter):
         system_prompt: str = "Ты — эксперт по математике. Дай развёрнутый и строго обоснованный ответ на вопрос. Используй определения, теоремы, леммы и примеры. Все формулы и выражения — в формате LaTeX. Контекст (если он есть) имеет приоритет перед общими знаниями. Структура ответа: формулировка задачи, определение необходимых понятий, пошаговое рассуждение, вывод.",
     ):
         llm = OllamaLLM(model=model)
-        prompt_template = ChatPromptTemplate.from_messages(
+        history_prompt_template = ChatPromptTemplate.from_messages(
             [
                 SystemMessage(content=system_prompt),
                 SystemMessage(content="Контекст:\n{context}"),
@@ -47,12 +47,16 @@ class RussianPhi4LLMChatAdapter(LLMChatAdapter):
                 ("human", "{question}"),
             ]
         )
-        chain = LLMChain(
-            llm=llm,
-            prompt=prompt_template,
+        prompt_template = ChatPromptTemplate.from_messages(
+            [
+                SystemMessage(content=system_prompt),
+                SystemMessage(content="Контекст:\n{context}"),
+                ("human", "{question}"),
+            ]
         )
-        self._chain = RunnableWithMessageHistory(
-            chain,
+        self._chain = prompt_template | llm
+        self._chain_with_history = RunnableWithMessageHistory(
+            runnable=(history_prompt_template | llm),
             get_session_history=self._get_message_history,
             input_messages_key="question",
             history_messages_key="history",
@@ -73,7 +77,7 @@ class RussianPhi4LLMChatAdapter(LLMChatAdapter):
         history.clear()
 
     @staticmethod
-    def _format_contexts(contexts: Context) -> str:
+    def _format_contexts(contexts: list[Document]) -> str:
         if not contexts:
             return "Контекст отсутствует."
 
@@ -81,10 +85,14 @@ class RussianPhi4LLMChatAdapter(LLMChatAdapter):
             f"Источник {i + 1}:\n{doc.page_content}" for i, doc in enumerate(contexts)
         )
 
-    def generate(self, query: str, session_id: str, contexts: Context) -> str:
+    def generate(
+        self, query: str, contexts: list[Document], session_id: str = None
+    ) -> str:
         context_block = self._format_contexts(contexts)
-        response = self._chain.invoke(
-            {"context": context_block, "question": query},
-            config=RunnableConfig(configurable={"session_id": session_id}),
-        )
-        return response["text"]
+        if session_id is None:
+            return self._chain.invoke({"context": context_block, "question": query})
+        else:
+            return self._chain_with_history.invoke(
+                {"context": context_block, "question": query},
+                config=RunnableConfig(configurable={"session_id": session_id}),
+            )["text"]

@@ -22,7 +22,7 @@ class ModelChatService:
         photo_ids = self._context_service.get_context_photo_ids(photos_context)
         photo_id = photo_ids[0] if photo_ids else None
 
-        return self._generator.generate(query, session_id, notes_context), photo_id
+        return self._generator.generate(query, notes_context, session_id), photo_id
 
     def get_history(self, session_id: str) -> list[str]:
         """Get message history for a given session."""

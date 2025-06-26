@@ -3,7 +3,7 @@ from ragas.metrics import (
     ResponseRelevancy,
     ContextPrecision,
     ContextRecall,
-    Faithfulness
+    Faithfulness,
 )
 from ragas.evaluation import evaluate
 from ragas.run_config import RunConfig
@@ -21,7 +21,7 @@ from langchain_huggingface import HuggingFaceEmbeddings
 def run_ragas_evaluation(
     system_name: str, retriever: FaissAndBM25EnsembleRetriever, generator
 ):
-    critic_llm = OllamaLLM(model="phi4")
+    critic_llm = OllamaLLM(model="phi3.5")
     wrapped_critic = LangchainLLMWrapper(critic_llm)
 
     embedder = HuggingFaceEmbeddings(model_name="intfloat/multilingual-e5-large")
@@ -29,8 +29,7 @@ def run_ragas_evaluation(
 
     run_config = RunConfig(max_workers=1, timeout=500)
 
-
-    with open('RAG/tests/questions.md') as f:
+    with open("RAG/tests/questions.md") as f:
         questions = [s[3:] for s in f.readlines()]
 
     datasamples = {"question": [], "answer": [], "contexts": []}
@@ -52,7 +51,7 @@ def run_ragas_evaluation(
             ResponseRelevancy(),
             ContextPrecision(),
             ContextRecall(),
-            Faithfulness()
+            Faithfulness(),
         ],
         raise_exceptions=False,
         llm=wrapped_critic,
