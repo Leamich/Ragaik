@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from langchain.schema import Document
 from langchain_community.vectorstores import FAISS
 from langchain_community.vectorstores.utils import DistanceStrategy
@@ -15,6 +17,7 @@ class FaissChunkRepository(ChunkRepository):
 
     def __init__(
         self,
+        filename: Path | None = None,
         documents: list[Document] | None = None,
         strategy: DistanceStrategy = DistanceStrategy.COSINE,
         embedder=HuggingFaceEmbeddings(model_name="intfloat/multilingual-e5-large"),
@@ -24,12 +27,25 @@ class FaissChunkRepository(ChunkRepository):
         self._chunker = chunker
         self._strategy = strategy
 
-        if documents is None:
+        if documents is not None:
+            self._init_from_documents(documents)
+        elif filename is not None and filename.exists():
+            self._init_from_file(filename)
+        else:
             self._vectorstore = None
             self._retriever = None
 
-        else:
-            self._init_from_documents(documents)
+    def _init_from_file(self, filename: Path) -> None:
+        """
+        Initializes the vector store from a file.
+        """
+        self._vectorstore = FAISS.load_local(
+            str(filename),
+            embeddings=self._embedder,
+            distance_strategy=self._strategy,
+            allow_dangerous_deserialization=True,
+        )
+        self._retriever = self._vectorstore.as_retriever()
 
     def _init_from_documents(self, documents: list[Document]) -> None:
         chunks: list[Document] = self._chunker.chunk_many(documents)
@@ -37,6 +53,10 @@ class FaissChunkRepository(ChunkRepository):
             chunks, embedding=self._embedder, distance_strategy=self._strategy
         )
         self._retriever = self._vectorstore.as_retriever()
+
+    def store(self, path: Path) -> None:
+        if self._vectorstore is not None:
+            self._vectorstore.save_local(path)
 
     def add(self, document: Document) -> None:
         """Add document to the store."""

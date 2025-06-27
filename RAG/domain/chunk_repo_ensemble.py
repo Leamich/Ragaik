@@ -3,11 +3,12 @@ from typing import List
 from langchain.retrievers.ensemble import EnsembleRetriever
 from langchain.schema import Document
 
-from .port.chunk_repository import ChunkRepository
 from ..infrastructure.chunk_repository.bm25_chunk_repository import BM25ChunkRepository
 from ..infrastructure.chunk_repository.faiss_chunk_repository import (
     FaissChunkRepository,
 )
+from .port.chunk_repository import ChunkRepository
+
 
 class FaissAndBM25EnsembleRetriever:
     """
@@ -36,6 +37,7 @@ class FaissAndBM25EnsembleRetriever:
 
     def _try_init_ensemble(self):
         if self._faiss_repo.is_init() and self._bm_repo.is_init():
+            print("initializing ensemble retriever")
             self._ensemble = EnsembleRetriever(
                 retrievers=[
                     self._faiss_repo.get_retriever(),
@@ -66,5 +68,5 @@ class FaissAndBM25EnsembleRetriever:
         """
         Query both repositories and return the results.
         Raises error if ensemble is not initialized.
-        """ 
+        """
         return self._ensemble.invoke(query) if self._ensemble is not None else []

@@ -17,7 +17,7 @@ class ModelChatService:
 
     def ask(self, query: str, session_id: str) -> tuple[str, str | None]:
         """Retrieve top_k chunks and generate a response."""
-        notes_context: Context = self._context_service.retrieve_photo_context(query)
+        notes_context: Context = self._context_service.retrieve_textual_context(query)
         photos_context: Context = self._context_service.retrieve_photo_context(query)
         photo_ids = self._context_service.get_context_photo_ids(photos_context)
         photo_id = photo_ids[0] if photo_ids else None
