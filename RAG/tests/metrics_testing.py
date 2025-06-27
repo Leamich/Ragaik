@@ -89,7 +89,7 @@ def evaluate_faiss_bm25_phi4():
     generator = OllamaLLMChatAdapter()
 
     print("INFO: loading documents")
-    start_path = Path(config.START_PATH)
+    start_path = Path(config.NOTES_START_FILE)
     documents = load_documents(start_path)
     print("INFO: loaded", len(documents), "documents")
 

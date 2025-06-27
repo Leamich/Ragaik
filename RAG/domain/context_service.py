@@ -3,10 +3,7 @@ from typing import Any
 from langchain.schema import Document
 
 from RAG.domain.chunk_repo_ensemble import FaissAndBM25EnsembleRetriever
-from RAG.domain.port.loader import DocumentLoader
-from RAG.infrastructure.chunk_repository.bm25_chunk_repository import (
-    BM25ChunkRepository,
-)
+from RAG.infrastructure.chunk_repository.faiss_chunk_repository import FaissChunkRepository
 
 type Context = list[Document]
 
@@ -20,7 +17,7 @@ class ContextService:
     def __init__(
         self,
         notes_repository=FaissAndBM25EnsembleRetriever(),
-        photos_repository=BM25ChunkRepository(),
+        photos_repository=FaissChunkRepository()
     ):
         self._notes_repository = notes_repository
         self._photos_repository = photos_repository

@@ -17,4 +17,4 @@ app.add_middleware(
 
 
 app.include_router(api_v1_router, prefix="/api/v1", tags=["v1"])
-app.mount("/api/v1/photos", StaticFiles(directory="./resources/photos/dump_all_AIK"), name="photos")
+app.mount("/api/v1/photos", StaticFiles(directory=config.PHOTO_DIR), name="photos")

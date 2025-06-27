@@ -22,7 +22,7 @@ def make_mb25_cache(docs: list[Document], cache_path: Path) -> None:
 
 
 if __name__ == "__main__":
-    root_path = Path(config.START_PATH)
+    root_path = Path(config.NOTES_START_FILE)
     docs = load_documents(root_path)
 
     faiss_cache_path = Path(config.FAISS_CACHE_DIR)
@@ -32,5 +32,7 @@ if __name__ == "__main__":
     make_mb25_cache(docs, bm25_cache_path)
 
     bm25_photo_cache_path = Path(config.PHOTO_CONTEXT_CACHE)
-    photo_docs = load_photo_docs(Path("resources/photos/phot_text_content.csv"))
+
+    phot_text_content_file  = Path(config.PHOT_TEXT_CONTENT_FILE)
+    photo_docs = load_photo_docs(phot_text_content_file)
     make_faiss_cache(photo_docs, bm25_photo_cache_path)
