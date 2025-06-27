@@ -1,174 +1,234 @@
+<!-- +page.svelte – updated chat page integrating the fresh Tailwind/Svelte UI while preserving existing API logic -->
 <script lang="ts">
-	import MarkdownWithMath from '$lib/MarkdownWithMath.svelte';
-	import {askQuery, deleteHistory, loadHistory} from '../../api';
-	import type { QuerySchema, ResponseSchema } from '../../types/schema';
-	import {onMount} from "svelte";
+    import MarkdownWithMath from '$lib/MarkdownWithMath.svelte';
+    import {askQuery, deleteHistory, loadHistory} from '../../api';
+    import type {MessageResponseSchema, QuerySchema} from '../../types/schema';
+    import {onMount} from 'svelte';
 
-	interface message {
-		id: number;
-		user: 'user' | 'bot';
-		text: string;
-	}
+    interface Message {
+        id: number;
+        user: 'user' | 'bot';
+        text: string;
+        images?: string[];
+    }
 
-	let messages: message[] = [
-		{
-			id: 1,
-			user: 'bot',
-			text: 'Hello! I am RAGaik, your personal assistant for studying. How can I help you today?'
-		}
-	];
+    // Initial welcome message from the bot (preserved from original page)
+    let messages: Message[] = [
+        {
+            id: 1,
+            user: 'bot',
+            text: 'Hi! I\'m your AI assistant. Ask me anything!'
+        }
+    ];
 
-	let input = '';
-	let loading = false;
-	let nextId = 2;
+    let input = '';
+    let loading = false;
+    let nextId = messages.length + 1;
+    let chatContainer: HTMLDivElement;
 
-	onMount(async () => {
-		const loadedMessages = await loadHistory()
-		if (loadedMessages && loadedMessages.length > 0) {
-			const new_messages: message[] = loadedMessages.map((msg, index) => ({
-				id: nextId + index,
-				user: index % 2 === 0 ? 'user' : 'bot',
-				text: msg
-			}))
-			messages = [ ...messages, ...new_messages];
-			nextId = messages.length + 1;
-		}
-	});
+    /** Scroll chat view to the bottom */
+    function scrollToBottom() {
+        requestAnimationFrame(() => {
+            if (chatContainer) chatContainer.scrollTop = chatContainer.scrollHeight;
+        });
+    }
 
-	async function handleSubmit(event: Event) {
-		event.preventDefault();
-		const question = input.trim();
-		if (!question) return;
+    /** Restore previous chat (original logic kept) */
+    onMount(async () => {
+        const loadedMessages = await loadHistory();
+        if (loadedMessages && loadedMessages.length > 0) {
+            const restored: Message[] = loadedMessages.map((msg, idx) => ({
+                id: nextId + idx,
+                user: idx % 2 === 0 ? 'user' : 'bot',
+                text: msg
+            }));
+            messages = [...messages, ...restored];
+            nextId = messages.length + 1;
+            scrollToBottom();
+        }
+    });
 
-		// Add user message
-		messages = [...messages, { id: nextId++, user: 'user', text: question }];
 
-		input = '';
-		loading = true;
+    /** Handle submit from textarea */
+    async function handleSubmit() {
+        const question = input.trim();
+        if (!question || loading) return;
 
-		try {
-			const payload: QuerySchema = { query: question };
-			const res: ResponseSchema = await askQuery(payload);
+        // Add user message
+        messages = [...messages, {id: nextId++, user: 'user', text: question}];
+        input = '';
+        loading = true;
+        scrollToBottom();
 
-			messages = [...messages, { id: nextId++, user: 'bot', text: res.response }];
-		} catch {
-			messages = [
-				...messages,
-				{ id: nextId++, user: 'bot', text: 'Sorry, there was an error contacting the backend.' }
-			];
-		} finally {
-			loading = false;
-		}
-	}
+        try {
+            const payload: QuerySchema = {query: question};
+            const res: MessageResponseSchema = await askQuery(payload);
 
-	async function handleEraseSession() {
-		await deleteHistory()
-		window.location.reload()
-	}
+            messages = [
+                ...messages,
+                {
+                    id: nextId++,
+                    user: 'bot',
+                    text: res.text,
+                    images: res.image_ids
+                }
+            ];
+
+        } catch {
+            messages = [
+                ...messages,
+                {
+                    id: nextId++,
+                    user: 'bot',
+                    text: 'Sorry – something went wrong while contacting the server.'
+                }
+            ];
+        } finally {
+            loading = false;
+            scrollToBottom();
+        }
+    }
+
+    /** Submit on Enter (Shift+Enter for newline) */
+    function onKeyDown(event: KeyboardEvent) {
+        if (event.key === 'Enter' && !event.shiftKey) {
+            event.preventDefault();
+            handleSubmit();
+        }
+    }
+
+    /** Erase session button */
+    async function handleEraseSession() {
+        await deleteHistory();
+        window.location.reload();
+    }
 </script>
 
-<div class="relative max-h-fit min-h-full bg-white">
-	<!-- Erase session button -->
-	<div class="flex justify-end px-4 pt-4">
-		<button
-			on:click={handleEraseSession}
-			class="px-3 py-1 bg-red-100 text-red-700 rounded-lg shadow hover:bg-red-200 transition text-sm font-semibold border border-red-200"
-		>
-			Erase Session
-		</button>
-	</div>
+<!-- MAIN LAYOUT -->
+<div class="flex flex-col h-[calc(100vh-80px)] max-h-[calc(100vh-80px)] bg-white overflow-hidden">
+    <!-- Chat area -->
+    <div
+            bind:this={chatContainer}
+            class="flex-1 overflow-y-auto p-4 space-y-4 bg-white chat-container"
+    >
+        {#each messages as msg (msg.id)}
+            <div class="flex {msg.user === 'user' ? 'justify-end' : 'justify-start'}">
+                <div
+                        class="px-3 py-2 rounded-lg max-w-[80%] break-words whitespace-pre-wrap"
+                        class:bg-violet-400={msg.user === 'user'}
+                        class:text-white={msg.user === 'user'}
+                        class:rounded-br-none={msg.user === 'user'}
+                        class:bg-gray-200={msg.user === 'bot'}
+                        class:text-gray-900={msg.user === 'bot'}
+                        class:rounded-bl-none={msg.user === 'bot'}
+                >
+                    <!-- Render markdown+math content -->
+                    <MarkdownWithMath text={msg.text}/>
 
-	<!-- Chat messages with typography styling -->
-	<div
-		class="prose prose-blue max-w-full max-h-[calc(100vh-80px)] min-h-[calc(100vh-80px)] px-4 py-6 overflow-y-scroll h-full chat-container pb-32"
-	>
-		{#each messages as msg (msg.id)}
-			<div
-				id="msg-{msg.id}"
-				class="mb-4 p-3 rounded-lg shadow-sm"
-				class:bg-blue-100={msg.user === 'bot'}
-				class:bg-blue-200={msg.user === 'user'}
-			>
-				<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-				<MarkdownWithMath text={msg.text} />
-			</div>
-		{/each}
-		{#if loading}
-			<div class="mb-4 p-3 rounded-lg shadow-sm bg-blue-100 opacity-70">
-				<p>Bot is typing…</p>
-			</div>
-		{/if}
-	</div>
+                    <!-- Render assistant images if any -->
+                    {#if msg.images}
+                        <div class="mt-2 flex flex-col gap-2">
+                            {#each msg.images as imgSrc (imgSrc)}
+                                <img
+                                        src={`/api/v1/photos/${imgSrc}.png`}
+                                        class="max-h-60 rounded-lg object-contain border"
+                                        loading="lazy"
+                                        alt="Assistant"
+                                />
+                            {/each}
+                        </div>
+                    {/if}
+                </div>
+            </div>
+        {/each}
 
-	<!-- Prompt overlay -->
-	<div
-		class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-blue-100 via-blue-50 to-transparent bg-opacity-95 backdrop-blur-lg p-4 shadow-lg border-t border-blue-200"
-	>
-		<form class="flex items-center gap-3" on:submit|preventDefault={handleSubmit}>
-			<div class="flex-1 relative">
-				<textarea
-					bind:value={input}
-					rows="1"
-					placeholder="Type your message..."
-					class="w-full p-3 h-12 pr-12 border-2 border-blue-200 rounded-2xl shadow focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 bg-white/80 transition resize-none text-base placeholder-gray-400"
-					disabled={loading}
-					style="min-height: 44px; max-height: 120px;"
-				></textarea>
-				<!-- Optional: Add a subtle icon inside the input (e.g., a pencil) -->
-				<svg
-					class="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-blue-300 pointer-events-none"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="2"
-					viewBox="0 0 24 24"
-				>
-					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						d="M15.232 5.232l3.536 3.536M9 13l6.768-6.768a2 2 0 112.828 2.828L11.828 15.828a4 4 0 01-1.414.94l-4.243 1.415 1.415-4.243a4 4 0 01.94-1.414z"
-					/>
-				</svg>
-			</div>
-			<button
-				type="submit"
-				class="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-2xl shadow hover:from-blue-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300 transition disabled:opacity-60 disabled:cursor-not-allowed"
-				disabled={loading || !input.trim()}
-			>
-				{#if loading}
-					<svg class="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
-						<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"
-						></circle>
-						<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-						></path>
-					</svg>
-					Sending...
-				{:else}
-					<span>Send</span>
-					<svg
-						class="w-5 h-5 ml-1"
-						fill="none"
-						stroke="currentColor"
-						stroke-width="2"
-						viewBox="0 0 24 24"
-					>
-						<path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5l7 7-7 7" />
-					</svg>
-				{/if}
-			</button>
-		</form>
-	</div>
+        <!-- Loading spinner inline with messages (optional) -->
+        {#if loading}
+            <div class="flex justify-start">
+                <div class="w-6 h-6 border-4 border-blue-400 border-t-transparent rounded-full animate-spin"></div>
+            </div>
+        {/if}
+    </div>
+
+    <!-- Input area pinned at bottom -->
+    <div class="border-t bg-white p-2">
+        <form class="flex items-end gap-2" on:submit|preventDefault={handleSubmit}>
+      <textarea
+              bind:value={input}
+              class="flex-1 resize-none p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              disabled={loading}
+              on:keydown={onKeyDown}
+              placeholder="Type your message..."
+              rows="1"
+              style="min-height: 44px; max-height: 120px;"
+      ></textarea>
+
+            <!-- Send button -->
+            <button
+                    aria-label="Send"
+                    class="relative bg-blue-500 text-white p-2 rounded disabled:opacity-50"
+                    disabled={loading || !input.trim()}
+                    type="submit"
+            >
+                {#if loading}
+                    <svg
+                            class="animate-spin h-5 w-5"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                    >
+                        <circle
+                                class="opacity-25"
+                                cx="12"
+                                cy="12"
+                                r="10"
+                                stroke="currentColor"
+                                stroke-width="4"
+                        ></circle>
+                        <path
+                                class="opacity-75"
+                                fill="currentColor"
+                                d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                        ></path>
+                    </svg>
+                {:else}
+                    <svg
+                            class="h-5 w-5"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor"
+                            viewBox="0 0 16 16"
+                    >
+                        <path
+                                d="M15.854.146a.5.5 0 0 0-.54-.11l-15 6a.5.5 0 0 0 0 .928l15 6a.5.5 0 0 0 .686-.475V.621a.5.5 0 0 0-.146-.475zM6 10.117V5.883L11.114 8 6 10.117z"
+                        />
+                    </svg>
+                {/if}
+            </button>
+
+            <!-- Quick erase button (mobile convenience) -->
+            <button
+                    class="bg-red-500 text-white px-2 py-2 rounded"
+                    on:click={handleEraseSession}
+                    type="button"
+            >
+                Erase
+            </button>
+        </form>
+    </div>
 </div>
 
 <style>
-	/* Ensure the messages container scrolls beneath the overlay prompt */
-	.chat-container {
-		scrollbar-width: thin;
-	}
-	.chat-container::-webkit-scrollbar {
-		width: 0.5rem;
-	}
-	.chat-container::-webkit-scrollbar-thumb {
-		background-color: rgba(0, 0, 0, 0.2);
-		border-radius: 0.25rem;
-	}
+    /* Thin, subtle scroll bar styling (kept from original) */
+    .chat-container {
+        scrollbar-width: thin;
+    }
+
+    .chat-container::-webkit-scrollbar {
+        width: 0.5rem;
+    }
+
+    .chat-container::-webkit-scrollbar-thumb {
+        background-color: rgba(0, 0, 0, 0.2);
+        border-radius: 0.25rem;
+    }
 </style>

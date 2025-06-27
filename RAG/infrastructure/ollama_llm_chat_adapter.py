@@ -67,7 +67,6 @@ class OllamaLLMChatAdapter(LLMChatAdapter):
         self, query: str, contexts: list[Document], session_id: str | None = None
     ) -> str:
         context_block = self._format_contexts(contexts)
-        print(context_block)
         if session_id is None:
             return self._chain.invoke({"context": context_block, "question": query})
         else:

@@ -2,8 +2,9 @@ interface QuerySchema {
 	query: string;
 }
 
-interface ResponseSchema {
-	response: string;
+interface MessageResponseSchema {
+	text: string;
+	image_ids?: string[];
 }
 
-export type { QuerySchema, ResponseSchema };
+export type { QuerySchema, MessageResponseSchema };

@@ -5,29 +5,6 @@
 </script>
 
 <div class="flex flex-col min-h-screen bg-gray-50">
-  <!-- Header -->
-  <header class="bg-white shadow-md">
-    <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-      <a href="/" class="text-3xl font-bold text-violet-400">
-          RAGaik
-      </a>
-      <div class="flex space-x-4">
-        <a
-          href="/chats"
-          class="px-4 py-2 bg-gray-100 text-violet-400 rounded-md font-medium hover:bg-gray-200 transition-colors duration-200"
-        >
-          Чат
-        </a>
-        <a
-          href="/contacts"
-          class="px-4 py-2 bg-violet-400 text-white rounded-md font-medium hover:bg-violet-500 transition-colors duration-200"
-        >
-          Контакты
-        </a>
-      </div>
-    </nav>
-  </header>
-
   <!-- Main Content -->
   <main class="flex-grow">
     <!-- QR Code Section -->

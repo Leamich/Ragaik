@@ -83,3 +83,12 @@ class FaissChunkRepository(ChunkRepository):
                 self._vectorstore.add_documents(chunks)
         else:
             self._init_from_documents(documents)
+
+    def query(self, query: str, top_k: int = 2) -> list[Document]:
+        """
+        Queries the vector store for documents similar to the query.
+        Returns a list of documents.
+        """
+        if self._retriever is not None:
+            return self._retriever.invoke(query, k=top_k)
+        return []

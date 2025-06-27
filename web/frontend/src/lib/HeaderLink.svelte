@@ -1,10 +1,11 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import {page} from '$app/stores';
+
 	export let href: string;
 	export let text: string;
 
-	let inactiveClasses = 'bg-gray-100 text-blue-600 hover:bg-blue-700 hover:text-white';
-	let activeClasses = 'bg-blue-600 text-white hover:bg-blue-700';
+    let inactiveClasses = 'bg-gray-100 text-violet-400 hover:bg-gray-200';
+    let activeClasses = 'bg-violet-400 text-white hover:bg-violet-500';
 </script>
 
 <a

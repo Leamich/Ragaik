@@ -18,17 +18,22 @@ from ..infrastructure.ollama_llm_chat_adapter import OllamaLLMChatAdapter
 
 
 @lru_cache()
-def get_faiss_chunk_repo(
-) -> FaissChunkRepository:
+def get_faiss_chunk_repo() -> FaissChunkRepository:
     filename = Path(config.FAISS_CACHE_DIR)
     if not filename.exists():
         raise FileNotFoundError(f"Faiss cache file not found at {filename}")
     return FaissChunkRepository(filename=Path(config.FAISS_CACHE_DIR))
 
+
 @lru_cache()
-def get_bm25_chunk_repo(
-) -> BM25ChunkRepository:
+def get_bm25_chunk_repo() -> BM25ChunkRepository:
     return BM25ChunkRepository(filename=Path(config.BM25_CACHE_FILE))
+
+
+@lru_cache()
+def get_photo_bm25_chunk_repo() -> FaissChunkRepository:
+    return FaissChunkRepository(filename=Path(config.PHOTO_CONTEXT_CACHE))
+
 
 def get_faiss_and_bm25_ensemble_retriever(
     faiss_chunk_repo: Annotated[FaissChunkRepository, Depends(get_faiss_chunk_repo)],
@@ -42,6 +47,7 @@ def get_faiss_and_bm25_ensemble_retriever(
 
 def get_photos_loader() -> DocumentLoader:
     return None  # Replace with actual photo loader implementation
+
 
 def get_document_loader() -> DocumentLoader:
     return None  # Replace with actual document loader implementation
@@ -58,11 +64,19 @@ def get_rus_phi4_generator():
 def get_context_service(
     document_loader: Annotated[DocumentLoader, Depends(get_document_loader)],
     photos_loader: Annotated[DocumentLoader, Depends(get_photos_loader)],
-    retriever: Annotated[
+    note_context_retriever: Annotated[
         FaissAndBM25EnsembleRetriever, Depends(get_faiss_and_bm25_ensemble_retriever)
     ],
+    photos_context_retriever: Annotated[
+        FaissChunkRepository, Depends(get_photo_bm25_chunk_repo)
+    ],
 ):
-    return ContextService(document_loader, photos_loader, retriever)
+    return ContextService(
+        notes_loader=document_loader,
+        photos_loader=photos_loader,
+        notes_repository=note_context_retriever,
+        photos_repository=photos_context_retriever,
+    )
 
 
 def get_rag_service(

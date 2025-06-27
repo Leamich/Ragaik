@@ -1,11 +1,13 @@
 from typing import Annotated
-from fastapi import APIRouter, Request
 from uuid import uuid4
 
-from .....application.schema.ask_schema import QuerySchema, ResponseSchema
-from .....domain.model_chat_service import ModelChatService
+from fastapi import APIRouter, Request
 from fastapi.params import Depends
+
+from .....application.schema.ask_schema import QuerySchema
+from .....domain.model_chat_service import ModelChatService
 from ....deps import get_rag_service
+from ....schema.ask_schema import MessageResponseSchema
 
 ask_router = APIRouter()
 
@@ -15,7 +17,7 @@ def query(
     query_schema: QuerySchema,
     rag_service: Annotated[ModelChatService, Depends(get_rag_service)],
     request: Request,
-) -> ResponseSchema:
+) -> MessageResponseSchema:
     """
     Endpoint to handle queries.
     """
@@ -24,9 +26,12 @@ def query(
     if "session_id" not in request.session:
         request.session["session_id"] = str(uuid4())
 
-    response, _ = rag_service.ask(query_schema.query, request.session["session_id"])
+    response, image_ids = rag_service.ask(
+        query_schema.query, request.session["session_id"]
+    )
     print(f"Session ID: {request.session['session_id']}")
-    return ResponseSchema(response=response)
+    return MessageResponseSchema(text=response, image_ids=image_ids)
+
 
 @ask_router.get("/history")
 def get_history(
@@ -40,6 +45,7 @@ def get_history(
         return []
 
     return rag_service.get_history(request.session["session_id"])
+
 
 @ask_router.delete("/history")
 def clear_history(

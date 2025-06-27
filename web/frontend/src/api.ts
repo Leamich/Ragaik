@@ -1,6 +1,6 @@
-import type { QuerySchema, ResponseSchema } from './types/schema';
+import type { MessageResponseSchema, QuerySchema } from './types/schema';
 
-export async function askQuery(payload: QuerySchema): Promise<ResponseSchema> {
+export async function askQuery(payload: QuerySchema): Promise<MessageResponseSchema> {
 	const response = await fetch('/api/v1/ask/query', {
 		method: 'POST',
 		credentials: 'same-origin',

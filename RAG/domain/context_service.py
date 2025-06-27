@@ -46,15 +46,15 @@ class ContextService:
         """
         return self._notes_repository.query(query)
 
-    def retrieve_photo_context(self, query: str, top_k: int = 1) -> Context:
+    def retrieve_photo_context(self, query: str) -> Context:
         """
         Returns the top_k photo contexts based on the query.
         """
-        return self._photos_repository.query(query, top_k)
+        return self._photos_repository.query(query)
 
     @staticmethod
     def get_context_photo_ids(photos_context: Context) -> list[str]:
         """
         Extracts photo IDs from the context.
         """
-        return [doc.metadata["id"] for doc in photos_context if "id" in doc.metadata]
+        return [doc.metadata["image_id"] for doc in photos_context if "image_id" in doc.metadata]
