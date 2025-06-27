@@ -1,6 +1,7 @@
 import glob
 import os
 from langchain.schema import Document
+import RAG.config as config
 
 
 def find_md_file_paths(root_path: str) -> list[str]:
@@ -19,5 +20,6 @@ def load_documents(root_path: str) -> list[Document]:
 
 
 if __name__ == "__main__":
-    docs = load_documents("RAG/tests/hse_conspects_course1/")
+    start_path = config.START_PATH
+    docs = load_documents(start_path)
     print(docs[0].page_content)
