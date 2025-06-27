@@ -7,16 +7,16 @@ from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_ollama import OllamaLLM
 
 from RAG.domain.port.llmchatadapter import LLMChatAdapter
+import RAG.config as config
 
 
 class OllamaLLMChatAdapter(LLMChatAdapter):
     def __init__(
         self,
         model: str = "phi4",
-        api_url: str = "http://localhost:11434",
         system_prompt: str = "Ты — эксперт по математике. Дай развёрнутый и строго обоснованный ответ на вопрос. Используй определения, теоремы, леммы и примеры. Все формулы и выражения — в формате LaTeX. Контекст (если он есть) имеет приоритет перед общими знаниями. Структура ответа: формулировка задачи, определение необходимых понятий, пошаговое рассуждение, вывод.",
     ):
-        llm = OllamaLLM(model=model, base_url=api_url)
+        llm = OllamaLLM(model=model, base_url=config.OLLAMA_API_URL)
         history_prompt_template = ChatPromptTemplate.from_messages(
             [
                 SystemMessage(content=system_prompt),
@@ -43,7 +43,7 @@ class OllamaLLMChatAdapter(LLMChatAdapter):
     @staticmethod
     def _get_message_history(session_id: str) -> RedisChatMessageHistory:
         return RedisChatMessageHistory(
-            session_id=session_id, url="redis://localhost:6379", ttl=3600 * 24
+            session_id=session_id, url=config.REDIS_API_URL, ttl=3600 * 24
         )
 
     def get_message_history_messages(self, session_id: str) -> list[str]:
