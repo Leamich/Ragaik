@@ -6,7 +6,7 @@ import RAG.config as config
 
 if __name__ == "__main__":
     retr = FaissAndBM25EnsembleRetriever()
-    start_path = Path(config.NOTES_START_FILE)
+    start_path = Path(config.NOTES_START_DIR)
     documents = load_documents(start_path)
     for doc in documents:
         if doc is None:

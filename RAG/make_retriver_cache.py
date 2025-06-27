@@ -22,7 +22,7 @@ def make_mb25_cache(docs: list[Document], cache_path: Path) -> None:
 
 
 if __name__ == "__main__":
-    root_path = Path(config.NOTES_START_FILE)
+    root_path = Path(config.NOTES_START_DIR)
     docs = load_documents(root_path)
 
     faiss_cache_path = Path(config.FAISS_CACHE_DIR)

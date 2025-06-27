@@ -1,23 +1,22 @@
 import os
 
 import pandas as pd
+from pathlib import Path
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_ollama import OllamaLLM
 from ragas.embeddings import LangchainEmbeddingsWrapper
 from ragas.evaluation import evaluate
 from ragas.llms import LangchainLLMWrapper
 from ragas.metrics import (
-    AnswerAccuracy,
     AnswerRelevancy,
     ContextRelevance,
-    Faithfulness,
-    LLMContextPrecisionWithoutReference,
     ResponseGroundedness,
-    ResponseRelevancy,
 )
 from ragas.run_config import RunConfig
 from ragas.utils import Dataset
 from tqdm import tqdm
+
+import RAG.config as config
 
 from RAG.infrastructure.chunk_repository.bm25_chunk_repository import (
     BM25ChunkRepository,
@@ -25,7 +24,7 @@ from RAG.infrastructure.chunk_repository.bm25_chunk_repository import (
 from RAG.infrastructure.ollama_llm_chat_adapter import OllamaLLMChatAdapter
 
 from ..domain.chunk_repo_ensemble import FaissAndBM25EnsembleRetriever
-from .load_local import load_documents
+from ..load import load_documents
 
 
 def run_ragas_evaluation(system_name: str, retriever, generator):
@@ -87,7 +86,7 @@ def evaluate_faiss_bm25_phi4():
     generator = OllamaLLMChatAdapter()
 
     print("INFO: loading documents")
-    start_path = "RAG/tests/hse_conspects_course1/"
+    start_path = Path(config.NOTES_START_DIR)
     documents = load_documents(start_path)
     print("INFO: loaded", len(documents), "documents")
 
@@ -106,7 +105,7 @@ def evaluate_faiss_bm25_phi35():
     generator = OllamaLLMChatAdapter(model="phi3.5")
 
     print("INFO: loading documents")
-    start_path = "RAG/tests/hse_conspects_course1/"
+    start_path = Path(config.NOTES_START_DIR)
     documents = load_documents(start_path)
     print("INFO: loaded", len(documents), "documents")
 
@@ -124,7 +123,7 @@ def evaluate_phi4_mb25():
     generator = OllamaLLMChatAdapter(model="phi4")
 
     print("INFO: loading documents")
-    start_path = "RAG/tests/hse_conspects_course1/"
+    start_path = Path(config.NOTES_START_DIR)
     documents = load_documents(start_path)
     print("INFO: loaded", len(documents), "documents")
 
