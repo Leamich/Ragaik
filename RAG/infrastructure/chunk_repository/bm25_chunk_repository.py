@@ -19,7 +19,7 @@ class BM25ChunkRepository(ChunkRepository):
         documents: list[Document] | None = None,
         filename: Path | None = None,
         chunker: Chunker = TokenChunker(),
-        k: int = 4,
+        k: int = 4
     ):
         self._chunker = chunker
 
@@ -34,7 +34,7 @@ class BM25ChunkRepository(ChunkRepository):
         else:
             self._chunks: list[Document] = self._chunker.chunk_many(documents)
             self._retriever = BM25Retriever.from_documents(self._chunks)
-            self._retriever.k = k  # соси разработчик, не знаю как это работает
+            self._retriever.k = k
 
     def add(self, document: Document) -> None:
         self._chunks += self._chunker.chunk(document)
