@@ -1,5 +1,5 @@
 import os
-from pathlib import Path
+
 import pandas as pd
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_ollama import OllamaLLM
@@ -7,25 +7,28 @@ from ragas.embeddings import LangchainEmbeddingsWrapper
 from ragas.evaluation import evaluate
 from ragas.llms import LangchainLLMWrapper
 from ragas.metrics import (
+    AnswerAccuracy,
+    AnswerRelevancy,
+    ContextRelevance,
     Faithfulness,
     LLMContextPrecisionWithoutReference,
-    ResponseRelevancy
+    ResponseGroundedness,
+    ResponseRelevancy,
 )
 from ragas.run_config import RunConfig
 from ragas.utils import Dataset
 from tqdm import tqdm
 
-from RAG.domain.port.llmchatadapter import LLMChatAdapter
+from RAG.infrastructure.chunk_repository.bm25_chunk_repository import (
+    BM25ChunkRepository,
+)
 from RAG.infrastructure.ollama_llm_chat_adapter import OllamaLLMChatAdapter
 
 from ..domain.chunk_repo_ensemble import FaissAndBM25EnsembleRetriever
-from ..load import load_documents
-import RAG.config as config
+from .load_local import load_documents
 
 
-def run_ragas_evaluation(
-    system_name: str, retriever: FaissAndBM25EnsembleRetriever, generator: LLMChatAdapter
-):
+def run_ragas_evaluation(system_name: str, retriever, generator):
     print("INFO: initializing critic LLM")
     critic_llm = OllamaLLM(model="phi4")
     wrapped_critic = LangchainLLMWrapper(critic_llm)
@@ -62,15 +65,10 @@ def run_ragas_evaluation(
         answers = pd.read_pickle(f"{system_name}_answers.pkl")
         dataset = Dataset.from_pandas(answers)
 
-
     print("INFO: generating dataset")
     results: pd.DataFrame = evaluate(
         dataset,
-        metrics=[
-            ResponseRelevancy(),
-            LLMContextPrecisionWithoutReference(),
-            Faithfulness()
-        ],
+        metrics=[AnswerRelevancy(), ContextRelevance(), ResponseGroundedness()],
         raise_exceptions=False,
         llm=wrapped_critic,
         embeddings=embedder_wrapped,
@@ -89,7 +87,26 @@ def evaluate_faiss_bm25_phi4():
     generator = OllamaLLMChatAdapter()
 
     print("INFO: loading documents")
-    start_path = Path(config.NOTES_START_FILE)
+    start_path = "RAG/tests/hse_conspects_course1/"
+    documents = load_documents(start_path)
+    print("INFO: loaded", len(documents), "documents")
+
+    print("INFO: adding documents to retriever")
+    # retriever.add_batch(documents)
+
+    print("INFO: running evaluation")
+    run_ragas_evaluation("FaissAndBM25EnsembleRetriever_Phi4", retriever, generator)
+
+
+def evaluate_faiss_bm25_phi35():
+    print("INFO: initializing retriever")
+    retriever = FaissAndBM25EnsembleRetriever()
+
+    print("INFO: initializing generator")
+    generator = OllamaLLMChatAdapter(model="phi3.5")
+
+    print("INFO: loading documents")
+    start_path = "RAG/tests/hse_conspects_course1/"
     documents = load_documents(start_path)
     print("INFO: loaded", len(documents), "documents")
 
@@ -97,8 +114,28 @@ def evaluate_faiss_bm25_phi4():
     retriever.add_batch(documents)
 
     print("INFO: running evaluation")
-    run_ragas_evaluation("FaissAndBM25EnsembleRetriever_Phi4", retriever, generator)
+    run_ragas_evaluation("FaissAndBM25EnsembleRetriever_Phi35", retriever, generator)
+
+
+def evaluate_phi4_mb25():
+    print("INFO: initializing retriever")
+
+    print("INFO: initializing generator")
+    generator = OllamaLLMChatAdapter(model="phi4")
+
+    print("INFO: loading documents")
+    start_path = "RAG/tests/hse_conspects_course1/"
+    documents = load_documents(start_path)
+    print("INFO: loaded", len(documents), "documents")
+
+    print("INFO: adding documents to retriever")
+    retriever = BM25ChunkRepository(documents=documents)
+
+    print("INFO: running evaluation")
+    run_ragas_evaluation("BM25EnsembleRetriever_Phi4", retriever, generator)
 
 
 if __name__ == "__main__":
     evaluate_faiss_bm25_phi4()
+    evaluate_faiss_bm25_phi35()
+    evaluate_phi4_mb25()
