@@ -9,7 +9,6 @@ import RAG.config as config
 from ..domain.chunk_repo_ensemble import FaissAndBM25EnsembleRetriever
 from ..domain.context_service import ContextService
 from ..domain.model_chat_service import ModelChatService
-from ..domain.port.loader import DocumentLoader
 from ..infrastructure.chunk_repository.bm25_chunk_repository import BM25ChunkRepository
 from ..infrastructure.chunk_repository.faiss_chunk_repository import (
     FaissChunkRepository,
@@ -31,7 +30,7 @@ def get_bm25_chunk_repo() -> BM25ChunkRepository:
 
 
 @lru_cache()
-def get_photo_bm25_chunk_repo() -> FaissChunkRepository:
+def get_photo_faiss_chunk_repo() -> FaissChunkRepository:
     return FaissChunkRepository(filename=Path(config.PHOTO_CONTEXT_CACHE))
 
 
@@ -45,37 +44,24 @@ def get_faiss_and_bm25_ensemble_retriever(
     )
 
 
-def get_photos_loader() -> DocumentLoader:
-    return None  # Replace with actual photo loader implementation
-
-
-def get_document_loader() -> DocumentLoader:
-    return None  # Replace with actual document loader implementation
-
-
 @lru_cache
 def get_rus_phi4_generator():
     return OllamaLLMChatAdapter(
-        model=config.OLLAMA_MODEL_NAME,
-        api_url=config.OLLAMA_API_URL,
+        model=config.OLLAMA_MODEL_NAME
     )
 
 
 def get_context_service(
-    document_loader: Annotated[DocumentLoader, Depends(get_document_loader)],
-    photos_loader: Annotated[DocumentLoader, Depends(get_photos_loader)],
     note_context_retriever: Annotated[
         FaissAndBM25EnsembleRetriever, Depends(get_faiss_and_bm25_ensemble_retriever)
     ],
     photos_context_retriever: Annotated[
-        FaissChunkRepository, Depends(get_photo_bm25_chunk_repo)
+        FaissChunkRepository, Depends(get_photo_faiss_chunk_repo)
     ],
 ):
     return ContextService(
-        notes_loader=document_loader,
-        photos_loader=photos_loader,
         notes_repository=note_context_retriever,
-        photos_repository=photos_context_retriever,
+        photos_repository=photos_context_retriever
     )
 
 
