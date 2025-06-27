@@ -9,20 +9,22 @@ from ragas.llms import LangchainLLMWrapper
 from ragas.metrics import (
     Faithfulness,
     LLMContextPrecisionWithoutReference,
-    ResponseRelevancy,
+    ResponseRelevancy
 )
 from ragas.run_config import RunConfig
 from ragas.utils import Dataset
 from tqdm import tqdm
 
+from RAG.domain.port.llmchatadapter import LLMChatAdapter
 from RAG.infrastructure.ollama_llm_chat_adapter import OllamaLLMChatAdapter
 
 from ..domain.chunk_repo_ensemble import FaissAndBM25EnsembleRetriever
 from .load_local import load_documents
+import RAG.config as config
 
 
 def run_ragas_evaluation(
-    system_name: str, retriever: FaissAndBM25EnsembleRetriever, generator
+    system_name: str, retriever: FaissAndBM25EnsembleRetriever, generator: LLMChatAdapter
 ):
     print("INFO: initializing critic LLM")
     critic_llm = OllamaLLM(model="phi4")
@@ -87,7 +89,7 @@ def evaluate_faiss_bm25_phi4():
     generator = OllamaLLMChatAdapter()
 
     print("INFO: loading documents")
-    start_path = "RAG/tests/hse_conspects_course1/"
+    start_path = config.START_PATH
     documents = load_documents(start_path)
     print("INFO: loaded", len(documents), "documents")
 
