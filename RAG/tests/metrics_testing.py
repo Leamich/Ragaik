@@ -1,5 +1,5 @@
 import os
-
+from pathlib import Path
 import pandas as pd
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_ollama import OllamaLLM
@@ -19,7 +19,7 @@ from RAG.domain.port.llmchatadapter import LLMChatAdapter
 from RAG.infrastructure.ollama_llm_chat_adapter import OllamaLLMChatAdapter
 
 from ..domain.chunk_repo_ensemble import FaissAndBM25EnsembleRetriever
-from .load_local import load_documents
+from ..load import load_documents
 import RAG.config as config
 
 
@@ -89,7 +89,7 @@ def evaluate_faiss_bm25_phi4():
     generator = OllamaLLMChatAdapter()
 
     print("INFO: loading documents")
-    start_path = config.START_PATH
+    start_path = Path(config.START_PATH)
     documents = load_documents(start_path)
     print("INFO: loaded", len(documents), "documents")
 
