@@ -105,7 +105,7 @@
 </script>
 
 <!-- MAIN LAYOUT -->
-<div class="flex flex-col h-[calc(100vh-80px)] max-h-[calc(100vh-80px)] bg-white overflow-hidden">
+<div class="flex flex-col h-[calc(100vh-80px)] max-h-[calc(100vh-80px)] bg-white overflow-hidden py-4">
     <!-- Chat area -->
     <div
             bind:this={chatContainer}
@@ -129,12 +129,17 @@
                     {#if msg.images}
                         <div class="mt-2 flex flex-col gap-2">
                             {#each msg.images as imgSrc (imgSrc)}
-                                <img
-                                        src={`/api/v1/photos/${imgSrc}.png`}
-                                        class="max-h-60 rounded-lg object-contain border"
-                                        loading="lazy"
-                                        alt="Assistant"
-                                />
+                                <button
+                                        class="max-h-72 rounded-lg object-contain border flex justify-center items-center"
+                                        on:click={() => window.open(`/api/v1/photos/${imgSrc}.png`, '_blank')}>
+                                    <img
+                                            src={`/api/v1/photos/${imgSrc}.png`}
+                                            class="max-h-72 rounded-lg object-contain"
+                                            loading="lazy"
+                                            alt="Context"
+                                    />
+                                </button>
+
                             {/each}
                         </div>
                     {/if}

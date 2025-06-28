@@ -10,7 +10,7 @@
 
 <a
 	{href}
-	class={`px-4 py-2 rounded-md font-medium transition-colors duration-200 ${
+	class={` px-3 py-2 rounded-md font-medium transition-colors duration-200 ${
 		$page.url.pathname === href ? activeClasses : inactiveClasses
 	}`}
 >
