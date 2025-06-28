@@ -1,5 +1,7 @@
 # Ragaik: A Math-Specific QA System Based on OCR
 
+\[ [pdf]([url](https://drive.google.com/file/d/1Yo-lEBIysRfTfn74YHYbhpOFCDvaOhnd/view?usp=drive_link)) \] \[ [демонстрация]([url](https://drive.google.com/file/d/1Iy2KbOZtyrLeM5f-nf-vt1imODo9WvN3/view?usp=drive_link)) \]
+
 _Currently in development_
 
 **Abstract**. This project aims to create a QA system based on a database of handwritten mathematical documents. It will include features for building a vectorized text database using OCR, and for deploying an on-demand server with an interface to interact with the QA system.
