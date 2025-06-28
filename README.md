@@ -1,6 +1,6 @@
 # Ragaik: A Math-Specific QA System Based on OCR
 
-\[ [pdf](https://drive.google.com/file/d/1Yo-lEBIysRfTfn74YHYbhpOFCDvaOhnd/view?usp=drive_link) \] \[ [демонстрация](https://drive.google.com/file/d/1Iy2KbOZtyrLeM5f-nf-vt1imODo9WvN3/view?usp=drive_link) \]
+\[ [pdf](https://drive.google.com/file/d/1Yo-lEBIysRfTfn74YHYbhpOFCDvaOhnd/view?usp=drive_link) \] \[ [demostration](https://drive.google.com/file/d/1Iy2KbOZtyrLeM5f-nf-vt1imODo9WvN3/view?usp=drive_link) \]
 
 _Currently in development_
 
@@ -17,6 +17,7 @@ The project was created as a first-year bachelor’s project at HSE Saint Peters
 1. uv [(you can see the installation instructions here)](https://docs.astral.sh/uv/getting-started/installation/)
 2. yarn
 2. docker (you know how to install this)
+3. [(ollama)](https://ollama.com/)
 
 ## Setup project
 
@@ -33,6 +34,7 @@ uv sync
 cd web/frontend/ 
 yarn install
 ```
+5. Run `ollama pull phi4`
 
 ## Start the project
 1. Start the redis `docker compose up`
