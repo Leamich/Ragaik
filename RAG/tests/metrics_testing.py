@@ -91,7 +91,7 @@ def evaluate_faiss_bm25_phi4():
     print("INFO: loaded", len(documents), "documents")
 
     print("INFO: adding documents to retriever")
-    # retriever.add_batch(documents)
+    retriever.add_batch(documents)
 
     print("INFO: running evaluation")
     run_ragas_evaluation("FaissAndBM25EnsembleRetriever_Phi4", retriever, generator)
