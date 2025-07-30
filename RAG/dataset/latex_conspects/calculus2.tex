@@ -1,0 +1,3731 @@
+\documentclass[12pt]{article}
+\usepackage{config}
+\usepackage{subfiles}
+\pgfplotsset{compat=1.18}
+
+
+
+\begin{document}
+
+\tableofcontents
+\newpage
+
+\begin{flushright}
+    Конспект Шорохова Сергея
+
+    Если нашли опечатку/ошибку - пишите @le9endwp
+\end{flushright}
+
+\section{Интегральчики}
+
+\subsection{\S 1. Первообразная и неопределенный интеграл}
+
+\begin{defin}{Первообразная функция}
+    $f : \q{a, b} \rightarrow \R;\ \ F: \q{a, b} \rightarrow \R$ 
+
+    $F$ -- первообразная функция $f$, если $F$ дифференцируема на $\q{a, b}$ и $F'(x) = f(x)$ при всех $x \in \q{a, b}$
+
+    \begin{Example}{}
+        $f(x) = \cos{x}$
+
+        $F(x) = \sin{x}$ 
+    \end{Example}
+\end{defin}
+
+\begin{propos}{}
+    Не всякая функция имеет первообразную
+
+    \begin{Example}{}
+        $f(x) = \begin{cases}
+            0,\ x \in (-1, 0] \\
+            1,\ x \in (0, 1)
+        \end{cases}$
+    \end{Example}
+\end{propos}
+
+\begin{propos}{}
+    Непрерывная на $\q{a, b}$ функция имеет первообразную
+\end{propos}
+
+\begin{theo}{}
+    $f, F : \q{a, b} \rightarrow \R, F$ -- первообразная $f$. Тогда
+
+    \begin{enumerate}
+        \item $F + C$ -- первообразная $f$
+        \item Если $\Phi$ -- первообразная $f$, то $\Phi = F + C$ для некоторой константы $C$
+    \end{enumerate}
+\end{theo}
+
+\textit{Доказательство:}
+
+\begin{enumerate}
+    \item $(F + C)' = F' = f$
+    \item $\Phi' = f = F'$
+    
+    $g = \Phi - F$
+
+    $g' = 0 \Rightarrow g = C \Rightarrow \Phi = F + C$
+\end{enumerate}
+
+\begin{defin}{Неопределенный интеграл}
+    Неопределенный интеграл -- множество первообразных функции $f$
+
+    Обозначение: $\int f(x)dx$
+\end{defin}
+
+\begin{Remark}{}
+    Для доказательства равенства $\int f(x)dx = F(x) + C$ достаточно проверить, что 
+    
+    $F'(x) = f(x)$
+\end{Remark}
+
+\textbf{Действия с множествами функций:}
+
+$A$ и $B$ -- множества функций $\q{a, b} \rightarrow \R$
+
+$\lambda \in \R,\ h : \q{a, b} \rightarrow \R$
+
+\begin{enumerate}
+    \item $A + B = \{f + g : f \in A,\ g \in B\}$
+    \item $\lambda A = \{\lambda f : f \in A\}$
+    \item $A + h = \{f + h : f \in A\}$
+    \item $(A)' = \{f' : f \in A\}$
+    
+    \begin{Example}{}
+        $(\int f(x)dx)' = \{ f \}$
+    \end{Example}
+\end{enumerate}
+
+\textbf{Таблица интегралов:}
+
+\begin{enumerate}
+    \item $\int adx = ax + C$
+    \item $\int x^pdx = \frac{x^{p + 1}}{p + 1} + C,\ p \neq -1$
+    \item $\in \frac{dx}{x} = \ln{|x|} + C$
+    \item $\int a^xdx = \frac{a^x}{\ln{a}} + C;\ a > 0,\ a \neq 1$
+    \item $\int \sin{x}dx = -\cos{x} + C$
+    \item $\int \cos{x}dx = \sin{x} + C$
+    \item $\int \frac{dx}{x^2 + 1} = \arctg{x} + C$
+    \item $\int \frac{dx}{\sqrt{1 - x^2}} = \arcsin{x} + C$
+\end{enumerate}
+
+\begin{theo}{Линейность интеграла}
+    $f, g : \q{a, b} \Rightarrow \R$ имеют первообразные
+
+    $\alpha, \beta \in \R$, не равные нулю одновременно
+
+    Тогда $\int (\alpha f(x) + \beta g(x))dx = \alpha \int f(x)dx + \beta \int g(x)dx$
+\end{theo}
+
+\textit{Доказательство:}
+
+$F$ и $G$ -- первообразные
+
+Правая часть $= \{ \alpha F(x) + \beta G(x) + C : C \in \R \}$
+
+$(\alpha F(x) + \beta G(x) + C)' = \alpha F'(x) + \beta G'(x) = \alpha f(x) + \beta g(x)$
+
+\begin{theo}{Замена переменной в интеграле}
+    $f : \q{a, b} \rightarrow \R,\ F$ -- первообразная
+    
+    $\varphi : \q{c, d} \rightarrow \q{a, b}$ -- дифференцируемая функция
+
+    Тогда $\int f(\varphi(x))\varphi'(x)dx = F(\varphi(x)) + C$
+\end{theo}
+
+\textit{Доказательство:}
+
+$(F(\varphi(x)) + C)' = F'(\varphi(x))\varphi'(x) = f(\varphi(x))\varphi'(x)$
+
+\begin{Remark}{}
+    $y = \varphi(x);\ \ dy = \varphi'(x)dx$
+
+    $\frac{dy}{dx} = y'$
+
+    $\int f(\varphi(x)) \varphi'(x)dx = \int f(y)dy = F(y) + C = F(\varphi(x)) + C$
+\end{Remark}
+
+\begin{Example}{}
+    \begin{enumerate}
+        \item $\int \frac{x}{x^2 + 1}dx = \frac{1}{2} \int \frac{(x^2 + 1)'}{x^2 + 1}dx = \frac{1}{2} \int \frac{dy}{y} = \ln{|y|} + c = \ln{|x^2 + 1|} + C$
+        
+        Здесь $y = \varphi(x) = x^2 + 1$
+
+        \item $\int \frac{dx}{\sin{x}} = \int \frac{dx}{2\sin{\frac{x}{2}}\cos{\frac{x}{2}}} = \int \frac{dy}{\sin{y}\cos{y}} = \int \frac{dy}{\tg{y}\cos^2{y}} = \int \frac{(\tg{y})'}{tg{y}}dy = \int \frac{dz}{z} = \ln{|z|} + C =$
+        
+        $= \ln{|\tg{y}|} + C = \ln{|\tg{\frac{x}{2}}|} + C$
+
+        Здесь $y = \frac{x}{2}$ и $z = \tg{y}$
+
+        \item $\int \frac{dx}{1 + \sqrt[3]{x}} = \int \frac{3t^2dt}{1 + t} = 3\int \frac{t^2 - 1 + 1}{t + 1}dt = 3\int (t - 1 + \frac{1}{t + 1})dt = 3(\int tdt - \int dt + \int \frac{dt}{t + 1}) =$
+        
+        $= 3t^2 - 3t + 3\int \frac{d(t + 1)}{t + 1} = 3t^2 - 3t + 3\ln{|t + 1|} + C$
+    \end{enumerate}
+\end{Example}
+
+\begin{theo}{Интегрирование по частям}
+    $f, g : \q{a, b} \rightarrow \R$ дифференцируемые
+
+    Если $f'g$ имеет первообразную, то $\int f(x)g'(x)dx = f(x)g(x) - \int f'(x)g(x)dx$
+\end{theo}
+
+\textit{Доказательство:}
+
+$H$ -- первообразная функции $f'g$
+
+$(fg - H + C)' = (fg)' - H' = f'g + fg' - f'g = fg'$
+
+\begin{nota}{Традиционная запись формулы}
+    $\int udv = uv - \int vdu$
+
+    $\begin{cases}
+        du = u'(x)dx \\
+        dv = v'(x)dx
+    \end{cases}$
+\end{nota}
+
+\begin{Example}{}
+    \begin{enumerate}
+        \item $\int \ln{x}dx = x\ln{x} - \int x \frac{dx}{x} = x\ln{x} - \int dx = x\ln{x} - x + C$
+        
+        Здесь $u = \ln{x},\ v = x$ и $du = (\ln{x})'dx = \frac{dx}{x}$ 
+
+        \item $\int x^2 e^x dx = \int x^2 de^x = x^2 e^x - \int 2x e^x dx = x^2 e^x - 2\int xde^x = x^2e^x - 2(xe^x - \int e^xdx) = \\ = x^2e^x - 2xe^x + 2e^x + C$
+        
+        Здесь сначала берем $u = x^2, v = e^x$, а потом $u = x, v = e^x$
+    \end{enumerate}
+\end{Example}
+
+\subsection{\S 2. Площадь}
+
+\begin{defin}{Площадь}
+    $F$ -- семейство всех ограниченных подмножеств плоскости
+
+    Прямоугольник $\q{a_1, b_1} \times \q{a_2, b_2}$, площадь прямоугольника $(b_1 - a_1)(b_2 - a_2)$
+
+    Площадь $S : F \rightarrow [0, + \infty)$
+
+    \begin{enumerate}
+        \item $S(\q{a_1, b_1} \times \q{a_2, b_2}) = (b_1 - a_1)(b_2 - a_2)$
+        \item $S(E) = S(E_1) + S(E_2)$, если $E = E_1 \bigcup E_2,\ E_1 \bigcap E_2 = \varnothing$
+    \end{enumerate}
+\end{defin}
+
+\begin{theo}{Свойство}
+    Если $\tilde{E} \subset E$, то $S(\tilde{E}) \leq S(E)$
+\end{theo}
+
+\textit{Доказательство:}
+
+$E = \tilde{E} \bigcup (E \setminus \tilde{E})$
+
+$S(E) = S(\tilde{E}) + S(E \setminus \tilde{E}) \geq S(\tilde{E})$
+
+\begin{defin}{(Квази)площадь}
+    $\sigma : F \rightarrow [0, +\infty)$
+
+    \begin{enumerate}
+        \item $\sigma(\q{a_1, b_1} \times \q{a_2, b_2}) = (b_1 - a_1)(b_2 - a_2)$
+        \item $\sigma(E) = \sigma(E_-) + \sigma(E_+)$, если $E_-$ и $E_+$ множества, получающиеся в результате разбиения $E$ вертикальной (горизонтальной) прямой
+        \item Если $\tilde{E} \subset E$, то $\sigma(\tilde{E}) \leq \sigma(E)$
+    \end{enumerate}
+\end{defin}
+
+\begin{Remark}{Свойство}
+    Формула 2) верна и если $E_- \bigcap E_+ \neq \varnothing$
+
+    Например, линию разбиения можно считать относящейся и к левой (верхней), и к правой (нижней) части
+\end{Remark}
+
+\textit{Доказательство:}
+
+$e = E_- \bigcap E_+$, $\sigma(e) = 0$
+
+$\sigma(E_+) = \sigma(E_+ \setminus e) + \sigma(e \bigcap E_+) = \sigma(E_+ \setminus e)$
+
+$\sigma(E_-) + \sigma(E_+) = \sigma(E_-) + \sigma(E_+ \setminus e) = \sigma(E_- \bigcup (E_+ \setminus e)) = \sigma(E_- \bigcup E_+) = \sigma(E)$
+
+\begin{Example}{Примеры площадей $E \in F$}
+    \begin{itemize}
+        \item Рассмотрим покрытие $E$ конечным числом прямоугольников $P_i$ (т.е. $\bigcup\limits_{i = 1}^n P_i \supset E$)
+        
+        $\sigma_1(E) = \inf\{ \sum\limits_{i = 1}^n \sigma(P_i) : \bigcup\limits_{i = 1}^n P_i \supset E \}$
+
+        \item Рассмотрим покрытие $E$ последовательностью прямоугольников $P_i$ (т.е. $\bigcup\limits_{i = 1}^{\infty} P_i \supset E$)
+        
+        $\sigma_2(E) = \inf\{ \sum\limits_{i = 1}^{\infty} \sigma(P_i) : \bigcup\limits_{i = 1}^{\infty} P_i \supset E \}$
+
+        \item Ясно, что $\sigma_1(E) \geq \sigma_2(E)$
+        
+        Но, если $E = ([0, 1] \bigcap \Q) \times ([0, 1] \bigcap \Q)$, то $\begin{cases}
+            \sigma_1(E) = 1 \\
+            \sigma_2(E) = 0
+        \end{cases}$
+    \end{itemize}
+\end{Example}
+
+\begin{theo}{}
+    \begin{enumerate}
+        \item $\sigma_1$ -- площадь
+        \item $\sigma_1$ не меняется при параллельном переносе
+    \end{enumerate}
+\end{theo}
+
+\textit{Доказательство:}
+
+\textbf{1)}
+
+\begin{enumerate}
+    \item $\sigma_1(\q{a, b} \times \q{c, d}) = (b - a)(d - c)$
+    
+    Поскольку $[a, b] \times [c, d]$ -- покрытие $P$, $\sigma_1(P) \leq (b - a)(d - c)$
+
+    В обратную сторону красиво доказано АИ. Там рисуночки, посмотрите!
+
+    \item $E = E_- \bigcup E_+ \Rightarrow \sigma_1(E) = \sigma_1(E_-) + \sigma_1(E_+)$
+    
+    \begin{itemize}
+        \item[$\leq :$] Если $P_1^+, \ldots P_m^+$ -- покрытие $E_+$, для которого $\sum\limits_{i = 1}^m \sigma(P_i^+) < \sigma_1(E_+) + \eps$
+        
+        А $P_1^-, \ldots P_n^-$ -- покрытие $E_-$, для которого $\sum\limits_{i = 1}^n \sigma(P_i^-) < \sigma_1(E_-) + \eps$, то
+
+        $P_1^-, P_2^-, \ldots P_n^-, P_1^+, P_2^+, \ldots P_m^+$ -- покрытие $E$, для которого 
+        
+        $\sigma_1(E) \leq \sum\limits_{i = 1}^{n + m} \sigma(P_i) < \sigma_1(E_-) + \sigma_1(E_+) + 2\eps \Rightarrow \sigma_1(E) < \sigma_1(E_-) + \sigma_1(E_+) + 2\eps$
+
+        \item[$\geq :$] Пусть $P_1, P_2, \ldots P_n$ -- покрытие $E$
+        
+        Разобьем $P_i$ на $P_i^-$ и $P_i^+$
+
+        $\sigma(P_i) = \sigma(P_i^-) + \sigma(P_i^+)$
+
+        $P_1^\pm, P_2^\pm, \ldots P_n^\pm$ -- покрытие $E^\pm$
+
+        $\sum\limits_{i = 1}^n \sigma(P_i^\pm) \geq \sigma_1(E^\pm)$
+
+        $\sum\limits_{i = 1}^n (\sigma(P_i^-) + \sigma(P_i^+)) \geq \sigma_1(E_-) + \sigma_1(E_+)$
+    \end{itemize}
+
+    \item $\tilde{E} \subset E \Rightarrow \sigma_1(\tilde{E}) \leq \sigma_1(E)$
+    
+    Если $\bigcup\limits_{i = 1}^n P_i \supset E$, то $\bigcup\limits_{i = 1}^n P_i \supset \tilde{E} \Rightarrow$ класс покрытий $\tilde{E}$ шире, чем класс покрытий $E$
+\end{enumerate}
+
+\textbf{2)}
+
+Пусть $\tilde{E}$ -- параллельный перенос $E$ на вектор $\overrightarrow{v}$
+
+$P_1, P_2, \ldots P_n$ -- покрытие $E$. Пусть $\tilde{P_i}$ -- параллельный перенос $P_i$ на вектор $\overrightarrow{v}$
+
+Тогда $\tilde{P_1}, \tilde{P_2}, \ldots \tilde{P_n}$ -- покрытие $\tilde{E}$ и $\sum\limits_{i = 1}^n \sigma(P_i) = \sum\limits_{i = 1}^n \sigma(\tilde{P_i})$
+
+\begin{defin}{}
+    $f : [a, b] \rightarrow \R$
+
+    $f_+ := \max\{f, 0\}$, т.е. $f_+(x) = \max\{f(x), 0\}$
+
+    $f_- := \max\{-f, 0\}$, т.е. $f_-(x) = \max\{-f(x), 0\}$
+
+    Свойства:
+
+    \begin{enumerate}
+        \item $f_\pm \geq 0$
+        \item $f = f_+ - f_-$
+        
+        $|f| = f_+ + f_-$
+
+        \item $f_+ = \frac{f + |f|}{2}$ и $f_- = \frac{|f| - f}{2}$
+        \item Если $f \in C[a, b]$, то $f_\pm \in C[a, b]$
+    \end{enumerate}
+\end{defin}
+
+\begin{defin}{Подграфик функции}
+    $f : [a, b] \rightarrow \R,\ f \geq 0$
+
+    Подграфик функции $f$ -- $P_f = \{ (x, y) \in \R : x \in [a, b],\ 0 \leq y \leq f(x) \}$
+\end{defin}
+
+\begin{defin}{Определенный интеграл}
+    $\sigma$ -- зафиксированная квазиплощадь
+
+    $f \in C[a, b]$ (пока что так)
+
+    $\int\limits_a^b f = \int\limits_a^b f(x)dx  := \sigma(P_{f_+}) - \sigma(P_{f_-})$
+\end{defin}
+
+\textbf{Свойства:}
+
+    \begin{enumerate}
+        \item $\int\limits_a^a f = 0$
+        \item $\int\limits_a^b 0 = 0$
+        \item Если $f \geq 0$, то $\int\limits_a^b f = \sigma(P_f)$
+        \item $\int\limits_a^b (-f) = -\int\limits_a^b f$
+        
+        \textit{Доказательство:}
+
+        $(-f_+) = \max\{-f, 0\} = f_-$
+
+        $(-f_-) = \max\{f, 0\} = f_+$
+
+        $\int\limits_a^b (-f) = \sigma(P_{f_-}) - \sigma(P_{f_+}) = -\int\limits_a^b f$
+
+        \item $\int\limits_a^b (c) = c(b - a)$
+        
+        \textit{Доказательство:}
+
+        $c > 0 \Rightarrow \int\limits_a^b c = P(\text{прямоугольника}) = c(b - a)$
+
+        \item Если $a < b,\ f \geq 0$ и $\int\limits_a^b f = 0$, то $f \equiv 0$
+        
+        \textit{Доказательство:} (от противного)
+
+        Пусть $f(x_0) > 0$. Из непрерывности $f$ в $x_0 \Rightarrow \varepsilon = \frac{f(x_0)}{2} \Rightarrow \exists \delta > 0 : \forall |x - x_0| < \delta \Rightarrow \\
+        \Rightarrow |f(x) - f(x_0)| < \varepsilon = \frac{f(x_0)}{2} \Rightarrow P_f \supset [x_0 - \delta, x_0 + \delta] \times [0, \frac{f(x_0)}{2}] \Rightarrow \\
+        \Rightarrow \sigma(P_f) \geq \sigma(\text{прямоугольника}) = 2\sigma \frac{f(x_0)}{2} > 0$ Противоречие
+    \end{enumerate}
+
+\subsection{\S 3. Свойства интеграла}
+
+\begin{nota}{Обозначение}
+    $P_g(E)$ -- подграфик функции $g \geq 0$ над множество $E$, т.е. 
+
+    $P_g(E) := \{ (x, y) \in \R^2 : x \in E,\ 0 \leq y \leq g(x) \}$
+\end{nota}
+
+\begin{theo}{Аддитивность интеграла}
+    $f \in C[a, b]$ и $c \in [a, b]$
+
+    Тогда $\int\limits_a^b f = \int\limits_a^c f + \int\limits_c^b f$
+\end{theo}
+
+\textit{Доказательство:}
+
+$\int\limits_a^b f = \sigma(P_{f_+}) - \sigma(P_{f_-}) = \sigma(P_{f_+}([a, c])) + \sigma(P_{f_+}([c, b])) - \sigma(P_{f_-}([a, c])) - \sigma(P_{f_-}([c, b])) = \int\limits_a^c f + \int\limits_c^b f$
+
+\begin{theo}{Следствие}
+    $f \in C[a, b]$, $a \leq c_1 \leq c_2 \leq \ldots \leq c_n \leq b$. Тогда
+
+    $\int\limits_a^b f = \int\limits_a^{c_1} f + \int\limits_{c_1}^{c_2} f + \ldots + \int\limits_{c_{n - 1}}^{c_n} f + \int\limits_{c_n}^b f$
+\end{theo}
+
+\textit{Доказательство:}
+
+Индукция по $n$
+
+\begin{theo}{Монотонность интеграла}
+    $f, g \in C[a, b]$ и $f \leq g$ на $[a, b]$
+
+    Тогда $\int\limits_a^b f \leq \int\limits_a^b g$
+\end{theo}
+
+\textit{Доказательство:}
+
+$f \leq g \Rightarrow f_+ \leq g_+ \Rightarrow P_{f_+} \subset P_{g_+}$, а еще $-g \leq -f \Rightarrow g_- \leq f_- \Rightarrow P_{g_-} \subset P_{f_-}$
+
+Значит $\sigma (P_{f_+}) \leq \sigma (P_{g_+})$ и $\sigma (P_{g_-}) \leq \sigma (P_{f_-})$
+
+$\int\limits_a^b f = \sigma (P_{f_+}) - \sigma (P_{f_-}) \leq \sigma (P_{g_+}) - \sigma (P_{g_-}) = \int\limits_a^b g$
+
+\begin{theo}{Следствия}
+    \begin{enumerate}
+        \item $f \in C[a, b] \Rightarrow \min\limits_{[a, b]} f \cdot (b - a) \leq \int\limits_a^b f \leq \max\limits_{[a, b]} f \cdot (b - a)$
+        
+        \textit{Доказательство:}
+
+        $\min f \leq f \leq \max f$ и монотонность интеграла для двух постоянных функций и $f$
+
+        \item $f \in C[a, b] \Rightarrow |\int\limits_a^b f| \leq \int\limits_a^b |f|$
+        
+        \textit{Доказательство:}
+
+        $-|f| \leq f \leq |f| \xRightarrow{\text{монотонность}} -\int |f| = \int\limits_a^b (-|f|) \leq \int\limits_a^b f \leq \int\limits_a^b |f|$
+    \end{enumerate}
+\end{theo}
+
+\begin{theo}{(Первая) (интегральная) теорема о среднем}
+    $f \in C[a, b]$. Тогда существует $c \in [a, b] : \int\limits_a^b f = f(c)(b - a)$
+\end{theo}
+
+\textit{Доказательство:}
+
+$\min f \leq \frac{1}{b - a} \int\limits_a^b f \leq \max f$, но множество значений $f$ на $[a, b]$ -- это отрезок $[\min f, \max f]$
+
+Следовательно, число $\frac{1}{b - a} \int\limits_a^b f$ -- есть значение функции $f$ в какой-то точке $[a, b]$. Возьмем эту точку в качестве $c$
+
+\begin{defin}{Среднее значение функции на отрезке}
+    Среднее значение функции $f$ на отрезке $[a, b]$ -- это $\frac{1}{b - a} \int\limits_a^b f$
+\end{defin}
+
+\begin{defin}{Интеграл с переменным верхним пределом}
+    $f \in C[a, b]$
+
+    $\Phi(x) := \int\limits_a^x f$, где $x \in [a, b]$
+\end{defin}
+
+\begin{Remark}{}
+    $\Phi(a) = 0$
+\end{Remark}
+
+\begin{defin}{Интеграл с переменным нижним пределом}
+    $f \in C[a, b]$
+
+    $\Psi(x) := \int\limits_x^b f$, где $x \in [a, b]$
+\end{defin}
+
+\begin{Remark}{}
+    $\Psi(b) = 0$
+
+    $\Phi(x) + \Psi(x) = \int\limits_a^b f$ (это аддитивность $\int$)
+\end{Remark}
+
+\begin{theo}{Теорема Барроу}
+    Если $f \in C[a, b],\ \Phi(x) := \int\limits_a^x f$, то $\Phi$ -- первообразная функции $f$
+\end{theo}
+
+\textit{Доказательство:}
+
+Надо доказать, что $\Phi'(x) = f(x)$. Пусть $x < y$
+
+$R(y) = \frac{\Phi(y) - \Phi(x)}{y - x} = \frac{1}{y - x} (\int\limits_a^y f - \int\limits_a^x f) = \frac{1}{y - x} \int\limits_x^y f \stackrel{\text{т-ма о среднем}}{=} f(c_y)$, где $c_y \in [x, y]$
+
+Возьмем последовательность $y_n > x$ и $\lim y_n = x$
+
+$\Phi_+'(x) = \lim\limits_{y \to x_+} R(y) = \lim\limits_{n \to \infty} R(y_n) = \lim\limits_{n \to \infty} f(c_{y_n}) = f(x)$, т.к. $x \leq c_{y_n} \leq y_n \rightarrow x$
+
+Если же $y < x$, то нужно смотреть на $\frac{1}{x - y} \int\limits_y^x f$ и дальше ровно так же 
+
+Следовательно, $\Phi'(x) = f(x)$
+
+\begin{theo}{Следствия}
+    \begin{enumerate}
+        \item $\Psi(x) := \int\limits_x^b f \Rightarrow \Psi'(x) = -f(x)$
+        
+        \textit{Доказательство:}
+
+        $\Phi(x) + \Psi(x) = const$
+
+        \item Если $f \in C\q{a, b}$, то у $f$ есть первообразная на $\q{a, b}$
+        
+        \textit{Доказательство:}
+
+        Возьмем $c \in (a, b)$ и $F(x) := \begin{cases}
+            \int\limits_c^x f,\ x \geq c \\
+            -\int\limits_x^c f,\ x \leq c
+        \end{cases}$
+        
+        Тогда $\begin{gathered}
+            F'(x) = f(x) \text{при} x \geq c \text{ (по теореме Барроу)} \\
+            F'(x) = -f(x) \text{при} x \leq c \text{ (по следствию 1)} \\
+            F_+'(c) = f(c) = F_-'(c)
+        \end{gathered}$
+    \end{enumerate}
+\end{theo}
+
+\begin{theo}{Формула Ньютона-Лейбница}
+    $f \in C[a, b],\ F$ -- первообразная $f$
+
+    Тогда $\int\limits_a^b f = F(b) - F(a)$
+\end{theo}
+
+\textit{Доказательство:}
+
+$\Phi(x) := \int\limits_a^x f$ -- первообразная $f$ (по теореме Барроу) $\Rightarrow \Phi = F + C$ для некоторой $C \in \R$
+
+$\Rightarrow \int\limits_a^b f = \Phi(b) = F(b) + C = F(b) - F(a)$, т.к. $0 = \Phi(a) = F(a) + C$
+
+\begin{nota}{Обозначение}
+    $F|_a^b := F(b) - F(a)$ подстановка
+
+    $\int\limits_a^b f = F|_a^b$
+\end{nota}
+
+\begin{theo}{Линейность интеграла}
+    $f, g \in C[a, b],\ \alpha, \beta \in \R$
+
+    Тогда $\int\limits_a^b (\alpha f + \beta g) = \alpha \int\limits_a^b f + \beta \int\limits_a^b g$
+\end{theo}
+
+\textit{Доказательство:}
+
+Пусть $F$ и $G$ -- первообразные $f$ и $g$
+
+Тогда $\alpha F + \beta G$ -- первообразная $\alpha f + \beta g \Rightarrow \int\limits_a^b (\alpha f + \beta g) = (\alpha F + \beta G)|_a^b = \alpha F|_a^b + \beta G|_a^b = \\
+= \alpha \int\limits_a^b f + \beta \int\limits_a^b g$
+
+\begin{theo}{Формула интегрирования по частям}
+    $u, v \in C^1[a, b]$
+
+    Тогда $\int\limits_a^b uv' = uv|_a^b - \int\limits_a^b u'v$
+\end{theo}
+
+\textit{Доказательство:}
+
+Пусть $H$ -- первообразная $u'v$. Тогда $uv - H$ -- первообразная $uv'$
+
+$(uv - H)' = u'v + uv' - H' = u'v + uv' - u'v = uv'$
+
+$\int\limits_a^b uv' = (uv - H)|_a^b = uv|_a^b - H|_a^b = uv|_a^b - \int\limits_a^b u'v$
+
+\begin{nota}{Соглашение}
+    Если $a > b$, то $\int\limits_a^b f = -\int\limits_b^a f$
+\end{nota}
+
+\begin{theo}{Замена переменной в определенном интеграле}
+    $f \in C\q{a, b},\ \varphi \in C^1\q{c, d},\ \varphi : \q{c, d} \rightarrow \q{a, b},\ p, q \in \q{c, d}$. Тогда
+
+    $\int\limits_p^q f(\varphi(t))\varphi'(t)dtt = \int\limits_{\varphi(p)}^{\varphi(q)} f(x)dx$
+\end{theo}
+
+\textit{Доказательство:}
+
+Пусть $F$ -- первообразная для $f$. Тогда $F \circ \varphi$ -- первообразная для $f(\varphi(t))\varphi'(t)$ (т.к. $(F(\varphi(t)))' = F'(\varphi(t))\varphi'(t)$)
+
+$\int\limits_p^q f(\varphi(t))\varphi'(t)dt = (F \circ \varphi)|_p^q = F(\varphi(q)) - F(\varphi(p)) = \int\limits_{\varphi(p)}^{\varphi(q)} f$
+
+\subsection{\S 4. Приложение формулы интегрирования по частям}
+
+$W_n := \int\limits_0^{\frac{\pi}{2}} \cos^n{x}dx \stackrel{(*)}{=} \int\limits_0^{\frac{\pi}{2}} \sin^n{x}dx$
+
+Пояснение к $(*)$: $\int\limits_0^\frac{\pi}{2} \sin^n{x}ds = \int\limits_0^\frac{\pi}{2} \cos^n{\frac{\pi}{2} - t}dt = - \int\limits_{\varphi(0)}^{\varphi(\frac{\pi}{2})} \cos^n{x}dx = -\int\limits_0^{\frac{\pi}{2}} \cos^n{x}dx$
+
+Здесь $\varphi(t) = \frac{\pi}{2} - t$ и $\varphi'(t) = -1$
+
+$W_0 = \frac{\pi}{2},\ W_1 = \int\limits_0^{\frac{\pi}{2}} \sin{x}dx = -\cos{x}|_0^{\frac{\pi}{2}} = 1,\ W_2 = \frac{1}{2} (\int\limits_0^\frac{\pi}{2} \cos^2 + \int\limits_0^\frac{\pi}{2} \sin^2) = \frac{\pi}{4}$
+
+$W_n = \int\limits_0^\frac{\pi}{2} \sin^n{x}dx = \int\limits_0^\frac{\pi}{2} \sin^{n-1}x \cdot (-\cos{x})'dx = -\sin^{n-1}x \cos{x}|_0^\frac{\pi}{2} - \int\limits_0^\frac{\pi}{2} (n-1)\sin^{n-2}x \cos{x} (-\cos{x})dx = \\
+= (n - 1) (\int\limits_0^\frac{\pi}{2} \sin^{n-2}x (1 - \sin^2{x})dx - \int\limits_0^\frac{\pi}{2} \sin^n{x}dx) = (n - 1)(W_{n-2} - W_n) \Rightarrow nW_n = (n - 1)W_{n-2}$
+
+Если четно, то $W_{2n} = \frac{2n - 1}{2n}W_{2n - 2} = \frac{2n - 1}{2n} \cdot \frac{2n - 3}{2n - 2} W_{2n - 1} = \ldots = \frac{(2n - 1)(2n - 3) \ldots 1}{2n(2n - 2) \ldots 2} \cdot \frac{\pi}{2} = \frac{(2n - 1)!!}{2n!!} \cdot \frac{\pi}{2}$
+
+Если нечетно, то $W_{2n + 1} = \frac{2n}{2n + 1}W_{2n - 1} = \frac{2n}{2n + 1} \cdot \frac{2n - 2}{2n - 1} W_{2n - 3} = \ldots = \frac{2n(2n - 2) \ldots 2}{(2n + 1)(2n - 1) \ldots 3} \cdot 1 = \frac{2n!!}{(2n + 1)!!}$
+
+\begin{theo}{Формула Валлеса}
+    $\lim\limits_{n \to \infty} \frac{2n!!}{(2n + 1)!!} \cdot \frac{1}{\sqrt{2n + 1}} = \sqrt{\frac{\pi}{2}}$
+\end{theo}
+
+\textit{Доказательство:}
+
+$\sin^{2n + 2}x \leq \sin^{2n + 1}x \leq \sin^{2n}x$ при $x \in [0, \frac{\pi}{2}]$
+
+$\int\limits_0^\frac{\pi}{2} \sin^{2n + 2}x dx \leq \int\limits_0^\frac{\pi}{2} \sin^{2n + 1}x dx \leq \int\limits_0^\frac{\pi}{2} \sin^{2n}x dx$
+
+То есть $W_{2n + 2} \leq W_{2n + 1} \leq W_{2n}$
+
+$\frac{2n + 1}{2n + 2} \cdot \frac{(2n - 1)!!}{(2n)!!} \cdot \frac{\pi}{2} \leq \frac{2n!!}{(2n + 1)!!} \leq \frac{(2n - 1)!!}{(2n)!!} \cdot \frac{\pi}{2}$
+
+$\frac{2n + 1}{2n + 2} \cdot \frac{\pi}{2} \leq \frac{(2n)!!}{(2n + 1)!!} \cdot \frac{(2n)!!}{(2n - 1)!!} \leq \frac{\pi}{2} \Rightarrow \lim (\frac{(2n)!!}{(2n - 1)!!})^2 \cdot \frac{1}{2n + 1} = \frac{\pi}{2}$
+
+\begin{theo}{Следствие}
+    $C_{2n}^n \sim \frac{4^n}{\sqrt{\pi n}}$
+\end{theo}
+
+\textit{Доказательство:}
+
+$C_{2n}^n = \frac{(2n)!}{n!n!} = \frac{(2n)!!(2n-1)!!}{n!n!} = \frac{(2n - 1)!!}{(2n)!!} 4^n \sim \sqrt{\frac{2}{\pi}} \cdot \frac{1}{\sqrt{2n + 1}} \cdot 4^n \sim \frac{4^n}{\sqrt{\pi n}}$
+
+\begin{theo}{Формула Тейлора с остатком в интегральной форме}
+    $f \in C^{n+1}\q{a, b},\ x_0, x \in \q{a, b}$
+
+    Тогда $f(x) = \sum\limits_{k = 0}^n \frac{f^{(k)}(x_0)}{k!}(x - x_0)^k + \frac{1}{n!} \int\limits_{x_0}^x (x - t)^n f^{(n+1)}(t)dt$
+\end{theo}
+
+\textit{Доказательство:}
+
+Индукция по $n$. База $n = 0$
+
+$f(x) = f(x_0) + \frac{1}{0!} \int\limits_{x_0}^x f'(t)dt \stackrel{\text{Н-Л}}{=} f(x_0) + f(x) - f(x_0) = f(x)$ -- верно
+
+Переход $n \to n + 1$
+
+$f(x) = \sum\limits_{k = 0}^n \frac{f^{(k)}(x_0)}{k!}(x - x_0)^k + \frac{1}{n!} \int\limits_{x_0}^x (x - t)^n f^{(n+1)}(t)dt = (*)$
+
+Берем $u = f^{(n + 1)}$, $v' = (x - t)^n$, $v = -\frac{(x - 1)^{n + 1}}{n + 1}$
+
+$\int\limits_{x_0}^x (x-t)^n f^{(n + 1)}(t)dt = -f^{(n + 1)}(t) \frac{(x - t)^{n + 1}}{n + 1}|_{t = x_0}^{t = x} + \int\limits_{x_0}^x \frac{(x - t)^{n + 1}}{n + 1} f^{(n + 2)}(t)dt$
+
+$(*) = \sum\limits_{k = 0}^n \frac{f^{(k)}(x_0)}{k!}(x - x_0)^k + \frac{f^{(n + 1)}(x_0)}{(n + 1)!}(x - x_0)^{n + 1} + \frac{1}{(n + 1)!} \int\limits_{x_0}^x (x - t)^{n + 1} f^{(n + 2)}(t)dt$
+
+\begin{Example}{}
+    $H_j := \frac{1}{j!} \int\limits_0^{\frac{\pi}{2}} ((\frac{\pi}{2})^2 - x^2)^j \cos{x}dx$
+
+    \begin{theo}{Свойства:}
+        \begin{enumerate}
+            \item $0 < H_j \leq \frac{1}{j!} \int\limits_0^\frac{\pi}{2} (\frac{\pi}{2})^{2j} \cos{x}dx = \frac{(\frac{\pi}{2})^{2j}}{j!}$
+            \item Если $c > 0$, то $c^jH_j \xrightarrow[j \to \infty]{} 0$
+            \item $H_0 = 1,\ H_1 = 2$
+            \item При $j \geq 2\ \ H_j = (4j - 2)H_{j - 1} - \pi^2H_{j - 2}$
+            
+            \textit{Доказательство:}
+
+            Берем $v' = \cos{x}$, $u = ((\frac{\pi}{2})^2 - x^2)^j$, $v = \sin{x}$, $u' = -2jx((\frac{\pi}{2})^2 - x^2)^{j - 1}$
+
+            $j!H_j = \int\limits_0^\frac{\pi}{2} ((\frac{\pi}{2})^2 - x^2)^j \cos{x}dx = ((\frac{\pi}{2})^2 - x^2)^j \sin{x}|{x = 0}^{x = \frac{\pi}{2}} + 2j \int\limits_0^\frac{\pi}{2} x((\frac{\pi}{2})^2 - x^2)^{j - 1} \sin{x}dx = (*)$
+
+            Первое слагаемом занулится, второе еще раз интегрируем по частям
+
+            $v' = \sin{x} \Rightarrow v = -\cos{x}$
+            
+            $u = x((\frac{\pi}{2})^2 - x^2)^{j - 1} \Rightarrow u' = ((\frac{\pi}{2})^2 - x^2)^{j - 1} - 2(j - 1)x^2((\frac{\pi}{2})^2 - x^2)^{j - 2} = (2j - 1)((\frac{\pi}{2})^2 - x^2)^{j - 1} - \frac{\pi^2}{2}(j - 1)((\frac{\pi}{2})^2 - x^2)^{j - 2}$
+
+            $(*) = 2j(-\cos{x}x((\frac{\pi}{2})^2 - x^2)^{j - 1})|_{x = 0}^{x = \frac{\pi}{2}} + (2j - 1) \int\limits_{0}^\frac{\pi}{2} ((\frac{\pi}{2})^2 0 x^2)^{j - 1}\cos{x}dx - \frac{\pi^2}{2}(j - 1) \int\limits_0^\frac{\pi}{2} ((\frac{\pi}{2})^2 - x^2)^{j - 2}\cos{x}dx$
+
+            Первое слагаемое зануляется, второе $= (j - 1)!H_{j - 1}$, третье $= (j - 2)!H_{j - 2}$
+
+            $j!H_j = 2(2j - 1)j(j - 1)!H_{j - 1} - \pi^2j(j - 1)(j - 2)!H_{j - 2}$
+
+            $H_j = (4j - 2)H_{j - 1} - \pi^2H_{j - 2}$
+
+            \item Существует многочлен $P_j$ степени $\leq j$ с целыми коэффициентами, такой что $H_j = P_j(\pi^2)$
+            
+            \textit{Доказательство:}
+
+            $P_0 \equiv 1,\ P_1 \equiv 2$
+
+            $P_j(x) = (4j - 2)P_{j - 1}(x) - xP_{j - 2}(x) \Rightarrow P_j(\pi^2) = (4j - 2)P_{j - 1}(\pi^2) - \pi^2P_{j - 2}(\pi^2) = H_j$
+        \end{enumerate}
+    \end{theo}
+\end{Example}
+
+\begin{theo}{Теорема Ламберта}
+    Числа $\pi$ и $\pi^2$ иррациональны
+\end{theo}
+
+\textit{Доказательство:}
+
+Пусть $\pi^2 = \frac{m}{n} \Rightarrow 0 < H_j = P_j(\frac{m}{n}) = \frac{\text{целое число}}{n^j} \Rightarrow n^jP_j(\frac{m}{n}) = n^jH_j > 0$ и является целым числом $\Rightarrow n^jH_j \geq 1$, но $\lim\limits_{j \to \infty} n^jH_j = 0$ по свойству 2 -- противоречие
+
+\begin{defin}{Равномерная непрерывность}
+    $f : E \rightarrow \R$, $E \subset \R$
+
+    $f$ равномерно непрерывна на $E$, если $\forall \varepsilon > 0\ \exists \delta > 0\ \forall x, y \in E : |x - y| < \delta \Rightarrow |f(x) - f(y)| < \varepsilon$
+\end{defin}
+
+\begin{Remark}{}
+    Определение непрерывности во всех точках множества $E$
+
+    $\forall y \in E\ \forall \varepsilon > 0\ \exists \delta > 0\ x \in E : |x - y| < \delta \Rightarrow |f(x) - f(y)| < \varepsilon$
+
+    То есть в этом определении $\delta(\varepsilon, y)$, а в равномерной непрерывности $\delta(\varepsilon)$
+\end{Remark}
+
+\begin{Example}{}
+    \begin{enumerate}
+        \item $\sin$ и $\cos$ равномерно непрерывны на $\R$
+        
+        $|sin{x} - \sin{y}| \leq |x - y|$ и $|\cos{x} - \cos{y}| \leq |x - y| \Rightarrow \delta = \varepsilon$ подходит
+
+        \item $x^2$ не является равномерно непрерывной на $\R$
+        
+        Возьмем $\varepsilon = 1$ и покажем, что никакая $\delta > 0$ не подходит
+
+        Рассмотрим $x$ и $x + \frac{\delta}{2}$
+
+        $f(x + \frac{\delta}{2}) - f(x) = (x + \frac{\delta}{2})^2 - x^2 = x\delta + \frac{\delta^2}{4} > x\delta \geq 1$ при $x \geq \frac{1}{\delta}$
+    \end{enumerate}
+\end{Example}
+
+\begin{theo}{Теорема Кантора}
+    $f \in C[a, b] \Rightarrow f$ равномерно непрерывна на $[a, b]$
+\end{theo}
+
+\textit{Доказательство:}
+
+Возьмем $\varepsilon > 0$ и предположим, что никакое $\delta > 0$ не подходит
+
+$\delta = 1$ не подходит $\Rightarrow$ найдутся $x_1, y_1 \in [a, b] : |x_1 - y_1| < 1$ и $|f(x_1) - f(y_1)| \geq \varepsilon$
+
+$\delta = \frac{1}{2}$ не подходит $\Rightarrow$ найдутся $x_2, y_2 : |x_2 - y_2| < \frac{1}{2}$ и $|f(x_2) - f(y_2)| \geq \varepsilon$
+
+\ldots
+
+$\delta = \frac{1}{n}$ не подходит $\Rightarrow$ найдутся $x_n, y_n : |x_n - y_n| < \frac{1}{n}$ и $|f(x_n) - f(y_n)| \geq \varepsilon$
+
+Выберем из $x_n$ схожящуюся подпоследовательность $x_{n_k} : \lim x_{n_k} = c$
+
+$a \leq x_{n_k} \leq b \Rightarrow c \in [a, b]$ и $\lim y_{n_k} = \lim x_{n_k} + \lim (y_{n_k} - x_{n_k}) = c + 0 = c$
+
+Функция $f$ непрерывна в $c \Rightarrow \exists \delta > 0\ \forall |x - c| < \delta \Rightarrow |f(x) - f(c)| < \frac{\varepsilon}{2}$
+
+$\lim x_{n_k} = c \Rightarrow$ при больших $k$ $|x_{n_k} - c| < \delta \Rightarrow |f(x_{n_k}) - f(c)| < \frac{\varepsilon}{2}$
+
+$\lim y_{n_k} = c \Rightarrow$ при больших $k$ $|y_{n_k} - c| < \delta \Rightarrow |f(y_{n_k}) - f(c)| < \frac{\varepsilon}{2}$
+
+Тогда $\varepsilon \leq |f(x_{n_k}) - f(y_{n_k})| \leq |f(x_{n_k}) - f(c)| + |f(c) - f(y_{n_k})| < \varepsilon$ -- противоречие
+
+\begin{Remark}{}
+    Важно, что именно отрезок
+
+    Для $x^2$ мы поняли, что на $[0, + \infty)$ нет равномерной непрерывности $\Rightarrow$ отрезок нельзя заменить на луч
+
+    Поймем что на полуинтервал тоже нельзя
+
+    $f(x) = \frac{1}{x}$ на $(0, 1]$ не равномерно непрерывна
+
+    $\varepsilon = 1$ никакое $\delta > 0$ не подходит (если какое-то не подходит, то $\delta > \delta_0$ тоже не подходит)
+
+    Возьмем $0 < \delta \leq 1$, $x = \frac{\delta}{2}$ и $y = \frac{\delta}{4}$
+
+    $|x - y| = \frac{\delta}{4} < \delta$, но $|f(x) - f(y)| = \frac{2}{\delta} > 1$
+\end{Remark}
+
+\begin{defin}{Модуль непрерывности}
+    $f : E \to \R$, $E \subset \R$
+
+    $\omega_f(\delta) := \sup\{ |f(x) - f(y)| : x, y \in E,\ |x - y| < \delta \}$ определена при $\delta \geq 0$
+
+    \begin{theo}{Свойства:}
+        \begin{enumerate}
+            \item $\omega_f(0) = 0$
+            \item $\omega_f(\delta) \geq 0$
+            \item $\omega_f$ нестрого возрастает
+            \item $|f(x) - f(y)| \leq \omega_f(|x - y|)$
+            \item Если $f$ липшицева к константе $M$, то $\omega_f(\delta) \leq M\delta$
+            
+            \textit{Доказательство:}
+
+            Липшицевость с константой $M$ -- это $|f(x) - f(y)| \leq M|x - y|\ \forall x, y \in E$
+
+            \item $f$ равномерно непрерывна на $E \Leftrightarrow \lim\limits_{\delta \to 0_+} \omega_f(\delta) = 0$ (т.е. $w_f$ непрерывна в 0)
+            
+            \textit{Доказательство:}
+
+            \begin{itemize}
+                \item[$\Rightarrow$] $f$ равномерно непрер $\Rightarrow \forall \varepsilon\ \exists \delta > 0\ \forall x, y \in E : |x - y| < \delta \Rightarrow |f(x) - f(y)| \leq \varepsilon \Rightarrow \\
+                \Rightarrow \omega_f(\frac{\delta}{2}) < \varepsilon$, т.к. $\omega_f(\frac{\delta}{2}) \leq \sup\{|f(x) - f(y)| : |x - y| < \delta\}$
+
+                Значит $\forall t < \frac{\delta}{2}\ \omega_f(t) \leq \varepsilon \Rightarrow \lim\limits_{t \to 0_+} \omega_f(t) = 0$
+
+                \item[$\Leftarrow$] $|f(x) - f(y)| \leq w_f(|x - y|)$ по $\varepsilon > 0$ выберем $\delta > 0$ такое что $\omega_f(\delta) < \varepsilon \Rightarrow$ если $|x - y| \leq \delta$, то $|f(x) - f(y)| \leq \omega_f(\delta) < \varepsilon$
+            \end{itemize}
+
+            \item $f \in C[a, b] \Leftrightarrow \lim\limits_{\delta \to 0_+} \omega_f(\delta) = 0$
+            
+            \textit{Доказательство:}
+
+            $f \in C[a, b] \Leftrightarrow f$ равномерно непрерывна на $[a, b] \Leftrightarrow \lim\limits_{\delta \to 0_+} \omega_f(\delta) = 0$
+        \end{enumerate}
+    \end{theo}
+\end{defin}
+
+\begin{defin}{Дробление отрезка}
+    Дробление отрезка $[a, b]$ -- набор точек $x_0 = a < x_1 < x_2 < \ldots < x_n = b$
+\end{defin}
+
+\begin{defin}{Ранг дробления}
+    Ранг дробления -- длина самого большого отрезка из дробления
+
+    $\max\{x_1 - x_0, x_2 - x_1 \ldots x_n - x_{n - 1}\} =: \tau$
+\end{defin}
+
+\begin{defin}{Оснащение дробления}
+    Оснащение дробления -- набор точек $\xi_k : \xi_k \in [x_{k - 1}, x_k]$
+\end{defin}
+
+\begin{defin}{Интегральная сумма (сумма Римана)}
+    $f : [a, b] \to \R$, $\tau$ дробление отрезка и $\tau = \{ x_0, x_1 \ldots x_n \}$
+
+    $\xi$ -- оснащение дробления и $\xi = \{ \xi_1, \xi_2 \ldots \xi_n \}$
+
+    $S(f, \tau, \xi) := \sum\limits_{k = 1}^n f(\xi_k)(x_k - x_{k - 1})$
+\end{defin}
+
+\begin{Example}{}
+    $S_p(n) := 1^p + 2^p + 3^p + \ldots + n^p;\ p > 0$
+
+    $\lim \frac{S_p(n)}{n^{p + 1}}$?
+
+    Возьмем $f(x) = x^p$ на $[0, 1]$ и $x_k = \xi_k = \frac{k}{n}$
+
+    $\frac{S_p(n)}{n^{p + 1}} = \frac{1}{n} \cdot ((\frac{1}{n})^p + (\frac{2}{n})^p + \ldots + (\frac{n}{n})^p) = \sum f(\xi_k) \cdot (x_k - x_{k - 1}) \rightarrow \int\limits_0^1 f(t)dt = \int\limits_0^1 x^pdx = \frac{x^{p+1}}{p + 1}|_0^1 = \frac{1}{p + 1}$
+\end{Example}
+
+\begin{theo}{Теорема об интегральных суммах}
+    $f \in C[a, b]$, $\tau$ -- дробление
+
+    Тогда $|\int\limits_a^b f - S(f, \tau, \xi)| \leq (b - a)\omega_f(|\tau|)$
+\end{theo}
+
+\textit{Доказательство:}
+
+$\Delta := \int\limits_a^b f - \sum\limits_{k = 1}^n f(\xi_k)(x_k - x_{k - 1}) = \sum\limits_{k = 1}^n \int\limits_{x_{k - 1}}^{x_k} f - \sum\limits_{k = 1}^n f(\xi_k)(x_k - x_{k - 1}) = \sum\limits_{k = 1}^n \int\limits_{x_{k - 1}}^{x_k} (f(x) - f(\xi_k))dx$
+
+$|\Delta| \leq \sum\limits_{k = 1}^n \int\limits_{x_{k - 1}}^{x_k} |f(x) - f(\xi_k)|dx \leq \sum\limits_{k = 1}^n \int\limits_{x_{k - 1}}^{x_k} \omega_f(|\tau|)dx = \omega_f(|\tau|) \sum\limits_{k = 1}^n (x_k - x_{k - 1}) = \omega_f(|\tau|)(b - a)$
+
+\begin{theo}{Следствия}
+    \begin{enumerate}
+        \item $f \in C[a, b]$. Тогда $\forall \varepsilon > 0\ \exists \delta > 0 : \forall$ дробления $\tau$ ранга $< \delta$ и $\forall$ его оснащения $\xi$
+        
+        $|\int\limits_a^b f - S(f, \tau, \xi)| < \varepsilon$
+
+        \item $f \in C[a, b]$. Тогда для любой последовательности дроблений $\tau_n : |\tau_n| \to 0$ и любой последовательности оснащений $\xi_n$ $\lim S(f, \tau_n, \xi_n) = \int\limits_a^b f$
+    \end{enumerate}
+\end{theo}
+
+\begin{defin}{Интеграл Римана}
+    $f : [a, b] \to \R$
+
+    $f$ интегрируема по Риману на $[a, b]$, и $I$ ее интеграл, если $\forall \varepsilon > 0\ \exists \delta > 0 : \forall$ дробления $\tau$ ранга $< \delta$ и $\forall$ его оснащения $\xi$
+
+    $|I - S(f, \tau, \xi)| < \varepsilon$
+\end{defin}
+
+\begin{lem}{}
+    $f \in C^2[\alpha, \beta]$. Тогда $\int\limits_\alpha^\beta f(x)ds - (\beta - \alpha)\frac{f(\alpha) + f(\beta)}{2}$ = $- \frac{1}{2} \int\limits_{\alpha}^{\beta} f''(t)(t - \alpha)(b - t)dt$
+\end{lem}
+
+\textit{Доказательство:}
+
+$\gamma = \frac{\alpha + \beta}{2}$
+
+$\int\limits_\alpha^\beta f(x)dx = \int\limits_\alpha^\beta f(x)(x - \gamma)'dx = f(x)(x - \gamma)|_{x = \alpha}^{x = \beta} - \int\limits_\alpha^\beta f'(x)(x - \gamma)dx = f(\beta) \cdot \frac{\beta - \alpha}{2} - f(\alpha) \cdot \frac{\alpha - \beta}{2} = \\ = \frac{f(\beta) + f(\alpha)}{2} (\beta - \alpha)$
+
+$\Delta = - \int\limits_\alpha^\beta f'(x)(x - \gamma)dx = (*)$
+
+Берем $u = f';\ v' = x - \gamma;\ -v = \frac{1}{2}(x - \alpha)(\beta - x) = \frac{1}{2}(-x^2 + (\alpha + \beta)x - \alpha\beta)$
+
+$(*) = -f'(x) \cdot (- \frac{1}{2})(x - \alpha)(\beta - x)|_{x = \alpha}^{x = \beta} - \int\limits_\alpha^\beta f''(x) \frac{1}{2} (x - \alpha)(\beta - x)dx$
+
+\begin{theo}{Формула трапеций}
+    $S = \sum (x_k - x_{k - 1})\frac{f(x_{k - 1}) + f(x_k)}{2}$
+
+    Как выглядит формула, если узлы на равных расстояниях?
+
+    $x_k - x_{k - 1} = \frac{b - a}{n}$
+
+    $S = \frac{b - a}{n} \cdot \sum\limits_{k = 1}^n \frac{f(x_{k - 1}) + f(x_k)}{2} = \frac{b - a}{n} (\frac{f(a)}{2} + \sum\limits_{k = 1}^{n - 1} f(x_k) + \frac{f(b)}{2})$
+\end{theo}
+
+\begin{nota}{Как выглядит интегральная сумма если узлы на равных расстояниях?}
+    $\xi_k = x_k$
+
+    $S(f, \tau, \xi) = \sum\limits_{k = 1}^n f(\xi_k)(x_k - x_{k - 1}) = \frac{b - a}{n}\sum\limits_{k = 1}^n f(x_k)$
+
+    А если $\xi_k = x_{k - 1}$, то $S(f, \tau, \xi) = \frac{b - a}{n} \sum\limits_{k = 0}^{n - 1}f(x_k)$
+
+\begin{Remark}{}
+    Если $|f| \leq M$, то $\omega_f(\delta) \leq M\delta$
+
+    $|S(f, \xi, \tau) - \int\limits_a^b f| \leq (b - a)\omega_f(\frac{b - a}{n}) \leq (b - a)^2 \cdot \frac{M}{n}$
+\end{Remark}
+
+\end{nota}
+
+\begin{theo}{Оценка погрешности в формуле трапеций}
+    $f \in C^2[a, b]$
+
+    Тогда $|\int\limits_a^b f - \sum\limits_{k = 1}^n(x_k - x_{k - 1}) \cdot \frac{f(x_{k - 1}) + f(x_k)}{2}| \leq \frac{|\tau|^2}{8} \cdot \int\limits_a^b |f''|$
+\end{theo}
+
+\newpage
+
+\textit{Доказательство:}
+
+$\Delta = \sum\limits_{k = 1}^n \int\limits_{x_{k - 1}}^{x_k} f - \sum\limits_{k = 1}^n (x_k - x_{k - 1}) \frac{f(x_{k - 1}) + f(x_k)}{2} = \sum\limits_{k = 1}^n (\int\limits_{x_{k - 1}}^{x_k} f - (x_k - x_{k - 1}) \frac{f(x_{k - 1}) + f(x_k)}{2}) \stackrel{lemma}{=} \\ \stackrel{lemma}{=} \sum\limits_{k = 1}^n - \frac{1}{2}\int_{x_{k - 1}}^{x_k} f''(t)(x_k - t)(t - x_{k - 1})dt$
+
+$|\Delta| \leq \frac{1}{2} \sum\limits_{k = 1}^n \int\limits_{x_{k - 1}}^{x_k} |f''(t)| \cdot |(x_k - t)(t - x_{k - 1})dt| \leq (*)$
+
+$(x_k - t)(t - x_{k - 1}) \leq (\frac{(x_k - t) + (t - x_{k - 1})}{2})^2 = (\frac{x_k - x_{k - 1}}{2})^2 = \frac{|\tau|^2}{4}$
+
+$(*) \leq \frac{|\tau|^2}{8} \sum \int\limits_{x_{k - 1}}^{x_k} |f''(t)|dt = \frac{|\tau|^2}{8} \int\limits_a^b |f''|$
+
+\begin{Remark}{}
+    Если $|f''| \leq M$ и узлы равноотстоящие друг от друга, то $|\int\limits_a^b f - \frac{b - a}{n} (\frac{f(a)}{2} + \sum f(x_k) + \frac{f(b)}{2})| \leq (\frac{b - a}{n})^2 \frac{M(b - a)}{8}$
+\end{Remark}
+
+\begin{theo}{Формула Эйлера-Маклорена для второй производной}
+    $f \in C^2[a, b];\ m, n \in \Z$
+
+    $\sum\limits_{k = m}^n f(k) = \frac{f(m) + f(n)}{2} + \int\limits_m^n f(t)dt + \frac{1}{2}\int\limits_m^n f''(t)\{t\}(1 - \{t\})dt$
+\end{theo}
+
+\textit{Доказательство:}
+
+Пишем лемму (1.1) для $\alpha = k$ и $\beta = k + 1$
+
+$\int\limits_k^{k + 1} f = \frac{f(k) + f(k + 1)}{2} - \frac{1}{2} \int\limits_k^{k + 1} f''(t)(t - k)(k + 1 - t)dt$
+
+Просуммируем по $k$ от $m$ до $n - 1$
+
+$\int\limits_m^n f = \sum\limits_{k = m}^{n - 1} \int\limits_{k}^{k + 1} f = \sum\limits_{k = m}^{n - 1} \frac{f(k) + f(k + 1)}{2} - \frac{1}{2} \sum\limits_{k = m}^{n - 1} \int\limits_k^{k + 1} f''(t)\{t\}(1 - \{t\})dt = \frac{f(m)}{2} + \sum f(k) + \frac{f(n)}{2} - \\
+- \frac{1}{2} \int\limits_m^n f''(t)\{t\}(1 - \{t\})dt$
+
+$\int\limits_m^n f + \frac{f(m) + f(n)}{2} = \sum f(k) - \frac{1}{2} \int\limits_m^n f''(t) \{t\}(1 - \{t\})dt$
+
+\begin{Example}{}
+    \begin{enumerate}
+        \item $S_p(n) = 1^p + 2^p + \ldots + n^p;\ f(x) = x^p;\ f''(x) = p(p - 1)x^{p - 2}$
+        
+        $S_p(n) = \frac{1 + n^p}{2} + \int\limits_1^n x^pdx + \frac{1}{2} \int\limits_1^n p(p - 1)x^{p - 2} \{x\}(1 - \{x\})dx$
+
+        Пусть $p > -1$
+
+        $|S_p(n) - \frac{n^{p + 1} - 1}{p + 1} - \frac{n^p + 1}{2}| \leq \frac{|p||p - 1|}{8} \int\limits_1^n x^{p - 2}dx$
+
+        Если $p \in (-1, 1)$, то $\int\limits_1^n x^{p - 2}dx = \frac{x^{p - 1}}{p - 1}|_1^n \leq \frac{1}{1 - p} \Rightarrow S_p(n) = \frac{n^{p + 1}}{p + 1} + \frac{n^p}{2} + O(1)$
+
+        Если $p > 1$, то $\int\limits_1^n x^{p - 2}dx = \frac{x^{p - 1}}{p - 1}|_1^n \leq \frac{n^{p - 1}}{p - 1} = O(n^{p - 1}) \Rightarrow S_p(n) = \frac{n^{p + 1}}{p + 1} + \frac{n^p}{2} + O(n^{p - 1})$
+
+        \item Гармонические числа $H_n := 1 + \frac{1}{2} + \ldots + \frac{1}{n}$
+        
+        $f(x) = \frac{1}{x};\ f''(x) = \frac{2}{x^3};\ m = 1$
+
+        $H_n = \frac{1 + \frac{1}{n}}{2} + \int\limits_1^n \frac{dx}{x} + \frac{1}{2}\int\limits_1^n \frac{2}{x^3}\{x\}(1 - \{x\})dx = \ln{n} + \frac{1}{2} + \frac{1}{2n} + a_n = (*)$
+
+        $a_n := \int\limits_1^n  \frac{\{x\}(1 - \{x\})}{x^3}dx$
+
+        $a_{n + 1} = a_n + \int\limits_n^{n + 1} \frac{\{x\}(1 - \{x\})}{x^3}dx > a_n$
+
+        Поймем что $a_n$ ограничена: $a_n \leq \int\limits_1^n \frac{\frac{1}{4}}{x^3}dx = \frac{1}{4} \cdot (- \frac{1}{2x^2})|_1^n = \frac{1}{8} - \frac{1}{8n^2} < \frac{1}{8} \Rightarrow \\
+        \Rightarrow$ существует конечный $\lim a_n =: a$
+
+        $(*) = \ln{n} + \frac{1}{2} + \frac{1}{2n} + a + O(1) = \ln{n} + \gamma + O(\frac{1}{n})$, где $\gamma$ -- постоянная Эйлера
+
+        \begin{nota}{}
+            $\gamma \approx 0.5772156043\ldots$
+        \end{nota}
+
+        \item Формула Стирлинга
+        
+        $f(t) = \ln{t};\ f''(t) = -\frac{1}{t^2};\ m = 1$
+
+        $\sum\limits_{k = 1}^n \ln{k} = \frac{\ln{1} + \ln{n}}{2} + \int\limits_1^n \ln{t}dt - \frac{1}{2} \int\limits_1^n \frac{\{t\}(1 - \{t\})}{t^2}dt = n\ln{n} - n + \frac{1}{2}\ln{n} + 1 - b_n$
+
+        $b_{n + 1} = b_n + \frac{1}{2}\int\limits_n^{n + 1} \frac{\{t\}(1 - \{t\})}{t^2}dt > b_n$
+
+        $b_n \leq \frac{1}{8}\int\limits_1^n \frac{dt}{t^2} = \frac{1}{8} (- \frac{1}{t})|_1^n = \frac{1}{8} - \frac{1}{8n} < \frac{1}{8} \Rightarrow \lim b_n = b \in \R \Rightarrow b_n = b + o(1)$
+
+        $\ln{n!} = n\ln{n} - n + \frac{1}{2}\ln{n} + (1 - b) + o(1)$
+
+        $n! = n^ne^{-n}\sqrt{n}e^{1 - b}e^{o(1)} \sim C n^n e^{-n}\sqrt{n}$ (где $C = e^{1 - b}$)
+
+        Хотим найти $C > 0$ из формулы $n! \sim n^ne^{-n}\sqrt{n}C$
+
+        Знаем, что $C_{2n}^n \sim \frac{4^n}{\sqrt{\pi n}}$, но $C_{2n}^n = \frac{(2n)!}{(n!)^2} \sim \frac{C(2n)^{2n}e^{-2n}\sqrt{2n}}{(Cn^ne^{-n}\sqrt{n})^2} = \frac{C 2^{2n}\sqrt{2n}}{C^2 \sqrt{n} \sqrt{n}} = \frac{4^n\sqrt{n}}{C\sqrt{n}} \sim \frac{4^n}{\sqrt{\pi n}}$
+
+        $\Rightarrow \lim\limits_{n \to \infty} \frac{4^n\sqrt{2}}{C\sqrt{n}}\cdot \frac{\sqrt{\pi n}}{4^n} = 1 \Rightarrow C = \sqrt{2\pi}$
+
+        \begin{nota}{Формула Стирлинга}
+            $n! \sim n^n e^{-n}\sqrt{2\pi n}$
+
+            $\ln{n!} = n\ln{n} - n + \frac{1}{2}(\ln n + \ln{2\pi}) + o(1)$
+        \end{nota}
+
+        \begin{Remark}{}
+            Чуть более точные вычисления дают $O(\frac{1}{n})$ вместо $o(1)$
+
+            $n! = n^ne^{-n} \sqrt{2\pi n} e^{O(\frac{1}{n})}$
+        \end{Remark}
+    \end{enumerate}
+\end{Example}
+
+\subsection{\S 5. Несобственные интегралы}
+
+\begin{defin}{}
+    $- \infty < a < b \leq + \infty;\ f \in C[a, b)$
+
+    $\int\limits_a^{\to b} f := \lim\limits_{B \to b_-} \int\limits_a^B f$, если такой предел существует
+
+    $- \infty \leq a < b < + \infty;\ f \in C(a, b]$
+
+    $\int\limits_{\to a}^b f := \lim\limits_{A \to a_+} \int\limits_A^b f$, если такой предел существует
+\end{defin}
+
+\begin{Remark}{}
+    \begin{enumerate}
+        \item Если $F$ -- первообразная $f$ на $[a, b)$, то 
+        
+        $\int\limits_a^{\to b} f = \lim\limits_{B \to b_-} \int\limits_a^B f = \lim\limits_{B \to b_-} (F(B) - F(a)) = \lim\limits_{B \to b_-} F(B) - F(a)$
+
+        Если $F$ -- первообразная $f$ на $(a, b]$, то
+
+        $\int\limits_{\to a}^b f = F(b) - \lim\limits_{A \to a_+} F(A) =: F|_a^b$, т.е. подстановку теперь понимаем как предел (в случае, если она не определена в какой-то точке)
+
+        \item Если $f \in C[a, b]$, то новое определение совпадает со старым
+        
+        $\int\limits_a^{\to b} f - \int\limits_a^b f = \lim\limits_{B \to b_-} \int\limits_a^B f - \int\limits_a^b f = -\lim\limits_{B \to b_-} \int\limits_B^b f$
+
+        $f \in C[a, b] \Rightarrow f$ ограничена $\Rightarrow |f| \leq M$
+
+        $|\int\limits_B^b f| \leq \int\limits_B^b |f| \leq \int\limits_B^b M = (b - B)M \xrightarrow[B \to b_-]{} 0$
+    \end{enumerate}
+\end{Remark}
+
+\begin{Example}{}
+    $\int\limits \frac{dx}{x^p}$ на $(1, \infty)$ и $(0, 1)$
+    \begin{enumerate}
+        \item $p \neq 1$, первообразная для $\frac{1}{x^p} = x^{-p}$ -- это $\frac{x^{-p + 1}}{1 - p}$
+
+        $\int\limits_1^{+ \infty} \frac{dx}{x^p} = \frac{x^{1 - p}}{1 - p}|_1^\infty = \lim\limits_{x \to \infty} \frac{x^{1 - p}}{1 - p} - \frac{1}{1 - p} = \begin{cases}
+            + \infty & p < 1 \\
+            \frac{1}{p - 1} & p > 1
+        \end{cases}$
+
+        Если $p = 1$, то первообразная для $\frac{1}{x}$ -- это $\ln{x}$
+
+        $\int\limits_1^{+ \infty} \frac{dx}{x} = \ln{x}|_1^{+ \infty} = \lim\limits_{x \to \infty}\ln{x} - \ln{1} = + \infty$
+
+        Итого $\int\limits_1^{+ \infty} \frac{dx}{x^p} = \begin{cases}
+            + \infty & p \leq 1 \\
+            \frac{1}{p - 1} & p > 1
+        \end{cases}$
+
+        \item $p \neq 1$, первообразная $\frac{x^{1 - p}}{1 - p} \Rightarrow \int\limits_0^1 \frac{dx}{x^p} = \frac{x^{1 - p}}{1 - p}|_0^1 = \frac{1}{1 - p} - \lim\limits_{x \to 0_+} \frac{x^{1 - p}}{1 - p} = \begin{cases}
+            \frac{1}{1 - p} & p < 1 \\
+            + \infty & p > 1
+        \end{cases}$
+
+        $p = 1 \Rightarrow$ первообразная $\ln{x} \Rightarrow \int\limits_0^1 \frac{dx}{x} = \ln{x}|_0^1 = \ln{1} - \lim\limits_{x \to 0_+} \ln{x} = + \infty$
+
+        Итого $\int\limits_0^1 \frac{dx}{x^p} = \begin{cases}
+            \frac{1}{1 - p} & p < 1 \\
+            + \infty & p \geq 1
+        \end{cases}$
+    \end{enumerate}
+\end{Example}
+
+\begin{defin}{Сходящийся интеграл}
+    Несобственный интеграл $\int\limits_a^b f$ называется сходящимся, если $\lim$ из определения существует и конечен и называется расходящимся в противном случае
+\end{defin}
+
+\begin{Remark}{}
+    $\int\limits_1^{+ \infty} \frac{dx}{x^p}$ сходится $\Leftrightarrow p > 1$
+
+    $\int\limits_0^1 \frac{dx}{x^p}$ сходится $\Leftrightarrow p < 1$
+\end{Remark}
+
+\begin{theo}{Критерий Коши для сходимости интегралов}
+    $f \in C[a, b];\ \ - \infty < a < b \leq + \infty$
+
+    Тогда $\int\limits_a^{\to b} f$ сходится $\Leftrightarrow \forall \varepsilon > 0\ \exists c \in (a, b) : \forall A, B \in (c, b) \Rightarrow |\int\limits_A^B f| < \varepsilon$
+\end{theo}
+
+\textit{Доказательство:}
+
+\begin{itemize}
+    \item[$\Rightarrow$] $\int\limits_a^{\to b} f$ сходится $\Rightarrow$ существует конечный $\lim\limits_{y \to b_-} F(y)$, где $F$ -- первообразная $f$
+    
+    $\forall \varepsilon > 0$ найдется такая окрестность $(c, b)$, что $\forall y \in (c, b)\ |F(y) - L| < \frac{\varepsilon}{2}$
+
+    $\Rightarrow$ если $A, B \in (c, b)$, то $|F(A) - L| < \frac{\varepsilon}{2}$ и $|F(B) - L| < \frac{\varepsilon}{2}$
+
+    $\Rightarrow |F(B) - F(A)| \leq |F(B) - L| + |L - F(A)| < \frac{\varepsilon}{2} + \frac{\varepsilon}{2} = \varepsilon$
+
+    \item[$\Leftarrow$] Пусть $F$ -- первообразная $f$, тогда $\forall \varepsilon > 0\ \exists c \in (a, b) : \forall A, B \in (c, b) \Rightarrow |F(B) - F(A)| < \varepsilon$
+    
+    Но это условие из критерия Коши для $\lim\limits_{y \to b_-} F(y) \Rightarrow$ этот предел существует и конечен $\Rightarrow \int\limits_a^{\to b} f = \lim\limits_{y \to b_-} F(y) - F(a)$ существует и конечен
+\end{itemize}
+
+\begin{theo}{Свойства несобственных интегралов}
+    \begin{enumerate}
+        \item Аддитивность. $f \in C[a, b);\ c \in (a, b)$
+        
+        Тогда $\int\limits_a^b f$ сходится $\Leftrightarrow \int\limits_c^b f$ сходится и в этом случае $\int\limits_a^b f = \int\limits_a^c f + \int\limits_c^b$
+
+        \item $f \in C[a, b)$. Если $\int\limits_a^b$ сходится, то $\lim\limits_{B \to b_-} \int\limits_B^b f = 0$
+        
+        \item Линейность $f, g \in C[a, b);\ \alpha, \beta \in \R$
+        
+        Если $\int\limits_a^b f$ и $\int\limits_a^b$ сходится, то $\int\limits_a^b(\alpha f + \beta g)$ сходится и $\int\limits_a^b (\alpha f + \beta g) = \alpha \int\limits_a^b f + \beta \int\limits_a^b g$
+
+        \item Монотонность. $f, g \in C[a, b);\ f \leq g$ на $[a, b)$ и интегралы существуют $\Rightarrow \int\limits_a^b f \leq \int\limits_a^b g$
+        
+        \item Интегрирование по частям. $f, g \in C^1[a, b)$. Тогда $\int\limits_a^b fg' = fg|_a^b - \int\limits_a^b f'g$
+        
+        (если существуют какие-то два предела из трех, то существует и третий и есть равенство)
+    \end{enumerate}
+\end{theo}
+
+\textit{Доказательство:}
+
+\begin{enumerate}
+    \item $\int\limits_a^B f = \int\limits_a^c f + \int\limits_c^B$ и переходим к $\lim\limits_{B \to b_-} \Rightarrow \int\limits_a^b f = \int\limits_a^c f + \int\limits_c^b f$
+    
+    \item $\int\limits_a^b f = \int\limits_a^B f + \int\limits_B^b f \Rightarrow \int\limits_B^b f = \int\limits_a^b f - \int\limits_a^B$ и пишем $\lim\limits_{B \to b_-}$
+    
+    \item $a < B < b \Rightarrow \int\limits_a^B (\alpha f + \beta g) = \alpha \int\limits_a^B f + \beta \int\limits_a^B g$ и переходим к $\lim\limits_{B \to b_-}$
+    
+    \item $a < B < b$. Тогда $\int\limits_a^B f \leq \int\limits_a^B g$ и переходим к $\lim\limits_{B \to b_-}$
+    
+    \item $a < B < b$. Тогда $\int\limits_a^B fg' = fg|_a^B - \int\limits_a^B f'g$ и переходим к $\lim\limits_{B \to b_-}$
+\end{enumerate}
+
+\begin{Remark}{}
+    Если $\int\limits_a^b f$ сходится и $\int\limits_a^b g$ расходится, то $\int\limits_a^b (f + g)$ расходится
+
+    Если бы $\int\limits_a^b (f + g)$ сходится, то $\int\limits_a^b g = \int\limits_a^b ((f + g) - f)$ сходится
+\end{Remark}
+
+\begin{theo}{Замена переменной в несобственном интеграле}
+    $\varphi : [\alpha, \beta) \to [a, b);\ \varphi \in C^1[\alpha, \beta)$ и существует $\lim\limits_{\gamma \to \beta_-} \varphi(\gamma) =: c$
+
+    $f \in C[a, b)$. Тогда $\int\limits_\alpha^\beta f(\varphi(t)) \varphi'(t)dt = \int\limits_{\varphi(\alpha)}^c f(x)dx$ (если существует один из интегралов, то существует другой и есть равенство)
+\end{theo}
+
+\textit{Доказательство:}
+
+$F(y) := \int\limits_{\varphi(\alpha)}^y f(x)dx;\ y \in [a, b)$
+
+$\Phi(\gamma) := \int\limits_\alpha^\gamma f(\varphi(t))\varphi'(t)dt;\ \gamma \in [\alpha, \beta)$
+
+Тогда $\Phi(\gamma) = F(\varphi(\gamma))$ по формуле замены переменной в собственном интеграле
+
+\begin{enumerate}
+    \item Пусть существует $\lim\limits_{y \to c_-} F(y)$. Покажем, что сузествует $\lim\limits_{\gamma \to \beta_-} \Phi(\gamma)$
+    
+    Проверяем по Гейне. Возьмем $\gamma_n \nearrow \beta \Rightarrow \Phi(\gamma_n) = F(\varphi(\gamma_n))$
+
+    $\gamma_n \nearrow \beta \Rightarrow \varphi(\gamma_n) \to c \Rightarrow \Phi(\gamma_n) = F(\varphi(\gamma_n)) \to \lim\limits_{y \to c_-} F(y) = \int\limits_{\varphi(\alpha)}^c f(x)dx$
+
+    $\Rightarrow \lim\limits_{\gamma \to \beta_-} \Phi(\gamma) = \int\limits_{\varphi(\alpha)}^c f(x)dx$
+
+    \item Пусть существует $\lim\limits_{\gamma \to \beta_-} \Phi(\gamma)$. Проверим, что тогда $\exists \lim\limits_{y \to c} F(y)$. Тогда по пункту 1 будет равенство. Если $c < b$, то очевидно существует (т.к. $F$ непрерывно при $y < b$)
+    
+    Считаем, что $c = b$. Проверим по Гейне, что $\exists \lim\limits_{y \to b_-} F(y)$. Возьмем $b_n \nearrow b$. Можно считать, что $b_n \in [\varphi(\alpha), b)$. Т.е. сколь угодно близко к $b$ найдутся значения $\varphi \Rightarrow$ найдется \\ $\varphi(\beta_n) > b_n$
+
+    $\Rightarrow$ по БК $\exists \gamma_n \in (\alpha, \beta_n) : \varphi(\gamma_n) = b_n \Rightarrow \Phi(\gamma_n) = F(\varphi(\gamma_n)) = F(b_n)$
+
+    Осталось проверить, что $\gamma_n$ имеют предел. Предположим, что $\lim \gamma_n \neq \beta \Rightarrow$ найдется подпоследовательность $\gamma_{n_k} \to \tilde{\beta} \neq \beta$
+
+    $\gamma_n \in [\alpha, \beta) \Rightarrow \gamma_{n_k} \to \tilde{\beta} < \beta \Rightarrow \varphi$ непрерывна в $\tilde{\beta}$
+
+    $b \leftarrow b_{n_k} = \varphi(\gamma_{n_k}) \to \varphi(\tilde{\beta}) < b$. Противоречие. Следовательно $\lim \gamma_n = \beta \Rightarrow \lim \Phi(\gamma_n) = \\ = \lim\limits_{\gamma \to \beta_-} \Phi(\gamma)$, т.е. он существует
+\end{enumerate}
+
+\begin{Remark}{}
+    $\int\limits_a^b f(x)dx$ заменой $x = b - \frac{1}{t}$ и $\varphi(t) = b - \frac{1}{t}$ сводится к $\int\limits_{\frac{1}{b - a}}^{+ \infty} f(b - \frac{1}{t})\frac{dt}{t^2}$
+
+    То есть точку, где нет непрерывности можно записать на $\infty$. $\varphi(\frac{1}{b - a}) = a$ и $\varphi(\infty) = b$
+\end{Remark}
+
+\begin{theo}{}
+    $f \in C[a, b)$ и $f \geq 0$. Тогда $\int\limits_a^b f$ всегда определен. Он сходится $\Leftrightarrow F$ -- ограниченная функция на $[a, b)$
+\end{theo}
+
+\textit{Доказательство:}
+
+$F(y) := \int\limits_a^y f$. Если $y < z$, то $F(z) = \int\limits_a^z f = \int\limits_a^y f + \int\limits_y^z f \geq F(y) \Rightarrow F$ нестрого возрастает $\Rightarrow \\
+\Rightarrow \lim\limits_{y \to b_-} F$ существует и $\lim\limits_{y \to b_-} F = \sup\limits_{y \in [a, b)} F(y)$
+
+Тогда конечность предела равносильна ограниченности функции $F$
+
+\begin{theo}{Следствие 1 (признак сравнения)}
+    $f, g \in C[a, b),\ f, g \geq 0$ и $f \leq g$. Тогда
+     
+    \begin{enumerate}
+        \item Если $\int\limits_a^b g$ сходится, то $\int\limits_a^b f$ сходится
+        \item Если $\int\limits_a^b f$ сходится, то $\int\limits_a^b g$ расходится
+    \end{enumerate}
+\end{theo}
+
+\textit{Доказательство:}
+
+$F(y) := \int\limits_a^y f, G(y) := \int\limits_a^y g;\ f \leq g \Rightarrow F(y) \leq G(y)$
+
+\begin{enumerate}
+    \item $\int\limits_a^b g$ cходится $\Leftrightarrow G$ -- ограничена $\Rightarrow F$ -- ограничена $\Leftrightarrow \int\limits_a^b f$ cходится
+    \item Если бы $\int\limits_a^b g$ сходится, то $\int\limits_a^b f$ сходится. Противоречие
+\end{enumerate}
+
+\begin{Remark}{}
+    \begin{enumerate}
+        \item Достаточно наличия неравенства $f \leq g$ при аргументах близких к точке $b$
+        \item Неравенство $f \leq g$ можно заменить на $f = O(g)$
+        
+        $f = O(g)$ означает, что $f \leq Cg$ для некоторого C и $\int\limits_a^b Cg = C\int\limits_a^b g$
+
+        \item Если $f = O(\frac{1}{x^{1 + \varepsilon}})$ при $\varepsilon > 0$, то $\int\limits_a^{+ \infty} f$ сходится
+        
+        $g(x) = \frac{1}{x^{1 + \varepsilon}}$ и $\int\limits_1^{+ \infty} \frac{dx}{x^{1 + \varepsilon}}$ сходится 
+    \end{enumerate}
+\end{Remark}
+
+\begin{theo}{Следствие}
+    $f, g \in C[a, b);\ f, g \geq 0$ и $f \stackrel{x \to b}{\sim} g$. Тогда $\int\limits_a^b f$ и $\int\limits_a^b g$ ведут себя одинаково
+\end{theo}
+
+\textit{Доказательство:}
+
+$f \sim g \Rightarrow f = \varphi g$, где $\lim\limits_{x \to b_-} \varphi(x) = 1 \Rightarrow \frac{1}{2} \leq \varphi(x) \leq 2$ при $x$ близких к $b$
+
+$\frac{1}{2}g(x) \leq f(x) \leq 2g(x)$ при $x$ близких к $b$ $\Rightarrow f = O(g)$ и $g = O(f)$ в окрестности $b$
+
+\begin{Remark}{}
+    Если $f \geq 0$ и $\int\limits_a^{+ \infty} f$ сходится, то не обязательно $\lim\limits_{x \to + \infty} f(x) = 0$
+\end{Remark}
+
+\begin{defin}{Абсолютная сходимость}
+    $f \in C[a, b)$
+
+    $\int\limits_a^b f$ абсолютно сходится, если $\int\limits_a^b |f| < + \infty$
+\end{defin}
+
+\begin{theo}{}
+    Если $\int\limits_a^b f$ абсолютно сходится, то $\int\limits_a^b f$ сходится
+\end{theo}
+
+\textit{Доказательство:}
+
+$0 \leq f_\pm \leq |f|$. Признак сравнения: $\int\limits_a^b |f|$ сходится $\Rightarrow \int\limits_a^b f_\pm$ сходится $\Rightarrow \int\limits_a^b f = \int\limits_a^b f_+ - \int\limits_a^b f_-$ сходится
+
+\begin{Remark}{}
+    Бывают интегралы, которые сходятся, но не абсолютно
+\end{Remark}
+
+\begin{Exercise}{}
+    Что делать, если несколько точек, где нет непрерывности? Пусть отрезок $[a, b]$ нарезан на куски, т.е. $[a, b] = [a, c_1] \cup [c_1, c_2] \cup \ldots \cup [c_n, b]$ (где в $c_i$ нет непрерывности). Добавим в каждый полученный отрезок по точке $d_i$
+
+    Итого подряд идут точки типа $a, d_1, c_1, d_2, c_2 \ldots d_n, c_n, d_{n + 1}, b$
+
+    $\int\limits_a^b f$ сходится означает, что $\int\limits_a^{d_1}, \int\limits_{d_1}^{c_1}, \int\limits_{c_1}^{d_2}, \ldots, \int\limits_{d_{n + 1}}^b$ сходятся
+\end{Exercise}
+
+\begin{theo}{Признак Дирихле}
+    $f, g \in C[a, + \infty)$
+
+    \begin{enumerate}
+        \item $f$ имеет ограниченную первообразную на $[a, + \infty)$ (т.е. $F(x) := \int\limits_a^x f$ ограничена)
+        \item $g$ монотонна 
+        \item $\lim\limits_{x \to + \infty} g(x) = 0$
+    \end{enumerate}
+
+    Тогда $\int\limits_a^{+ \infty} f(x)g(x)dx$ сходится
+\end{theo}
+
+\textit{Доказательство (для случая, когда $g \in C^1[a, + \infty)$):}
+
+Хотим доказать, что $H(x) := \int\limits_a^x fg$ имеет конечный предел при $x \to + \infty$
+
+$H(x) = \int\limits_a^x F'g = Fg|_a^x - \int\limits_a^b Fg'$. Проверим, что существует конечный предел
+
+$\lim\limits_{x \to + \infty} F(x)g(x) = 0$, т.к. $F$ ограничена и $g$ -- бесконечно малая
+
+Осталось доказать, что $\lim\limits_{x \to + \infty} \int\limits_a^x Fg'$ существует и конечен, т.е. что $\int\limits_a^{+ \infty} Fg'$ сходится
+
+Проверим, что он абсолютно сходится, т.е. $\int\limits_a^{+ \infty} |Fg'| < + \infty$
+
+$F$ -- ограничена $\Rightarrow \exists M : |F(x)| \leq M\ \forall x \Rightarrow |Fg'| \leq M|g'|$. По признаку сравнения достаточно проверить, что $\int\limits_a^{+ \infty} |g'|$ сходится. Из монотонности $g$ следует, что $g'$ фиксированного знака, поэтому надо проверить, что $\int\limits_a^{+ \infty} g'$ сходится
+
+$\int\limits_a^{+ \infty} g' = g|_a^{+ \infty} = \lim\limits_{x \to + \infty} g(x) - g(a) = -g(a) < + \infty$
+
+\begin{theo}{Признак Абеля}
+    $f, g \in C[a, + \infty)$
+
+    \begin{enumerate}
+        \item $\int\limits_a^{+ \infty} f$ сходится
+        \item $g$ монотонна 
+        \item $g$ ограничена
+    \end{enumerate}
+
+    Тогда $\int\limits_a^{+ \infty} f(x)g(x)dx$ сходится
+\end{theo}
+
+\textit{Доказательство:}
+
+Монотонная ограниченная функция имеет конечный предел $b := \lim\limits_{x \to + \infty} g(x)$
+
+$\tilde{g}(x) := g(x) - b$ -- монотонная и $\lim\limits_{x \to + \infty} \tilde{g}(x) = 0$
+
+$F(x) := \int\limits_a^x f$. По условию $\lim\limits_{x \to + \infty} F(x) = \int\limits_a^{+ \infty} f$ существует и конечен $\Rightarrow F$ локально ограничена, т.е. при $x \geq K\ |F(x)| \leq M$
+
+Но на отрезке $[a, K]$ функция $F$ непрерывна $\Rightarrow$ ограничена
+
+$\Rightarrow f$ и $\tilde{g}$ удовлетворяют условиям признака Дирихле $\Rightarrow \int\limits_a^{+ \infty} f\tilde{g}$ сходится
+
+$\int\limits_a^{+ \infty} = \int\limits_a^{+ \infty} f(\tilde{g} + b) = \int\limits_a^{+ \infty} f\tilde{g} + b\int\limits_a^{+ \infty} f$ сходится как сумма двух сходящихся
+
+\begin{theo}{Следствие}
+    $f, g \in C[a, + \infty), f$ -- периодична с периодом $T$, $g$ -- монотонна и $\lim\limits_{x \to + \infty} g(x) = 0$
+
+    \begin{enumerate}
+        \item Если $\int\limits_a^{+ \infty} |g|$ сходится, то $\int\limits_a^{+ \infty} fg$ сходится абсолютно
+        \item Если $\int\limits_a^{+ \infty} |g|$ расходится, то $\int\limits_a^{+ \infty} fg$ сходится $\Leftrightarrow \int\limits_a^{a + T} f = 0$
+    \end{enumerate}
+\end{theo}
+
+\textit{Доказательство:}
+
+\begin{enumerate}
+    \item $f$ непрерывна на $[a, a + T] \Rightarrow$ ограничена на $[a, a + T] \Rightarrow$ ограничена, т.к. периодична
+
+    $fg = O(g) \Rightarrow \int\limits_a^{+ \infty} fg$ абсолютно сходится по признаку сравнения
+
+    \item 
+    
+    \begin{itemize}
+        \item[$\Leftarrow$] $\int\limits_a^{a + T} f = 0$, тогда $F(x) := \int\limits_a^x f$ -- ограниченная функция
+        
+        Проверим, что $F$ периодична с периодом $T$
+
+        $F(x + T) = \int\limits_a^{x + T} f = \int\limits_a^{a + T} f + \int\limits_{a + T}^{x + T} f = 0 + \int\limits_a^{x} f = F(x) \Rightarrow F$ ограничена $\Rightarrow$ принцип Дирихле
+
+        \item[$\Rightarrow$] Пусть $\int\limits_a^{a + T} f = b \neq 0$. Тогда $\int\limits_a^{a + T} (f - \frac{b}{T}) = 0 \Rightarrow \int\limits_a^{+ \infty} (f - \frac{b}{T})g$ сходится 
+        
+        $\int\limits_a^{+ \infty} fg = \int\limits_a^{+ \infty} (f - \frac{b}{T})g + \frac{b}{T}\int\limits_a^{+ \infty} g$. Первое сходится, второе расходится $\Rightarrow \int\limits_a^{+ \infty} fg$ расходится
+    \end{itemize}
+\end{enumerate}
+
+\begin{Example}{}
+    $\int\limits_1^{+ \infty} \frac{\sin{x}}{x^p}dx$
+
+    \begin{itemize}
+        \item[$p > 1$] $|\frac{\sin{x}}{x^p}| \leq \frac{1}{x^p}$
+        
+        $\int\limits_1^{+ \infty} \frac{dx}{x^p}$ сходится $\Rightarrow \int\limits_1^{+ \infty} \frac{\sin{x}}{x^p}dx$ сходится абсолютно по признаку сравнения
+
+        \item[$p > 0$] $\sin$ -- периодическая функция с периодом $2\pi$
+        
+        $\int\limits_0^{2\pi} \sin{x}dx = 0$
+
+        $f(x) = \sin{x};\ g(x) = \frac{1}{x^p} \xrightarrow[x \to + \infty]{} 0$ монотонно $\Rightarrow \int\limits_1^{+ \infty} \frac{\sin{x}}{x^p}dx$ сходится 
+
+        А что с абсолютной сходимостью? $\int\limits_0^{2\pi} |\sin{x}|dx > 0$
+
+        $f(x) = |\sin{x}|;\ g(x) = \frac{1}{x^p} \xrightarrow[x \to + \infty]{} 0$ монотонно
+
+        $\int\limits_1^{+ \infty} \frac{dx}{x^p}$ -- расходится $\Rightarrow \int\limits_1^{+ \infty} \frac{|\sin{x}|}{x^p}dx$ расходится $\Rightarrow \int\limits_1^{+ \infty} \frac{\sin{x}}{x^p}dx$ не имеет абсолютной сходимости
+
+        \item[$p \leq 0$] Рассмотрим отрезок $[2\pi k + \frac{\pi}{6}, 2\pi k + \frac{5\pi}{6}]$. На нем $\sin{x} \geq \frac{1}{2}$
+        
+        $\int\limits_{2\pi k + \frac{\pi}{6}}^{2\pi k + \frac{5\pi}{6}} \frac{\sin{x}}{x^p}dx \geq \frac{1}{2} \int\limits_{2\pi k + \frac{\pi}{6}}^{2\pi k + \frac{5\pi}{6}} \frac{dx}{x^p} \geq \frac{1}{2} \cdot \frac{2\pi}{3} \cdot (2\pi k + \frac{\pi}{6})^{-p} \geq \frac{\pi}{3}$ -- противоречие с условие критерия Коши, значит $\int\limits_1^{+ \infty} \frac{\sin{x}}{x^p}dx$ расходится
+    \end{itemize}
+\end{Example}
+
+\begin{Remark}{}
+    В признаках Абеля и Дирихле нельзя отказаться от монотонности $g$
+
+    $f(x) = \sin{x};\ g(x) = \frac{\sin{x}}{x}$
+
+    $|\int\limits_1^x \sin{x}dx| = |\cos{1} - \cos{x}| \leq 2;\ \lim\limits_{x \to + \infty} g(x) = 0$
+
+    $\int\limits_1^{+ \infty} fg = \int\limits_1^{+ \infty} \frac{\sin^2{x}}{x}dx$ 
+
+    $\int\limits_0^{2\pi} \sin^2{x}dx = \pi > 0;\ \int\limits_1^{+ \infty} \frac{dx}{x}$ -- расходится
+
+    $\Rightarrow \int\limits_1^{+ \infty} \frac{\sin^2{x}}{x}dx$ расходится
+\end{Remark}
+
+\section{Анализ в метрических пространствах}
+
+\subsection{\S 1. Метрические пространства}
+
+\begin{defin}{Метрика}
+    $X$ -- множество. $\rho : X \times X \to \R$ -- метрика (расстояние)
+
+    \begin{enumerate}
+        \item $\rho(x, y) \geq 0$ и $\rho(x, y) = 0 \Leftrightarrow x = y$
+        \item $\rho(x, y) = \rho(y, x)$
+        \item Неравенство треугольника: $\rho(x, z) \leq \rho(x, y) + \rho(y, z)$
+    \end{enumerate}
+\end{defin}
+
+\begin{defin}{Метрическое пространство}
+    $(X, \rho)$ -- метрическое пространство
+\end{defin}
+
+\begin{Example}{}
+    \begin{enumerate}
+        \item Дискретная метрика (метрика лентяя) $\rho(x, y) = \begin{cases}
+            0 & x = y \\
+            1 & x \neq y
+        \end{cases}$
+        \item $X = \R;\ \rho(x, y) = |x - y|$
+        \item $X = \R^2;\ \rho$ -- расстояние на плоскости
+        \item $X = \R^d;\ p \geq 1$ и $\rho(x, y) = (|x_1 - y_1|^p + |x_2 - y_2|^p + \ldots + |x_d - y_d|^p)^{\frac{1}{p}}$
+        
+        Неравенство треугольника -- это неравенство Минковского
+
+        \item Частный случай 4. $X = \R^2;\ \rho(x, y) = |x_1 - y_1| + |x_2 - y_2|$ -- Манхэттенское расстояние
+        
+        \item Французская железнодорожная метрика $X = \R^2$
+        
+        $\rho(A, B) =$ длина отрезка $AB$
+
+        $\rho(C, D) = CP + PD$
+
+        Тут кросивый рисуночек, типа чтоб проехать из города в другой оч часто надо заехать в $P$ -- пАрИж
+
+        \item Метрика Хемминга $a_1, a_2 \ldots a_n$ слова из $n$ букв
+        
+        $\rho(A, B) =$ количество разрядов, в которых $A$ и $B$ различаются
+
+        \item $X = C[a, b];\ \rho(f, g) := \max\limits_{x \in [a, b]} |f(x) - g(x)|$ -- равномерная метрика
+        \item $X = C[a, b];\ \rho(f, g) := \int\limits_a^b |f(x) - g(x)|dx$ -- метрика в $L_1$
+    \end{enumerate}
+\end{Example}
+
+\begin{defin}{Шар}
+    $(X, \rho)$ -- метрическое пространство, $r > 0,\ a \in X$
+
+    Открытый шар радиуса $r$ с центром в точке $a$
+
+    $B_r(a) := \{x \in X : \rho(x, a) < r\}$
+
+    Замкнутый шар $\overline{B_r}(a) := \{x \in X : \rho(x, a) \leq r\}$
+\end{defin}
+
+\begin{theo}{Свойства}
+    \begin{enumerate}
+        \item $B_{r_1}(a) \cap B_{r_2}(a) = B_{\min(r_1, r_2)}(a)$
+        
+        $B_{r_1}(a) \cup B_{r_2}(a) = B_{\max(r_1, r_2)}(a)$
+
+        \item Если $a \neq b$, то найдется $r > 0 : \overline{B_r}(a) \cap \overline{B_r}(b) = \varnothing$
+    \end{enumerate}
+\end{theo}
+
+\textit{Доказательство:}
+
+\begin{enumerate}
+    \item[2.] Возьмем $r = \frac{\rho(a, b)}{3} > 0$. Пусть $\overline{B_r}(a) \cap \overline{B_r}(b) \neq \varnothing$, т.е. найдется $x \in \overline{B_r}(a)$ и $x \in \overline{B_r}(b) \Rightarrow$
+    
+    $\Rightarrow \rho(a, b) \leq \rho(a, x) + \rho(x, b) \leq r + r = \frac{2}{3}\rho(a, b)$ -- противоречие
+\end{enumerate}
+
+\begin{defin}{Открытое множество}
+    $U \subset X$ -- открытое множество, если $\forall a \in U$ найдется $B_r(a) \subset U$
+\end{defin}
+
+\begin{theo}{Свойства}
+    \begin{enumerate}
+        \item $\varnothing$ и $X$ -- открытые множества
+        \item Объединение любого количества открытых множеств -- открытое множество
+        \item Пересечение конечного количества открытых множеств -- открытое множество
+        \item Открытый шар -- открытое множество
+    \end{enumerate}
+\end{theo}
+
+\textit{Доказательство:}
+
+\begin{enumerate}
+    \item Очевидно
+    \item Пусть $U_\alpha$ -- открытые при $\alpha \in I$. Докажем, что $U := \bigcup\limits_{\alpha \in I} U_\alpha$ -- открытое
+    
+    Возьмем $a \in U \Rightarrow a \in U_{\alpha_0}$ для некоторого $\alpha_0$, но $U_{\alpha_0}$ -- открытое $\Rightarrow \exists r > 0 : \\ B_r(a) \subset U_{\alpha_0} \subset U$
+
+    \item Пусть $U_1, U_2 \ldots U_n$ открытые. Докажем, что $U := \bigcap\limits_{k = 1}^n U_k$ -- открытое
+    
+    Возьмем $a \in U \Rightarrow a \in U_k\ \forall k \in 1 \ldots n$. $U_k$ -- открытое $\Rightarrow \exists r_k > 0 : B_{r_k}(a) \subset U_k$
+
+    Возьмем $r := \min(r_1, r_2 \ldots r_n) > 0 \Rightarrow B_r(a) \subset B_{r_k}(a) \subset U_k \Rightarrow B_r(a) \subset U = \bigcap\limits_{k = 1}^n U_k$
+
+    \item $B_R(a)$ -- открытое множество
+    
+    Возьмем $x \in B_R(a) \Rightarrow \rho(x, a) < R$ и положим $r := R - \rho(x, a) > 0$
+
+    Проверим, что $B_r(x) \subset B_R(a)$. Возьмем $y \in B_r(x)$ и проверим, что $y \in B_R(a)$
+
+    $y \in B_r(x) \Rightarrow \rho(y, x) < r = R - \rho(x, a) \Rightarrow \rho(y, a) \leq \rho(y, x) + \rho(x, a) < r + \rho(x, a) = R$
+\end{enumerate}
+
+\begin{Remark}{}
+    В 3 существенно, что множеств конечное число
+
+    \begin{Example}{}
+        $X = R;\ \rho(x, y) = |x - y|;\ U_n := (- \frac{1}{n}, \frac{1}{n})$ -- открытые множества
+
+        $\bigcap\limits_{n = 1}^{+ \infty} U_n = \{0\}$ -- не открытое
+    \end{Example}    
+\end{Remark}
+
+\begin{defin}{Внутренняя точка}
+    $(X, \rho)$ -- метрическое пространство, $A \subset X,\ a \in A$
+
+    $a$ -- внутренняя точка множества $A$, если $\exists r > 0 : B_r(a) \subset A$
+\end{defin}
+
+\begin{Remark}{}
+    Открытое множество -- множество, все точки которого внутренние
+\end{Remark}
+
+\begin{defin}{Внутренность множества}
+    $(X, \rho)$ -- метрическое пространство, $A \subset X$
+
+    Внутренность множества -- все внутренние точки множества
+
+    \textbf{Обозначение:} $\Int A$ (иногда $A^\circ$)
+\end{defin}
+
+\begin{theo}{Свойства}
+    \begin{enumerate}
+        \item $\Int A \subset A$
+        \item $\Int A$ -- объединение всех открытых множеств, содержащихся в $A$
+        \item $\Int A$ -- открытое множество
+        \item $A$ -- открытое $\Leftrightarrow A = \Int A$
+        \item $A \subset B \Rightarrow \Int A \subset \Int B$
+        \item $\Int (\Int A) = \Int A$
+        \item $\Int (A \cap B) = \Int A \cap \Int B$
+    \end{enumerate}
+\end{theo}
+
+\textit{Доказательство:}
+
+\begin{enumerate}
+    \item Очев 
+    \item Хотим $\Int A = \bigcup\limits_{G \subset A} G$, где $G$ -- открытое
+    
+    \begin{itemize}
+        \item[$\subset$] Возьмем $a \in \Int A \Rightarrow a$ -- внутренняя точка $\Rightarrow \exists r > 0 : B_r(a) \subset A$, но $B_r(a)$ -- открытое множество $\Rightarrow B_r(a)$ присутствует среди множеств из объединения
+        \item[$\supset$] Пусть $a \in U \Rightarrow \exists G$ -- откртытое $\subset A : a \in G \Rightarrow \exists r > 0 : B_r(a) \subset G \subset A \Rightarrow a$ -- внутренняя точка 
+    \end{itemize}
+
+    \item По пункту 2 $\Int A$ -- объединение открытых множеств $\Rightarrow \Int A$ -- открытое
+    
+    \item 
+    
+    \begin{itemize}
+        \item[$\Leftarrow$] т.к. $\Int A$ -- открытое
+        \item[$\Rightarrow$] $A$ -- открытое $\Rightarrow$ все точки внутренние $\Rightarrow$ все лежат в $\Int A \Rightarrow A = \Int A$
+    \end{itemize}
+
+    \item Если $a$ -- внутрення точка для $A$, то и для $B$ тоже, т.к. $A \subset B$
+    \item $3 + 4 = 6$
+\end{enumerate}
+
+\begin{Exercise}{}
+    \begin{enumerate}
+        \item Доказать пункт 7
+        \item Придумать пример, когда $\Int (A \cup B) \neq \Int A \cup \Int B$
+    \end{enumerate}
+\end{Exercise}
+
+\begin{defin}{Замкнутое множество}
+    Замкнутое множество -- множество, дополнение которого открыто 
+
+    $A$ замкнуто $\Leftrightarrow X \setminus A$ открыто
+\end{defin}
+
+\begin{theo}{Свойства замкнутых множеств}
+    \begin{enumerate}
+        \item $\varnothing$ и $X$ -- замкнутые множества
+        \item Пересечение любого количества замкнутых множеств -- замкнутое множество
+        \item Объединение конечного количества замкнутых множеств -- замкнутое множество
+        \item Замкнутый шар -- замкнутое множество
+    \end{enumerate}
+\end{theo}
+
+\textit{Доказательство:}
+
+\begin{enumerate}
+    \item Очевидно, ничего писать не буду
+    \item $F_\alpha$ -- замкнутые $\Rightarrow X \setminus F_\alpha$ -- открытые $\Rightarrow \bigcup X \setminus F_\alpha = X \setminus \bigcap F_\alpha$ -- открытое $\Rightarrow \bigcap F_\alpha$ -- замкнутое
+    \item $F_1 \ldots F_n$ -- замкнутые $\Rightarrow X \setminus F_k$ -- открытые $\Rightarrow \bigcap X \setminus F_k = X \setminus \bigcup F_k$ -- открытое $\Rightarrow \bigcup F_k$ -- замкнутое
+    \item $\overline{B}_R(a)$ -- замкнутое множество $\Leftrightarrow X \setminus \overline{B}_R(a) = \{x \in X : \rho(x, a) > R\}$ -- открытое
+    
+    Возьмем $r := \rho(x, a) - R$ и проверим, что $B_r(x) \subset X \setminus \overline{B}_R(a)$
+
+    $x \notin \overline{B}_R(a)$, т.е. $B_r(x) \cap \overline{B}_R(a) = \varnothing$
+
+    Предположим противное, тогда $\exists y \in B_r(x)$ и $y \in \overline{B}_R(a) \Rightarrow \rho(x, y) < r$ и $\rho(y, a) \leq R \Rightarrow \\ \Rightarrow \rho(x, a) \leq \rho(x, y) + \rho(y, a) < r + R = \rho(x, a)$ ?????
+\end{enumerate}
+
+\begin{defin}{Замыкание множества}
+    Замыкание множества $A$ -- пересечение всех замкнутых множеств, содержащих $A$
+
+    Обозначение $\Cl A$ или $\overline{A}$
+\end{defin}
+
+\begin{theo}{}
+    $X \setminus \Cl A = \Int (X \setminus A)$ и $X \setminus \Int A = \Cl (X \setminus A)$
+\end{theo}
+
+\textit{Доказательство:}
+
+Докажем, что $X \setminus \Cl A = \Int (X \setminus A)$
+
+\begin{itemize}
+    \item[$\subset$] Пусть $x \in X \setminus \Cl A \Rightarrow x \notin \Cl A \Rightarrow x \notin F$, где $F$ -- некоторое замкнутое множество, содержащее $A \Rightarrow x \in X \setminus F$ -- открытое и $X \setminus F \subset X \setminus A \Rightarrow x \in \Int (X \setminus A)$
+    
+    \item [$\supset$] Пусть $x \in \Int (X \setminus A) \Rightarrow x \in G$, где $G$ -- открытое, содержащееся в $X \setminus A \Rightarrow x \notin X \setminus G$ -- замкнутое и $X \setminus G \supset X \setminus (X \setminus A) = A \Rightarrow x \notin \Cl A \Rightarrow x \in X \setminus \Cl A$
+\end{itemize}
+
+\begin{theo}{Свойства замыкания}
+    \begin{enumerate}
+        \item $\Cl A \supset A$
+        \item $\Cl A$ -- замкнутое множество
+        \item $A$ -- замкнутое $\Leftrightarrow A = \Cl A$
+        \item $A \subset B \Rightarrow \Cl A \subset \Cl B$
+        \item $\Cl(\Cl A) = \Cl A$
+        \item $\Cl(A \cup B) = \Cl A \cup \Cl B$
+    \end{enumerate}
+\end{theo}
+
+\textit{Доказательство:}
+
+\begin{enumerate}
+    \item Очевидно
+    \item Пересечение замкнутые -- замкнутое
+    \item $A$ -- замкнутое $\Leftrightarrow X \setminus A$ -- открытое $\Leftrightarrow X \setminus A = \Int (X \setminus A) \Leftrightarrow A = \Cl A$
+    \item $A \subset B \Rightarrow X \setminus A \supset X \setminus B \Rightarrow \Int (X \setminus A) \supset \Int (X \setminus B) \Rightarrow X \setminus \Int (X \setminus A) \subset X \setminus \Int (X \setminus B) \Rightarrow \Cl A \subset \Cl B$
+    \item $2 + 3 = 5$
+\end{enumerate}
+
+\begin{Exercise}{}
+    \begin{enumerate}
+        \item Доказать пункт 6
+        \item Придумать пример, когда $\Cl (A \cap B) \neq \Cl A \cap \Cl B$
+        \item $A, \Int A, \Cl A, \Int \Cl A, \Cl \Int A, \Cl \Int \Cl A \ldots$
+        
+        Какое наибольше количество различных множеств может получиться?
+    \end{enumerate}
+\end{Exercise}
+
+\begin{theo}{}
+    $x \int \Cl A \Leftrightarrow \forall r > 0\ B_r(x) \cap A \neq \varnothing$
+\end{theo}
+
+\textit{Доказательство:}
+
+$x \in Cl A = X \setminus \Int (X \setminus A) \Leftrightarrow x \notin \Int (X \setminus A) \Leftrightarrow \forall r > 0\ B_r(x) \not\subset X \setminus A \Leftrightarrow \forall r > 0\ B_r(x) \cap A \neq \varnothing$
+
+\begin{defin}{Окрестность и проколотая окрестность}
+    Окрестность точки $a$ -- шарик радиуса $r > 0$ с центром в точке $a$
+
+    Обозначение $U_a$
+
+    Проколотая окрестность -- $\mathring{U}_a = U_a \setminus \{a\}$
+\end{defin}
+
+\begin{defin}{Предельная точка}
+    $x$ -- предельная точка множества $A$, если $\forall \mathring{U}_x$ содержится точки множества $A$
+
+    Локальное обозначение (примерно на 1 лекцию): $A'$ -- множество предельных точек множества $A$
+\end{defin}
+
+\begin{theo}{Свойства}
+    \begin{enumerate}
+        \item $\Cl A = A \cup A'$
+        \item $A \subset B \Rightarrow A' \subset B'$
+        \item $A$ -- замкнутое $\Leftrightarrow A \supset A'$
+        \item $(A \cup B)' = A' \cup B'$
+    \end{enumerate}
+\end{theo}
+
+\textit{Доказательство:}
+
+\begin{enumerate}
+    \item $x \in \Cl A \Leftrightarrow \forall U_x\ U_x \cap A \neq \varnothing$
+
+    Это так, если $x \in A$ или $x \in A'$ (тут $\mathring{U}_a \cap A \neq \varnothing$)
+
+    \item очев 
+    
+    \item $A$ -- замкнутое $\Leftrightarrow A = \Cl A \Leftrightarrow A = A \cup A' \Leftrightarrow A \supset A'$
+    
+    \item 
+    
+    \begin{itemize}
+        \item[$\supset$] $A \cup B \supset A \Rightarrow (A \cup B)' \supset A'$
+        \item[$\subset$] Возьмем $x \in (A \cup B)'$ и предположим, что $x \notin A'$. Надо доказать, что $x \in B'$
+        
+        $x \in (A \cup B)' \Rightarrow \forall r > 0\ \mathring{B_r}(x) \cap (A \cup B) \neq \varnothing$
+
+        $x \notin A' \Rightarrow \exists R > 0 : \mathring{B_R}(x) \cap A = \varnothing \Rightarrow \forall r < R\ \mathring{B_r}(x) \cap A = \varnothing$
+
+        Тогда $\mathring{B_r}(x) \cap B \neq \varnothing \forall r < R \Rightarrow$ вообще любой $\mathring{B_r}(x)$ пересекается с $B \Rightarrow x \in B'$
+    \end{itemize}
+\end{enumerate}
+
+\begin{theo}{}
+    Следующие условия равносильны
+
+    \begin{enumerate}
+        \item $x \in A'$
+        \item $\forall r > 0\ B_r(x)$ содержит бесконечное количество точек из $A$
+        \item Существует последовательность различных точек $x_n \in A : \rho (x_n, x) \to 0$
+        \item Существует последовательность $x_n \in A : \rho(x_n, x)$ строго убывает и $\to 0$
+    \end{enumerate}
+\end{theo}
+
+\textit{Доказательство:}
+
+\begin{enumerate}
+    \item[$4 \Rightarrow 3$] очевидно
+    \item[$3 \Rightarrow 2$] Если $\rho(x_n, x) \to 0$, то при больших и $\rho(x_n, x) < r$, т.е. $x_n \in B_r(x) \Rightarrow$ в $B_r(x)$ бесконечное количество точек из $A$
+    \item[$2 \Rightarrow 1$] Если $B_r(x) \cap A$ состоит из бесконечного количество точек, то $\mathring{B_r}(x) \cap A \neq \varnothing$ (множества отличаются на одну точку или совпадают)
+    \item[$1 \Rightarrow 4$] Рассмотрим $r = 1$. В открестности $\mathring{B_r}(x)$ есть точка из $A$, назовем ее $x_1 \neq x$
+    
+    $r = \frac{1}{2}\rho(x_1, x) < \frac{1}{2}$. В окрестности $\mathring{B_r}(x)$ есть точка из $A$, назовем ее $x_2 \neq x$
+
+    $\rho(x_2, x) < r < \rho(x_1, x)$
+
+    $r = \frac{1}{2}\rho(x_2, x) < \frac{1}{4}$. В окрестности $\mathring{B_r}(x)$ есть точка из $A$, назовем ее $x_3 \neq x$
+
+    $\rho(x_3, x) < \rho(x_2, x)$ и так далее
+
+    $x_1, x_2 \ldots \in A$, $\rho(x_1, x) > \rho(x_2, x) > \ldots$ и $\rho(x_n, x) < \frac{1}{2^n} \Rightarrow \rho(x_1, x) \to 0$
+\end{enumerate}
+
+\begin{theo}{Очевидное следствие}
+    Конечное множество не имеет предельных точек
+\end{theo}
+
+\begin{defin}{Подпространство}
+    $(X, \rho)$ -- метрическое пространство $Y \subset X$
+
+    $(Y, \rho|_{Y \times Y})$ -- подпространство метрического пространства $(X, \rho)$
+\end{defin}
+
+\begin{theo}{Об открытых множества в пространстве и подпространстве}
+    $(X, \rho)$ -- метрическое пространство, $Y \subset X$. Тогда
+
+    \begin{enumerate}
+        \item $A$ -- открыто в $(Y, \rho) \Leftrightarrow \exists G \subset X$, открытое в $(X, \rho) : A = G \cap Y$
+        \item $A$ -- замкнуто в $(Y, \rho) \Leftrightarrow \exists F \subset X$, замкнутое в $(X, \rho) : A = F \cap Y$
+    \end{enumerate}
+\end{theo}
+
+\textit{Доказательство:}
+
+\begin{enumerate}
+    \item 
+    
+    \begin{itemize}
+        \item[$\Rightarrow$] $A$ открыто в $(Y, \rho) \Rightarrow A = \bigcup\limits_{x \in A} B^Y_{r_x}(x)$, где $r_x$ -- такой радиус, что $B^Y_{r_x}(x) \subset A$
+        
+        $B^Y_{r_x}(x) = \{z \in Y : \rho(z, x) < r_x\} = B^X_{r_x}(x) \cap Y$
+
+        $\Rightarrow A = \bigcup\limits_{x \in A} (B^X_{r_x}(x) \cap Y) = Y \cap \bigcup\limits_{x \in A} B^X_{r_x}(x)$, где $G := \bigcup\limits_{x \in A} B^X_{r_x}(x)$ -- открытое в $(X, \rho)$ как объединение открытых
+
+        \item[$\Leftarrow$] $A = G \cap Y$, $G$ -- открытое в $X$. Докажем, что $A$ открыто в $Y$
+        
+        Возьмем $a \in A \subset G \Rightarrow \exists r > 0 : B^X_r(a) \subset G \Rightarrow B^Y_r(a) = B^X_r(a) \cap Y \subset G \cap Y = A$
+    \end{itemize}
+
+    \item $A$ -- замкнуто в $(Y, \rho) \Leftrightarrow Y \setminus A$ -- открыто в $(Y, \rho) \Leftrightarrow \exists G \subset X$ открытое в \\ 
+    $(X, \rho) : Y \setminus A = G \cap Y \Rightarrow Y \cap (X \setminus G) = A$, где $X \setminus G$ -- замкнутое $\Leftrightarrow G$ -- открытое 
+\end{enumerate}
+
+\begin{Example}{}
+    $X = \R,\ Y = [0, 3)$
+
+    $[0, 1)$ -- открыто в $Y$, т.к. $(-1, 1)$ -- открыто в $\R$, а $[0, 1) = (-1, 1) \cap Y$
+
+    $[2, 3)$ -- замкнуто в $Y$, т.к. $[2, 4]$ -- замкнуто в $\R$, а $[2, 3) = [2, 4] \cap Y$
+\end{Example}
+
+\begin{defin}{Норма}
+    $X$ -- векторное пространство. $\parl{\ }$ -- норма на $X$, если 
+
+    $\parl{\cdot} : X \to R$
+
+    \begin{enumerate}
+        \item $\parl{x} \forall x \in X$ и $\parl{x} = 0 \Leftrightarrow x = \overrightarrow{0}$
+        \item $\parl{\alpha x} = |\alpha| \cdot \parl{x}\ \forall x \in X\ \forall \alpha \in \R$
+        \item $\parl{x + y} \leq \parl{x} + \parl{y}\ \forall x, y \in X$ (неравенство треугольника)
+    \end{enumerate}
+\end{defin}
+
+\begin{Example}{}
+    \begin{enumerate}
+        \item $X = \R;\ |x|$ -- норма
+        \item $X = \R^d;\ \parl{x}_p = (|x_1|^p + |x_2|^p + \ldots + |x_d|^p)^{\frac{1}{p}}$ -- норма, $p \geq 1$
+        
+        Неравенство треугольника -- это неравенство Минковского
+
+        \item $X = C[a, b];\ \parl{f} := \max\limits_{x \in [a, b]} |f(x)|$
+        \item $X = C[a, b];\ \parl{f} := \int\limits_a^b |f|$
+    \end{enumerate}
+\end{Example}
+
+\begin{defin}{Скалярное произведение}
+    $X$ -- векторное пространство, $\q{\cdot, \cdot} : X \times X \to \R$ -- скалярное произведение, если
+
+    \begin{enumerate}
+        \item $\q{x, x} \geq 0\ \forall x \in X$ и $\q{x, x} = 0 \Leftrightarrow x = \overrightarrow{0}$
+        \item $\q{x, y} = \q{y, x}\ \forall x, y \in X$
+        \item $\q{\alpha x, y} = \alpha \q{x, y}\ \forall x, y \in X\ \forall \alpha \in \R$
+        \item $\q{x + y, z} = \q{x, z} + \q{y, z}\ \forall x, y, z \in X$
+    \end{enumerate}
+\end{defin}
+
+\begin{Example}{}
+    \begin{enumerate}
+        \item $X = \R^d;\ \q{x, y} = x_1y_1 + x_2y_2 + \ldots + x_dy_d$
+        
+        $x = (x_1 \ldots x_d);\ y = (y_1 \ldots y_d)$
+
+        \item $X = \R^d;\ w_1, w_2 \ldots w_d > 0$
+        
+        $\q{x, y} = w_1x_1y_1 + w_2x_2y_2 + \ldots + w_dx_dy_d$
+
+        \item $X = C[a, b];\ \q{f, g} = \int\limits_a^b f(x)g(x)dx$
+    \end{enumerate}
+\end{Example}
+
+\begin{theo}{Свойства}
+    \begin{enumerate}
+        \item Неравенство Коши-Буняковского
+        
+        $\q{x, y}^2 \leq \q{x, x} \cdot \q{y, y}$
+
+        \item $\parl{x} := \sqrt{\q{x, x}}$ -- норма
+        \item $\parl{\cdot}$ -- норма в $X \Rightarrow \rho(x, y) := \parl{x - y}$ -- метрика в $X$
+        \item $\parl{x - y} \geq |\parl{x} - \parl{y}|$
+    \end{enumerate}
+\end{theo}
+
+\newpage
+
+\textit{Доказательство:}
+
+\begin{enumerate}
+    \item $f(t) := \q{x + ty, x + ty} \geq 0$
+    
+    $f(t) = \q{x, x + ty} + t\q{y, x + ty} = \q{x, x} + t\q{x, y} + t\q{y, x} + t^2\q{y, y} = t^2\q{y, y} + 2t\q{x, y} + \q{x, x}$ -- квадратный трехчлен
+
+    $\Rightarrow f$ имеет не больше одного корня $\Rightarrow D \leq 0 \Leftrightarrow (2\q{x, y})^2 - 4\q{x, x}\q{y, y} \leq 0$
+
+    Сократили на 4 и победили
+
+    \item $\parl{\alpha x} = \sqrt{\q{\alpha x, \alpha x}} = \sqrt{\alpha^2\q{x, x}} = |\alpha|\sqrt{\q{x, x}} = |\alpha|\parl{x}$
+    
+    Неравенство треугольника: $\parl{x + y} \stackrel{?}{\leq} \parl{x} + \parl{y}$, т.е. $\sqrt{\q{x + y, x + y}} \leq \sqrt{\q{x, x}} + \\ + \sqrt{\q{y, y}}$
+
+    Т.е. $\q{x + y, x + y} \leq \q{x, x} + \q{y, y} + 2\sqrt{\q{x,x}} \cdot \sqrt{\q{y, y}}$
+
+    Но $\q{x + y, x + y} = \q{x, x} + 2\q{x, y} + \q{y, y}$. После сокращения осталось КБШ
+
+    \item $\parl{x - y} \geq 0$ и $\parl{x - y} = 0 \Leftrightarrow x - y = \overrightarrow{0} \Leftrightarrow x = y$
+    
+    $\rho(y, x) = \parl{y - x} = \parl{(-1)(x - y)} = |-1| \cdot \parl{x - y} = \rho(x, y)$
+
+    Неравенство треугольника: $\rho(x, y) + \rho(y, z) \geq \rho(x, z)$
+
+    $\parl{x - y} + \parl{y - z} \geq \parl{x - y + y - z} = \parl{x - z}$
+
+    \item Нужно доказать, что $-\parl{x - y} \leq \parl{x} - \parl{y} \leq \parl{x - y}$
+    
+    \begin{itemize}
+        \item Правое:
+        
+        $\parl{x} - \parl{y} \leq \parl{x - y}$, т.е. $\parl{x - y} + \parl{y} \geq \parl{x - y + y} = \parl{x}$
+
+        \item Левое:
+        
+        $\parl{x} - \parl{y} \geq -\parl{x - y}$, т.е. $\parl{x - y} + \parl{x} = \parl{y - x} + \parl{x} \geq \parl{y - x + x} = \parl{y}$
+    \end{itemize}
+\end{enumerate}
+
+\begin{Exercise}{}
+    Доказать, что норма $\parl{\ }$ в векторном пространстве $X$ порождается некоторым скалярным произведением $\Leftrightarrow \parl{x + y}^2 + \parl{x - y}^2 = 2\parl{x}^2 + 2\parl{y}^2$
+\end{Exercise}
+
+\subsection{\S 2. Предел в метрическом пространстве}
+
+\begin{defin}{}
+    $(X, \rho)$ -- метрическое пространтсво, $x_n \in X;\ a \in X$. $\lim x_n = a$, если
+
+    \begin{enumerate}
+        \item Вне любого шара с центром в точке $a$ содержится лишь конечное число членов последовательности
+        \item $\forall \varepsilon > 0\ \exists N : \forall n > N\ \rho(x_n, a) < \varepsilon$
+        \item $\lim \rho(x_n, a) = 0$
+    \end{enumerate}
+\end{defin}
+
+\begin{theo}{}
+    Эти определения равносильны 
+\end{theo}
+
+\begin{defin}{Ограниченное множество}
+    $A \subset X$, $A$ -- ограниченное множество, если оно содержится в каком-то шаре
+\end{defin}
+
+\begin{nota}{Свойства пределов}
+    \begin{enumerate}
+        \item Предел единственный
+        
+        Т.е. если $\lim x_n = a$ и $\lim x_n = b$, то $a = b$
+
+        \item Если $\lim x_n \lim y_n = a$, то предел последовательности, полученной перемешиванием $x_n$ и $y_n$ также равен $a$
+        
+        \item Если $\lim x_n = a$, то последовательность полученная из $x_n$ перестановкой членов, также стремится к $a$
+        
+        \item Если $\lim x_n = a$, то предел ее подпоследовательность также равен $a$
+        
+        \item Если последовательность имеет предел, то она ограничена как множество
+        \item Если $\lim x_n = a;\ \lim y_n = b \Rightarrow \lim \rho(x_n, y_n) = \rho(a, b)$
+    \end{enumerate}
+\end{nota}
+
+\textit{Доказательство:}
+
+\begin{enumerate}
+    \item Пусть $a \neq b$. Возьмем $\varepsilon = \frac{1}{2}\rho(a, b) > 0$
+    
+    $\exists N_1 : \forall n > N_1\ \rho(x_n, a) < \varepsilon$ и $\exists N_2 : \forall n > N_2\ \rho(x_n, b) < \varepsilon$
+
+    Возьмем $n > \max(N_1, N_2) \Rightarrow \rho(a, b) \leq \rho(a, x_n) + \rho(x_n, b) < 2\varepsilon = \rho(a, b)$
+
+    \item Очевидно
+    \item Еще более очевидно 
+    \item Ссылка на 1 семестр
+    \item Пусть $\lim x_n = a$. Вне $B_1(a)$ конечное число членов последовательности ($x_{i_1} \ldots x_{i_k}$). \\
+    $R := \max\{1, \rho(a, x_{i_1}) \ldots \rho(a, x_{i_k})\} \Rightarrow x_n \in \overline{B}_R(a)\ \forall n$
+
+    \item $\rho(a, b) \leq \rho(x_n, a) + \rho(x_n, y_n) + \rho(y_n, b)$
+    
+    $\rho(x_n, y_n) \leq \rho(x_n, a) + \rho(a, b) + \rho(y_n, b)$
+
+    Тогда $|\rho(a, b) - \rho(x_n, y_n)| \leq \rho(x_n, a) + \rho(y_n, b) \xrightarrow[n \to \infty]{} 0$
+\end{enumerate}
+
+\begin{theo}{Теорема об арифметических действиях с пределами в нормированном пространстве}
+    $X$ -- нормированное пространство, $\lim x_n = a;\ \lim y_n = b;\ a, b, x_n, y_n \in X;\\
+    \lim \lambda_n = \mu;\ \lambda_n, \mu \in \R$
+
+    Тогда
+
+    \begin{enumerate}
+        \item $\lim (x_n \pm y_n) = a \pm b$
+        \item $\lim (\lambda_n x_n) = \mu a$
+        \item $\lim \parl{x_n} = \parl{a}$
+        \item Если в $X$ есть скалярное произведение, то $\lim \q{x_n, y_n} = \q{a, b}$
+    \end{enumerate}
+\end{theo}
+
+\textit{Доказательство:}
+
+\begin{enumerate}
+    \item $\parl{(x_n + y_n) - (a + b)} \leq \parl{x_n - a} + \parl{y_n - b} \to 0$
+    \item $\parl{\lambda_n x_n - \mu a} \leq \parl{\lambda_n x_n - \mu x_n + \mu x_n - \mu a} \leq \parl{\lambda_nx_n - \mu x_n} + \parl{\mu x_n - \mu a} = \\
+    = |\lambda_n - \mu| \cdot \parl{x_n} + |\mu| \cdot \parl{x_n - a} \to 0$
+    \item $\parl{x_n} = \rho(x_n, 0) \to \rho(a, 0) = \parl{a}$
+    \item $\q{x_n, y_n} - \q{a, b} = \q{x_n, y_n} - \q{a, y_n} + \q{a, y_n} - \q{a, b} = \q{x_n - a, y_n} + \q{a, y_n - b}$
+    
+    $|\q{x_n, y_n} - \q{a, b}| \leq |\q{x_n - a, y_n}| + |\q{a, y_n - b}| \leq \parl{x_n - a} \cdot \parl{y_n} + \parl{a} \cdot \parl{y_n - b} \to 0$
+\end{enumerate}
+
+\begin{defin}{Покоординатная сходимость в $\R^d$}
+    $x_n = (x_n^{(1)} \ldots x_n^{(d)});\ a = (a^{(1)} \ldots a^{(d)})$
+
+    $x_n$ покоординатно сходится к $a$, если $\lim x_n^{(k)} = a^{(k)}\ \forall k = 1 \ldots d$
+\end{defin}
+
+\begin{theo}{}
+    В $\R^d$ покоординатная сходимость и сходимость по норме совпадают
+\end{theo}
+
+\textit{Доказательство:}
+
+\begin{itemize}
+    \item[$\Rightarrow$] $\parl{x_n - a} = \sqrt{(x_n^{(1)} - a^{(1)})^2 + \ldots + (x_n^{(d)} - a^{(d)})^2} \leq |x_n^{(1)} - a^{(1)}| + \ldots + |x_n^{(d)} - a^{(d)}| \to 0$
+    
+    \item[$\Leftarrow$] $|x_n^{(k)} - a^{(k)}| \leq \sqrt{(x_n^{(1)} - a^{(1)})^2 + \ldots + (x_n^{(d)} - a^{(d)})^2} = \parl{x_n - a} \to 0$
+    
+    $\Rightarrow \lim x_n^{(k)} = a^{(k)}$
+\end{itemize}
+
+\begin{defin}{Фундаментальная последовательность}
+    $\forall \varepsilon > 0\ \exists N : \forall m, n \geq N\ \rho(x_n, x_m) < \varepsilon$
+\end{defin}
+
+\begin{theo}{Свойства}
+    \begin{enumerate}
+        \item Сходящаяся последовательность -- фундаментальная
+        \item Фундаментальная последовательность ограничена
+        \item Если у фундаментальной последовательности есть подпоследовательность, сходящаяся к $a$, то сама последовательность тоже сходится к $a$
+    \end{enumerate}
+\end{theo}
+
+\textit{Доказательство:}
+
+\begin{enumerate}
+    \item $\lim x_n = a \Rightarrow \forall \varepsilon > 0\ \exists N : \forall n \geq N\ \rho(x_n, a) < \frac{\varepsilon}{2}$ и $\forall m \geq N\ \rho(x_m, a) < \frac{\varepsilon}{2}$
+    
+    $\Rightarrow \rho(x_n, x_m) \leq \rho(x_n, a) + \rho(a, x_m) < \frac{\varepsilon}{2} + \frac{\varepsilon}{2} = \varepsilon$
+
+    \item Возьмем $\varepsilon = 1. \exists N : \forall m, n \geq N\ \rho(x_n, x_m) < 1 \Rightarrow x_n \in B_1(x_N)$ при $n \geq N$
+    
+    $R := \max\{1, \rho(x_1, x_N) \ldots \rho(x_{N - 1}, x_N)\} \Rightarrow x_n \in \overline{B}_R(x_N)\ \forall n$
+
+    \item Пусть $x_{n_k} \to a$. Зафиксируем $\varepsilon > 0\ \begin{gathered}
+        \exists N : \forall m, n \geq N\ \rho(x_n, x_m) < \varepsilon \\
+        \exists K : \forall k \geq K\ \rho(x_{n_k}, a) < \varepsilon
+    \end{gathered}$
+
+    Возьмем $k = \max\{K, N\}$. Тогда $n_k \geq N \Rightarrow \rho(x_{n_k}, a) < \varepsilon$ и $\rho(x_{n_k}, x_n) < \varepsilon\ \forall n$
+
+    $\Rightarrow \rho(x_n, a) \leq \rho(x_n, x_{n_k}) + \rho(x_{n_k}, a) < 2\varepsilon$ при $n \geq N$
+\end{enumerate}
+
+\begin{defin}{Полное метрическое пространство}
+    $(X, \rho)$ -- метрическое пространство
+
+    Оно называется полным, если любая фундаментальная последовательность имеет предел
+\end{defin}
+
+\begin{Example}{}
+    $R$. $\rho(x, y) = |x - y|$ -- полное метрическое пространство
+
+    $\Q$ не полное. $x_n = \frac{[10^n\pi]}{10^n}$ фундаментальна, но не имеет предела в $\Q$
+\end{Example}
+
+\begin{theo}{}
+    $\R^d$ -- полное пространство
+\end{theo}
+
+\textit{Доказательство:}
+
+Пусть $x_n = (x_n^{(1)} \ldots x_n^{(d)})$ -- фундаментальная последовательность
+
+Т.е. $\forall \varepsilon > 0\ \exists N : \forall m, n \geq N\ \parl{x_n - x_m} < \varepsilon$
+
+$\parl{x_n - x_m} = \sqrt{(x_n^{(1)} - x_m^{(1)})^2 + \ldots + (x_n^{(d)} - x_m^{(d)})^2} \geq |x_n^{(k)} - x_m^{(k)}|$
+
+Следовательно, числовая последовательность $x_n^{(k)}$ фундаментальная $\Rightarrow$ у нее есть предел $a^{(k)} := \lim x_n^{(k)} \Rightarrow x_n$ покоординатно сходится к $a = (a^{(1)} \ldots a^{(d)}) \Rightarrow$ сходится по норме
+
+\begin{Remark}{}
+    $(X, \rho)$ -- полное метрическое пространство. $Y \subset X$
+
+    $(Y, \rho)$ -- полное $\Leftrightarrow Y$ замкнуто 
+\end{Remark}
+
+\textit{Доказательство:}
+
+\begin{itemize}
+    \item[$\Leftarrow$] $y_n$ -- фундаментальная последовательность в $Y \Rightarrow y_n$ фундаментальная в $X$
+    
+    $\Rightarrow y_n$ имеет предел в $X$, т.е. $b := \lim y_n$ и $b \in X$
+    
+    $\Rightarrow b$ предельная точка $Y \Rightarrow b \in Y$, т.к. $Y$ замкнуто
+
+    \item[$\Rightarrow$] Возьмем предельную точку $b$ множества $Y \Rightarrow$ найдется $y_n \in Y : \lim y_n = b \Rightarrow y_n$ фундаментальна в $X \Rightarrow y_n$ фундаментальна в $Y \Rightarrow$ у нее есть предел в $Y$
+    
+    т.е. $\lim y_n = a \in Y \Rightarrow a = b$ по единственности предела
+\end{itemize}
+
+\subsection{\S 3. Компактность}
+
+\begin{defin}{Покрытие}
+    $A, B_\alpha$. $B_\alpha,\ \alpha \in I$ -- покрытие множества $A$, если $A \subset \bigcup\limits_{\alpha \in I} B_\alpha$
+\end{defin}
+
+\begin{defin}{Открытое покрытие}
+    Открытое покрытие -- покрытие открытыми множествами
+\end{defin}
+
+\begin{defin}{Подпокрытие}
+    Подпокрытие какого-то покрытия -- из какого-то покрытия выкинулы какое-то количество множеств и оно осталось покрытием
+\end{defin}
+
+\begin{defin}{Компакт}
+    $K$ -- компакт (компактное множество), если из любого покрытия $K$ открытыми множествами можно извлечь конечное подпокрытие 
+\end{defin}
+
+\begin{theo}{Теорема о свойствах компактов}
+    $(X, \rho)$ -- метрическое пространство
+
+    \begin{enumerate}
+        \item $K \subset Y \subset X$. Тогда $K$ -- компакт в $(X, \rho) \Leftrightarrow K$ -- компакт в $(Y, \rho)$
+        \item $K$ -- компакт $\Rightarrow K$ -- замкнуто и ограничено
+        \item Замкнутое подмножество компакта -- компакт
+    \end{enumerate}
+\end{theo}
+
+\newpage
+
+\textit{Доказательство:}
+
+\begin{enumerate}
+    \item 
+    
+    \begin{itemize}
+        \item[$\Rightarrow$] $K \subset \bigcup\limits_{\alpha \in I} U_\alpha$, где $U_\alpha$ -- открыты в $(Y, \rho)$
+        
+        Тогда $\exists G_\alpha$ открытые в $(X, \rho) : U_\alpha = G_\alpha \cap Y \Rightarrow K \subset \bigcup\limits_{\alpha \in I} U_\alpha \subset \bigcup\limits_{\alpha \in I} G_\alpha$ -- открытое покрытие в $(X, \rho)$ $\Rightarrow$ можно выбрать конечное подпокрытие 
+
+        $K \subset \bigcup\limits_{i = 1}^n G_{\alpha_i} \Rightarrow K = K \cap Y \subset \bigcup\limits_{i = 1}^n G_{\alpha_i} \cap Y = \bigcup\limits_{i = 1}^n U_{\alpha_i} \Rightarrow K$ -- компакт в $(Y, \rho)$
+
+        \item[$\Leftarrow$] $K \subset \bigcup\limits_{\alpha \in I} G_\alpha$, где $G_\alpha$ -- открыты в $(X, \rho) \Rightarrow U_\alpha := G_\alpha \cap Y$ -- открыты в $(Y, \rho)$ и $K \subset \bigcup\limits_{\alpha \in I} U_\alpha \Rightarrow$ можно выбрать конечное подпокрытие $K \subset \bigcup\limits_{i = 1}^n U_{\alpha_i} \subset \bigcup\limits_{i = 1}^n G_{\alpha_i} \Rightarrow K$ -- компакт в $(X, \rho)$
+    \end{itemize}
+
+    \item $\left. \right.$
+    
+    \begin{itemize}
+        \item[Ограниченность.] Возьмем $a \in K$ и рассмотрим покрытие $K \subset \bigcup\limits_{n = 1}^\infty B_n(a)$ -- открытое покрытие
+        
+        Выберем конечное подпокрытие $\Rightarrow K \subset \bigcup\limits_{n = 1}^N B_n(a) = B_N(a) \Rightarrow K$ -- ограничено
+
+        \item[Замкнутость.] Надо доказать, что $X \setminus K$ открыто. Возьмем $a \in X \setminus K$ и покажем, что для некоторого $r > 0\ B_r(a) \subset X \setminus K$
+        
+        Возьмем такое $r_x > 0$, что $B_{r_x}(x) \cap B_{r_x}(a) = \varnothing$
+
+        $K \subset \bigcup\limits_{x \in K} B_{r_x}(x)$ -- открытое покрытие. Выберем конечное подпокрытие $K \subset \bigcup\limits_{i = 1}^n B_{r_{x_i}}(x_i)$
+
+        $r := \min\{r_{x_1}, r_{x_2} \ldots r_{x_n}\} > 0$
+
+        Покажем что $B_r(a) \subset X \setminus K$, т.е. что $B_r(a) \cap K = \varnothing$
+
+        $B_{r_{x_i}}(a) \cap B_{r_{x_i}}(x_i) = \varnothing \Rightarrow B_r(a) \cap B_{r_{x_i}}(x_i) = \varnothing \Rightarrow B_r(a) \cap \bigcup\limits_{i = 1}^n B_{r_{x_i}}(x_i) = \varnothing$
+
+        \item $K$ -- компакт, $K \supset \tilde{K}$ -- замкнуто. Покажем, что $\tilde{K}$ -- компакт. Рассмотрим открытое покрытие $\tilde{K} \subset \bigcup\limits_{\alpha \in I} U_\alpha$, где $U_\alpha$ -- открыты в $(X, \rho)$
+
+        $X \setminus \tilde{K}$ -- открыто $\Rightarrow K \subset (X \setminus \tilde{K}) \cup \bigcup\limits_{\alpha \in I} U_\alpha$ -- открытое покрытие $K$ -- компакт $\Rightarrow$ можно выбрать конечное подпокрытие
+
+        $\tilde{K} \subset K \subset (X \setminus \tilde{K}) \cup \bigcup\limits_{i = 1}^n U_{\alpha_i} \Rightarrow \tilde{K} \subset \bigcup\limits_{i = 1}^n U_{\alpha_i} \Rightarrow \tilde{K}$ -- компакт
+    \end{itemize}
+\end{enumerate}
+
+\begin{theo}{}
+    $K_\alpha$ -- семейство компактов в $(X, \rho) :$ пересечение любого их конечно количество непусто. Тогда $\bigcap\limits_{\alpha \in I} K_\alpha \neq \varnothing$
+\end{theo}
+
+\textit{Доказательство:}
+
+Зафиксируем компакт $K_{\alpha_0}$. Предположим, что $\bigcap\limits_{\alpha \in I} K_\alpha = \varnothing$
+
+$K_{\alpha_0} \cap \bigcap\limits_{\alpha \neq \alpha_0} K_\alpha = \varnothing$, т.е. $K_{\alpha_0} \subset X \setminus \bigcap\limits_{\alpha \neq \alpha_0} K_\alpha = \bigcup\limits_{\alpha \neq \alpha_0} (X \setminus K_\alpha)$
+
+Это открытое покрытие $K_{\alpha_0}$. Выберем конечное подпокрытие 
+
+$K_{\alpha_0} \subset \bigcup\limits_{i = 1}^n (X \setminus K_{\alpha_i}) = X \setminus \bigcap\limits_{i = 1}^n K_{\alpha_i} \Rightarrow \bigcap\limits_{i = 0}^n K_{\alpha_i} = \varnothing$ -- противоречие
+
+\begin{theo}{Следствие}
+    $K_1 \supset K_2 \supset \ldots$ -- непустые компакты
+
+    Тогда $\bigcap\limits_{n = 1}^\infty K_n \neq \varnothing$
+\end{theo}
+
+\begin{defin}{Секвенциально компактное множество}
+    $(X, \rho)$ -- метрическое пространство $K \subset X$
+
+    $K$ -- секвенциально компактное, если из любой последовательности точек множества $K$ можно выбрать подпоследовательность, сходящуюся к какой-то точке из $K$
+\end{defin}
+
+\begin{Remark}{}
+    Секвенциальный компакт замкнут 
+\end{Remark}
+
+\begin{theo}{}
+    Всякое бесконечное подмножество компакта имеет предельную точку
+\end{theo}
+
+\textit{Доказательство:}
+
+$K$ -- компакт, $A \subset K$ -- бесконечное подмножество
+
+Предположим, что $A' = \varnothing \Rightarrow A$ -- замкнуто $\subset K \Rightarrow A$ -- компакт 
+
+Возьмем $a \in A$, она не предельная $\Rightarrow \exists r_a > 0 : \mathring{B}_{r_a}(a) \cap A = \varnothing \Rightarrow B_{r_a}(a) \cap A = \{a\}$
+
+Рассмотрим открытое покрытие $A \subset \bigcup\limits_{a \in A} B_{r_a}(a)$. Из этого покрытия нельзя выкинуть ни одно из множеств $\Rightarrow$ нельзя выбрать конечное подпокрытие. Противоречие 
+
+\begin{theo}{Следствие}
+    Компактность $\Rightarrow$ секвенциальная компактность
+\end{theo}
+
+\textit{Доказательство:}
+
+$K$ -- компакт, $\{x_n\}$ -- последовательность точек из $K$
+
+$D := \{x_1, x_2, x_3 \ldots\}$
+
+Если $\#D < + \infty$, то какой-то член последовательности повторяется бесконечное число раз. Возьмем его в качестве подпоследовательности
+
+Если $\#D = + \infty$, то по теореме у $D$ есть предельная точка $\Rightarrow$ найдутся различные $y_n \in D : \lim y_n = a$ -- предельная точка 
+
+Переставим члены последовательности $y_n$ и получим подпоследовательность. $a \in K$, т.к. $K$ -- замкнуто
+
+\begin{theo}{}
+    $K$ -- компакт (секвенциальный компакт) в $(X, \rho) \Rightarrow (K, \rho)$ -- полное
+\end{theo}
+
+\textit{Доказательство:}
+
+$x_n \in K$ фундаментальная последовательность. $K$ -- секвенциальный компакт $\Rightarrow$ в ней можно выбрать сходящуюся подпоследовательность $\Rightarrow$ у $x_n$ есть предел 
+
+\begin{defin}{Эпсилон-сеть}
+    $A \in X,\ (X, \rho)$ -- метрическое пространство, $\varepsilon > 0$
+
+    $E \subset A$ -- $\varepsilon$-сеть, если $\forall a \in A\ \exists e \in E : \rho(a, e) < \varepsilon$
+\end{defin}
+
+\begin{Remark}{}
+    Здесь написано, что $A \subset \bigcup\limits_{e \in E} B_\varepsilon(e)$
+\end{Remark}
+
+\begin{defin}{Конечная эпсилон-сеть}
+    $E$ -- конечное множество и $\varepsilon$-сеть $\Rightarrow E$ -- конечная $\varepsilon$-сеть для $A$
+\end{defin}
+
+\begin{defin}{Вполне ограниченное множество}
+    $A$ -- вполне ограниченое, если $\forall \varepsilon > 0$ в множестве $A$ есть конечная $\varepsilon$-сеть
+\end{defin}
+
+\begin{theo}{Свойства}
+    \begin{enumerate}
+        \item Вполне ограниченность $\Rightarrow$ ограниченность 
+        \item В $\R^d$ верно и обратное
+    \end{enumerate}
+\end{theo}
+
+\textit{Доказательство:}
+
+\begin{enumerate}
+    \item $\varepsilon = 1$. Возьмем конечную $\varepsilon$-сеть $x_1 \ldots x_n$. $R := 1 + \max\limits_{k \neq 1}(\rho(x_1, x_k))$
+    
+    $\overline{B}_R(x_1) \supset A$
+
+    Берем $y \in A \Rightarrow \exists x_i  : \rho(x_i, y) \leq 1 \Rightarrow \rho(x_1, y) \leq \rho(x_1, x_i) + \rho(x_i, y) \leq R$
+
+    \item $A$ -- ограниченное в $\R^d \Rightarrow A \subset B_R(0) \subset [-R; R]^d$
+    
+    Нарежем каждую сторону на $n$ частей. Получим $n^d$ кубиков, сторона которых $\frac{2R}{n}$. Если наше множество $A$ пересекается с каким-то кубиком, то выбираем в нем произвольную точку, в остальных не берем вообще ничего
+
+    Получили $\frac{2R}{n}\sqrt{d}$-сеть
+\end{enumerate}
+
+\begin{theo}{}
+    Секвенциальная компактность $\Rightarrow$ вполне ограниченность
+\end{theo}
+
+\textit{Доказательство:}
+
+От противного. Пусть для $\varepsilon > 0$ в множестве $A$ не нашлось конечной $\varepsilon$-сети. Возьмем $x_1 \in A \Rightarrow x_1$ -- не $\varepsilon$-сеть $\Rightarrow$ найдется $x_2 \in A : \rho(x_1, x_2) > \varepsilon \Rightarrow x_1, x_2$ -- не $\varepsilon$-сеть $\Rightarrow$ найдется $x_3 \in A : \rho(x_1, x_3) > \varepsilon$ и $\rho(x_2, x_3) > \varepsilon$ и так далее
+
+На $n$ шаге: $x_1 \ldots x_n$ -- не $\varepsilon$-сеть $\Rightarrow$ найдется $x+{n + 1} \in A : \rho(x_k, x_{n + 1}) > \varepsilon\ \forall k \leq n$
+
+Построили последовательность $x_n$. Выберем сходящуюся подпоследовательность $x_{n_k} \Rightarrow$ она фундаментальна. Но это не так, $\rho(x_{n_i}, x_{n_j}) > \varepsilon$
+
+\begin{theo}{Теорема Хаусдорфа}
+    Если $K$ вполне ограничено и $(K, \rho)$ -- полное $\Rightarrow K$ -- компакт
+\end{theo}
+
+\newpage
+
+\textit{Доказательство:}
+
+$K \subset \bigcup\limits_{\alpha \in I} U_\alpha$, $U_\alpha$ -- открытые. Пусть нельзя выделить конечное подпокрытие 
+
+$\varepsilon = 1$. Существует конечная $1$-сеть $S_1 \Rightarrow K \subset \bigcup\limits_{x \in S_1} \overline{B}_1(x)$
+
+Для какого-то из множеств $K \cap \overline{B}_1(x),\ x \in S_1$ нельзя выделить конечное подпокрытие. Возьмем одно такое и назовем его $A_1$
+
+Существует конечная $\frac{1}{2}$-сеть $S_2 \Rightarrow A_1 \subset K \subset \bigcup\limits_{x \in S_2} \overline{B}_{\frac{1}{2}}(x)$
+
+Для какого-то из множеств $A_1 \cap \overline{B}_{\frac{1}{2}}(x),\ x \in S_2$ нельзя выделить конечное подпокрытие. Возьмем одно такое и назовем его $A_2$ и так далее
+
+На $n$ шаге: существует конечная $\frac{1}{n}$-сеть $S_n \Rightarrow A_{n - 1} \subset K \subset \bigcup\limits_{x \in S_n} \overline{B}_{\frac{1}{n}}(x)$
+
+Для какого-то из множеств $A_{n - 1} \cap \overline{B}_{\frac{1}{n}}(x),\ x \in S_n$ нельзя выделить конечное подпокрытие. Возьмем одно такое и назовем его $A_n$
+
+$K \supset A_1 \supset A_2 \supset \ldots;\ A_n = A_{n - 1} \cap \overline{B}_{\frac{1}{n}}(x_n)$
+
+Проверим, что $x_1, x_2 \ldots$ фундаментальная. Возьмем $k > n \Rightarrow$ найдется $y \in A_k \Rightarrow y \in \overline{B}_{\frac{1}{k}}(x_k)$ и $y \in \overline{B}_{\frac{1}{n}}(x_n) \Rightarrow \rho(x_k, x_n) \leq \rho(x_k, y) + \rho(y, x_n) < \frac{1}{k} + \frac{1}{n} < \frac{2}{n}$ -- фундаментальная, значит $\exists \lim x_n = x_* \in K \Rightarrow$ найдется $U_{\alpha_0} \ni x_* \Rightarrow \exists r > 0\ x_* \in B_r(x_*) \subset U_{\alpha_0}$
+
+$\lim x_n = x_* \Rightarrow \exists N : \forall n > N\ \rho(x_n, x_*) < \frac{r}{2}$. А еще $A_n \subset \overline{B}_{\frac{1}{n}}(x_n) \subset \overline{B}_{\frac{1}{n} + \frac{r}{2}}(x_*) \subset \overline{B}_{r}(x_*)$ при $n > \frac{2}{r}$
+
+\begin{theo}{Следующие условия равносильны}
+    \begin{enumerate}
+        \item $K$ -- компакт
+        \item $K$ -- секвенциальный компакт
+        \item $K$ -- вполне ограниченное и $(K, \rho)$ -- полное
+    \end{enumerate}
+\end{theo}
+
+\begin{theo}{}
+    $(X, \rho)$ -- полное метрическое пространство. Следующие условия равносильны
+
+    \begin{enumerate}
+        \item $K$ -- компакт
+        \item $K$ -- секвенциальный компакт
+        \item $K$ -- замкнуто и вполне ограниченно
+    \end{enumerate}
+\end{theo}
+
+\textit{Доказательство:}
+
+Если $(X, \rho)$ -- полное, то $K$ -- замкнуто $\Leftrightarrow (K, \rho)$ -- полное, тогда третьи строчки из двух предыдущих теорем -- одно и то же
+
+\begin{theo}{Характеристика компакта в $\R^d$}
+    $K \in \R^d$, следующие условия равносильны
+
+    \begin{enumerate}
+        \item $K$ -- компакт
+        \item $K$ -- секвенциальный компакт
+        \item $K$ -- замкнуто и ограничено 
+    \end{enumerate}
+\end{theo}
+
+\begin{lem}{Лемма Лебега}
+    $K$ -- компакт, $K \subset \bigcup\limits_{\alpha \in I} U_\alpha$ -- открытое 
+
+    Тогда $\exists r > 0 : \forall x \in K$ шар $B_r(x)$ целиком накрывается каким-то $U_\alpha$
+\end{lem}
+
+\textit{Доказательство:}
+
+$\forall x \in K\ x$ покрыта каким-то $U_{\alpha_0}$ -- открытое $\Rightarrow \exists r_x > 0 : B_{r_x}(x) \subset U_{\alpha_0}$
+
+Рассмотрим покрытие $K \subset \bigcup\limits_{x \in K} B_{\frac{r_x}{2}}(x)$. Выделим конечное подпокрытие $K \subset \bigcup\limits_{i = 1}^n B_{\frac{r_{x_i}}{2}}(x_i)$
+
+$r := \min\{\frac{r_1}{2}, \frac{r_2}{2} \ldots \frac{r_n}{2}\}$ подходит. Возьмем $y \in K$. Хотим доказать, что $B_r(y) \subset B_{r_{x_i}}(x_i)$ для некоторой $i$
+
+Возьмем $z \in B_r(y),\ \rho(y, z) < r \leq \frac{r_{x_i}}{2},\ y \in K \Rightarrow y \in B_{\frac{r_{x_i}}{2}}(x_i)$ для некоторого $i \Rightarrow \rho(y, x_i) < \frac{r_{x_i}}{2}$
+
+$\rho(z, x_i) \leq \rho(z, y) + \rho(y, x_i) < r_{x_i}$
+
+\subsection{\S 4. Непрерывные отображения}
+
+\begin{defin}{Непрерывность функции в точке}
+    $(X, \rho)$ и $(Y, \rho)$ -- метрические пространства. $E \subset X;\ f : E \to Y;\ a \in E$
+
+    $f$ -- непрерывна в $a$, если
+
+    \begin{enumerate}
+        \item $\forall \varepsilon > 0\ \exists \delta > 0 : \forall x \in E\ \rho_X(x, a) < \delta \Rightarrow \rho_Y(f(x), f(a)) < \varepsilon$
+        \item $\forall \varepsilon > 0\ \exists \delta > 0 : f(B_\delta(a) \cap E) \subset B_\varepsilon(f(a))$
+        \item Для любой последовательность $x_n \in E : \lim x_n = a \Rightarrow \lim f(x_n) = f(a)$
+    \end{enumerate}
+\end{defin}
+
+\begin{theo}{}
+    Эти определения равносильны
+\end{theo}
+
+\begin{Exercise}{}
+    Докажите
+\end{Exercise}
+
+\begin{defin}{Предел функции в точке}
+    $\lim\limits_{x \to a} f(x) = b$, если
+    
+    \begin{enumerate}
+        \item $\forall \varepsilon > 0\ \exists \delta > 0 : \forall x \in E, x \neq a\ \rho_X(x, a) < \delta \Rightarrow \rho_Y(f(x), b) < \varepsilon$
+        \item $\forall \varepsilon > 0\ \exists \delta > 0 : f(\mathring{B}_\delta(a) \cap E) \subset B_\varepsilon(b)$
+        \item Для любой последовательности $x_n \in E, x_n \neq a : \lim x_n = a \Rightarrow \lim f(x_n) = b$
+    \end{enumerate}
+\end{defin}
+
+\begin{theo}{Критерий Коши}
+    $a$ -- предельная точка $E$. Существование предела $\lim\limits_{x \to a} f(x) \Leftrightarrow \forall \varepsilon > 0\ \exists \delta > 0 : \begin{cases}
+        \forall \rho(x, a) < \delta \\
+        \forall \rho(y, a) < \delta \\
+        x, y \neq a 
+    \end{cases} \Rightarrow \rho_Y(f(x), f(y)) < \varepsilon$
+\end{theo}
+
+\textit{Доказательство:}
+
+\begin{itemize}
+    \item[$\Rightarrow$] $\lim\limits_{x \to a} f(x) = b \Rightarrow \exists \delta > 0 : \begin{cases}
+        \rho_X(x, a) < \delta  \Rightarrow \rho_Y(f(x), b) < \frac{\varepsilon}{2} \\
+        \rho_X(y, a) < \delta  \Rightarrow \rho_Y(f(y), b) < \frac{\varepsilon}{2}
+    \end{cases} \Rightarrow \rho_Y(f(x), f(y)) < \varepsilon$
+
+    \item[$\Leftarrow$] Проверим определение по Гейне. Берем $x_n \to a$
+    
+    $\exists N : \forall n \geq N\ \rho_X(x_n, a) < \delta \Rightarrow \forall m, n \geq N\ \begin{cases}
+        \rho_X(x_n, a) < \delta \\
+        \rho_X(x_m, a) < \delta 
+    \end{cases} \Rightarrow \rho_Y(f(x_n), f(x_m)) < \varepsilon$
+
+    Т.е. $f(x_n)$ -- фундаментальная последовательность $\Rightarrow$ у нее есть предел
+\end{itemize}
+
+\begin{theo}{Арифметические действия с пределами}
+    $f, g : E \to Y$ -- нормированное пространство, $a$ -- предельная точка $E$
+    
+    $\lim\limits_{x \to a} f(x) = A,\ \lim\limits_{x \to a} g(x) = B,\ \lim\limits_{x \to a} \lambda(x) = \mu$. Тогда:
+
+    \begin{enumerate}
+        \item $\lim\limits_{x \to a} (f(x) \pm g(x)) = A \pm B$
+        \item $\lim\limits_{x \to a} \lambda(x) f(x) = \mu A$
+        \item $\lim\limits_{x \to a} \parl{f(x)} = \parl{A}$
+        \item Если в $Y$ есть скалярное произведение, то $\lim\limits_{x \to a} \q{f(x), g(x)} = \q{A, B}$
+        \item Если $Y = \R$ и $B \neq 0$, то $\lim\limits_{x \to a} \frac{f(x)}{g(x)} = \frac{A}{B}$
+    \end{enumerate}
+\end{theo}
+
+\textit{Доказательство:}
+
+Смотрим на определение по Гейне
+
+\begin{theo}{Теорема о непрерывности композиции}
+    $D \subset X;\ f : D \to Y;\ f(D) \subset E;\ g : E \to Z;\ a \in D$
+
+    $f$ -- непрерывна в точке $a,\ g$ -- непрерывна в точке $f(a)$. Тогда $g \circ f$ непрерывна в $a$
+\end{theo}
+
+\textit{Доказательство:}
+
+Гейне. Берем $x_n \in E : x_n \to a \Rightarrow f(x_n) \to f(a) \Rightarrow g(f(x_n)) \to g(f(a))$
+
+\begin{theo}{Характеристика непрерывных в терминах открытых множеств}
+    $f : X \to Y$. Тогда следующие условия равносильны
+
+    \begin{enumerate}
+        \item $f$ -- непрерывна в точке $a$
+        \item Для любого $U \subset Y$ открытого $f^{-1}(U) := \{x \in X : f(x) \in U\}$ -- открыто 
+    \end{enumerate}
+\end{theo}
+
+\textit{Доказательство:}
+
+\begin{itemize}
+    \item[$1 \Rightarrow 2$] Возьмем $U$ -- открытое. Проверим, что $f^{-1}(U)$ -- открыто 
+    
+    Возьмем $a \in f^{-1}(U) \Rightarrow f(a) \in U$ -- открытом $\Rightarrow \varepsilon > 0\ B_\varepsilon(f(a)) \subset U$
+
+    $f$ -- непрерывна в точке $a$. Возьмем $\delta > 0$ из определения непрерывности $f$ в точке $a$
+
+    $f(B_\delta(a)) \subset B_\varepsilon(f(a)) \subset U \Rightarrow B_\delta(a) \subset f^{-1}(U) \Rightarrow a$ -- внутренняя точка $f^{-1}(U) \Rightarrow \\
+    \Rightarrow f^{-1}(U)$ -- открыто
+
+    \item[$2 \Rightarrow 1$] Возьмем $a \in X$ и докажем, что $f$ -- непрерывна в точке $a$
+    
+    Возьмем $\varepsilon > 0$ и рассмотрим $U = B_\varepsilon(f(a))$ -- открытое $\Rightarrow a \in f^{-1}(U)$ -- открытое $\Rightarrow \\
+    \Rightarrow \exists \delta > 0 : B_\delta(a) \subset f^{-1}(U) \Rightarrow f(B_\delta(a)) \subset U = B_\varepsilon(f(a))$
+\end{itemize}
+
+\begin{theo}{}
+    Непрерывный образ компакта -- компакт
+\end{theo}
+
+\textit{Доказательство:}
+
+$f : K \to Y;\ K$ -- компакт. $f$ непрерывна во всех точках $\Rightarrow f(K)$ -- компакт
+
+Рассмотрим покрытие $f(K) \subset \bigcup\limits_{\alpha \in I} U_\alpha$ -- открытое $\Rightarrow K \subset f^{-1}(\bigcup U_\alpha) = \bigcup\limits_{\alpha \in I} f^{-1}(U_\alpha)$ -- открытое
+
+Выделим конечное подпокрытие $K \subset \bigcup\limits_{i = 1}^n f^{-1}(U_{\alpha_i}) = f^{-1}(\bigcup\limits_{i = 1}^n U_{\alpha_i}) \Rightarrow f(K) \subset \bigcup\limits_{i = 1}^n U_{\alpha_i}$
+
+\begin{defin}{Ограниченная функция}
+    $f: E \to Y$ -- ограничена если $f(E)$ -- ограниченное множество
+\end{defin}
+
+\begin{theo}{Следствия}
+    \begin{enumerate}
+        \item $f : K \to Y;\ K$ -- компакт, $f$ -- непрерывна $\Rightarrow f$ -- ограничена
+        \item $f : K \to \R;\ K$ -- компакт, $f$ -- непрерывна $\Rightarrow f$ -- ограничена и достигает своего минимума и максимума
+    \end{enumerate}
+\end{theo}
+
+\textit{Доказательство:}
+
+\begin{enumerate}
+    \item $f(K)$ -- компакт $\Rightarrow f(K)$ -- ограничено
+    \item $f(K)$ -- ограниченное множество. $b := \sup f(K) \in \R$
+    
+    $\forall n\ b - \frac{1}{n}$ -- не верхняя граница $\Rightarrow \exists x_n \in K : b > f(x_n) > b - \frac{1}{n} \Rightarrow \lim f(x_n) = b \Rightarrow \\ \Rightarrow f(x_{n_k}) \to f(x_n) = b$
+\end{enumerate}
+
+\begin{theo}{}
+    $f : X \to Y;\ (X, \rho_X)$ и $(Y, \rho_Y)$ -- метрические пространства
+
+    $f$ -- непрерывная биекция и $X$ -- компакт $\Rightarrow f^{-1} : Y \to X$ -- непрерывна
+\end{theo}
+
+\textit{Доказательство:}
+
+$g := f^{-1}$. Надо доказать для $g$, что прообраз открытого -- открытое
+
+Берем $U$ -- открытое $\subset X$. $g^{-1}(U) = f(U)$ 
+
+$X \setminus U$ -- замкнутое подмножество компакта $X \Rightarrow X \setminus U$ -- компакт $\Rightarrow f(X \setminus U)$ -- компакт $\Rightarrow f(X \setminus U)$ -- замкнутое $\Rightarrow Y \setminus f(X \setminus U)$ -- открытое, а это $f(U)$
+
+\begin{defin}{Равномерная непрерывность отображений}
+    $f : E \to Y;\ E \subset X;\ (X, \rho_X)$ и $(Y, \rho_Y)$ -- метрические пространства
+
+    $f$ равномерно непрерывная, если 
+    
+    $\forall \varepsilon > 0\ \exists \delta > 0 : \forall x, y \in E\ \rho_X(x, y) < \delta \Rightarrow \rho_Y(f(x), f(y)) < \varepsilon$
+\end{defin}
+
+\begin{theo}{Теорема Кантора}
+    $f : K \to Y$ -- непрерывна, $K$ -- компакт $\Rightarrow f$ равномерно непрерывна
+\end{theo}
+
+\newpage
+
+\textit{Доказательство:}
+
+Фиксируем $\varepsilon > 0$. Возьмем $x \in K$, $f$ непрерывна в точке $x \Rightarrow \exists r_x : f(B_{r_x}(x)) \subset B_{\frac{\varepsilon}{2}}(f(x))$
+
+$K \subset \bigcup\limits_{x \in K} B_{r_x}(x)$ -- покрытие $K$ открытыми множествами
+
+Берем $\delta > 0$ из леммы Лебега. Любой шарик $B_{\delta}(a)$ целиком содержится в каком-то элементе покрытия
+
+Покажем, что это $\delta$ подходит. Пусть $x, y \in K : \rho_X(x, y) < \delta \Rightarrow x \in B_\delta(y) \subset B_{r_a}(a)$ (какой-то элемент покрытия) $\Rightarrow f(x), f(y) \in f(B_\delta(y)) \subset f(B_{r_a}(a)) \subset B_{\frac{\varepsilon}{2}}(f(a))$
+
+$\rho_Y(f(x), f(y)) \leq \rho_Y(f(x), f(a)) + \rho_Y(f(a), f(y)) < \frac{\varepsilon}{2} + \frac{\varepsilon}{2} = \varepsilon$
+
+\begin{Exercise}{}
+    Модифицировать старое доказательство теоремы Кантора на случай отображений
+\end{Exercise}
+
+\begin{defin}{}
+    $X$ -- векторное пространство и $\parl{\cdot}$ и $\pparl{\cdot}$ -- нормы в $X$
+
+    Эти нормы эквивалентны, если $\exists c_1$ и $c_2 > 0 : c_1 \parl{x} \leq \pparl{x} \leq c_2 \parl{x}\ \forall x \in X$
+\end{defin}
+
+\begin{Remark}{}
+    \begin{enumerate}
+        \item Это отношение эквивалентности
+        \item Если $\parl{\cdot}$ и $\pparl{\cdot}$ эквивалентны, то $x_n \to a$ в смысле $\parl{\cdot}$ и в смысле $\pparl{\cdot}$ одно и то же
+        \item Предельные точки в смысле $\parl{\cdot}$ и $\pparl{\cdot}$ совпадают
+        \item Замкнутые и открытые множества в смысле $\parl{\cdot}$ и $\pparl{\cdot}$ совпадают
+        \item Непрерывность в смысле $\parl{\cdot}$ и $\pparl{\cdot}$ совпадает
+    \end{enumerate}
+\end{Remark}
+
+\begin{theo}{}
+    В $\R^d$ все нормы эквивалентны
+\end{theo}
+
+\textit{Доказательство:}
+
+Достаточно доказать, что любая норма эквивалентна $\parl{x} = \sqrt{x_1^2 + \ldots + x_d^2}$
+
+$p : \R^d \to \R$ -- норма
+
+$p(x) = p(\sum\limits_{k = 1}^d x_ke_k)$ ($e_k$ -- стандартный базис)
+
+$p(\sum\limits_{k = 1}^d x_ke_k) \leq \sum\limits_{k = 1}^d p(x_ke_k) = \sum\limits_{k = 1}^d |x_k|p(e_k) \leq (\sum\limits_{k = 1}^d |x_k|^2)^\frac{1}{2}(\sum\limits_{k = 1}^d p(e_k)^2)^\frac{1}{2}$. Первое это $\parl{x}$, второе -- какая-то константа $c_2$
+
+$|p(x) - p(y)| \leq p(x - y) \leq c_2 \parl{x - y} \Rightarrow p$ -- непрерывна
+
+$S := \{x \in \R^d : \parl{x} = 1\}$ -- компакт
+
+По теореме Вейерштрасса $\exists a \in S : 0 < p(a) \leq p(x)\ \forall x \in S$. Зададим $c_1 := p(a)$
+
+$p(x) = p(\frac{x}{\parl{x}} \cdot \parl{x}) = \parl{x} \cdot p(\frac{x}{\parl{x}})$. Аргумент $\frac{x}{\parl{x}} \in S \Rightarrow \parl{x} \cdot p(\frac{x}{\parl{x}}) \geq \parl{x} \cdot p(a)$
+
+\newpage
+
+\subsection{\S 5. Длина кривой}
+
+\begin{defin}{Путь}
+    $\gamma : [a, b] \to \R^d$ (или даже в $X$ -- метрическое пространство) -- непрерывная
+
+    Тогда $\gamma$ -- путь
+
+    Начало пути $\gamma(a)$, конец пути $\gamma(b)$
+\end{defin}
+
+\begin{defin}{Замкнутые путь}
+    Путь замкнутый, если $\gamma(a) = \gamma(b)$
+\end{defin}
+
+\begin{defin}{Простой (несамопересекающийся путь)}
+    Путь простое, если $\gamma(x) \neq \gamma(y)$ если $\forall x \neq y$ за исключением $\gamma(a) = \gamma(b)$
+\end{defin}
+
+\begin{defin}{Носители пути}
+    Носитель пути -- $\gamma([a, b])$
+\end{defin}
+
+\begin{defin}{Линейно связное множество}
+    $A \subset X$ -- линейно связное, если 
+
+    $\forall p, q \in A$ существует путь в $A$ с началом в $p$ и концом в $q$    
+\end{defin}
+
+\begin{theo}{Теорема Больцано-Коши}
+    $A$ -- линейно связное, $f : A \to \R$ -- непрерывная
+
+    $p, q \in A$. Тогда $f$ принимает все значения между $f(p)$ и $f(q)$
+\end{theo}
+
+\textit{Доказательство:}
+
+$A$ -- линейно связное $\Rightarrow \exists \gamma : [a, b] \to A : \gamma(a) = p, \gamma(b) = q$
+
+$f \circ \gamma : [a, b] \to \R$ непрерывна и $f(p) = f \circ \gamma(a);\ f(q) = f \circ \gamma(b)$
+
+\begin{defin}{Противоположный путь}
+    $\gamma : [a, b] \to X$
+
+    $\gamma^{-1}: [a, b] \to X$ и $\gamma^{-1}(t) := \gamma(a + b - t)$
+
+    Начало $\gamma^{-1}$ -- конец $\gamma$
+
+    Конец $\gamma^{-1}$ -- начало $\gamma$
+\end{defin}
+
+\begin{defin}{Эквивалентные пути}
+    $\gamma : [a. b] \to X$ и $\tilde{\gamma} : [c, d] \to X$
+
+    Найдется $\tau : [c, d] \to [a, b]$ -- строго возрастающая биекция (и непрерывна), такое что $\tilde{\gamma} = \gamma \circ \tau$ 
+\end{defin}
+
+\begin{defin}{Кривая}
+    Кривая -- класс эквивалентности путей
+
+    Параметризация кривой -- выбор конкретного представителя класса эквивалентности
+\end{defin}
+
+\begin{defin}{Гладкий путь}
+    $\gamma : [a, b] \to \R^d$ -- гладкий путь, если $\gamma = \begin{pmatrix}
+        \gamma_1 \\
+        \vdots \\
+        \gamma_d 
+    \end{pmatrix}$ и $\gamma_1 \ldots \gamma_d$ -- непрерывные дифференцируемые 
+\end{defin}
+
+\begin{defin}{Гладкая кривая}
+    Кривая гладкая, если у нее есть гладкая параметризация
+\end{defin}
+
+\begin{Remark}{}
+    Начало, конец кривой определяет и носитель тоже
+\end{Remark}
+
+\begin{defin}{Длина пути}
+    $\gamma : [a, b] \to X$
+
+    Берем дробление $[a, b] : t_0 = a, t_1, t_2 \ldots t_n = b$
+
+    $l(\gamma) := \sup \{ \sum\limits_{k = 1}^n \rho(\gamma(t_k), \gamma(t_{k - 1})) \}$
+\end{defin}
+
+\begin{theo}{Свойства}
+    \begin{enumerate}
+        \item $l(\gamma) \geq \rho(\gamma(a), \gamma(b))$
+        \item Длина пути $\geq$ длины вписанной в него ломаной
+        \item Длины эквивалентных путей равны 
+        \item $l(\gamma) = l(\gamma^{-1})$
+    \end{enumerate}
+\end{theo}
+
+\begin{defin}{Длина кривой}
+    Длина кривой -- длина любого из путей ее класса эквивалентности 
+\end{defin}
+
+\begin{theo}{Единственность длины пути}
+    $\gamma : [a, b] \to X$. Тогда $l(\gamma) = l(\gamma|_{[a, c]}) + l(\gamma|_{[c, b]})$
+\end{theo}
+
+\textit{Доказательство:}
+
+\begin{itemize}
+    \item[<<$\geq$>>] $l(\gamma) \geq \sum\limits_{j = 1}^m \rho(\gamma(t_j), \gamma(t_{j - 1})) + \sum\limits_{k = 1}^n \rho(\gamma(u_k), \gamma(u_{k - 1}))$
+    
+    Зафиксируем $t$-шки и перейдем к $\sup$ по $u$-шкам
+
+    $l(\gamma) \geq \sum\limits_{j = 1}^m \rho(\gamma(t_j), \gamma(t_{j - 1})) + \sup \{ \sum\limits_{k = 1}^n \rho(\gamma(u_k), \gamma(u_{k - 1})) \}$. Зададим супремум как $l(\gamma|_{[c, b]})$
+
+    $l(\gamma) \geq \sup \{ \sum \rho(\gamma(t_j), \gamma(t_{j - 1})) \} + l(\gamma|_{[c, b]})$. Зададим супрмум как $l(\gamma|_{[a, c]})$
+
+    \newpage
+
+    \item[<<$\leq$>>] $\sum\limits_{k = 1}^n \rho(\gamma(t_k), \gamma(t_{k - 1})) \leq \sum\limits_{k = 1}^m \rho(\gamma(t_k), \gamma(t_{k - 1})) + \rho(\gamma(t_m), \gamma(c)) + \rho(\gamma(c), \gamma(t_{m + 1})) + \sum\limits_{k = m + 1}^n \rho(\gamma(t_k), \gamma(t_{k - 1}))$
+    
+    Первые два слагаемых $\leq l(\gamma|_{[a, c]})$, вторые два $\leq l(\gamma|_{[c, b]})$
+
+    $\sum\limits_{k = 1}^n \rho(\gamma(t_k), \gamma(t_{k - 1})) \leq l(\gamma|_{[a, c]}) + l(\gamma|_{[c, b]})$
+
+    Осталось перейти к $\sup$ и получим $l(\gamma) \leq l(\gamma|_{[a, c]}) + l(\gamma|_{[c, b]})$
+\end{itemize}
+
+\begin{theo}{Длина гладкого пути}
+    $\gamma : [a, b] \to \R^d$
+
+    Тогда $l(\gamma) = \int\limits_a^b \parl{\gamma'(t)}dt = \int\limits_a^b \sqrt{\gamma_1'(t)^2 + \ldots + \gamma_d'(t)^2}dt$
+\end{theo}
+
+\begin{lem}{}
+    $\Delta \subset [a, b]$ -- отрезок
+
+    $m_\Delta^{(k)} := \min\limits_{t \in \Delta} |\gamma_k'(t)|$
+
+    $M_\Delta^{(k)} := \max\limits{t \in \Delta} |\gamma_k'(t)|$
+
+    $m_\Delta := (\sum\limits_{k = 1}^d(m_\Delta^{(k)})^2)^\frac{1}{2}$
+
+    $M_\Delta := (\sum\limits_{k = 1}^d(M_\Delta^{(k)})^2)^\frac{1}{2}$
+
+    Тогда $m_\Delta \cdot l(\Delta) \leq l(\gamma|_\Delta) \leq M_\Delta \cdot l(\Delta)$
+\end{lem}
+
+\textit{Доказательство:}
+
+Рассмотрим дробление $\Delta$ $t_0 < t_1 < \ldots < t_n$ и $a_j$ -- длина $j$-го звена ломаной по этому дроблению
+
+$a_j^2 = (\gamma_1(t_j) - \gamma_1(t_{j - 1}))^2 + \ldots + (\gamma_d(t_j) - \gamma_d(t_{j - 1}))^2$
+
+Каждую скобочку зададим как $\gamma_i(\xi_{ij})(t_j - t_{j - 1})$, где $\xi_{1i} \in [t_{j - 1}, t_j]$
+
+$a_j^2 \leq (|\gamma'_1(\xi_{1j})|^2 + \ldots + |\gamma_d'(\xi_{dj})|^2)(t_j - t_{j - 1})^2$
+
+Но каждый модуль $\leq (M_\Delta^{(i)})^2$
+
+Тогда $a_j^2 \leq (M_\Delta)^2(t_j - t_{j - 1})^2$
+
+Аналогично снизу и извлекаем корень
+
+$m_\Delta(t_j - t_{j - 1}) \leq a_j \leq M_\Delta(t_j - t_{j - 1})$
+
+И просуммируем по $j$ от 1 до $n$
+
+$m_\Delta(t_n - t_0) \leq \sum\limits_{j = 1}^n a_j \leq M_\Delta(t_n - t_0)$
+
+А еще $t_n - t_0 = l(\Delta)$
+
+\textit{Доказательство теоремы 2.43:}
+
+$M_{[t_{k - 1}, t_k]} =: M_k$ и аналогично с $m$
+
+$l(\gamma) = l(\gamma|_{[t_0, t_1]}) + \ldots + l(\gamma|_{[t_{n - 1}, t_n]})$
+
+Но для каждой такой штуки мы знаем оценку снизу и сверху ($m_i(t_i - t_{i - 1})$ и $M_i(t_i - t_{i - 1})$ соответственно)
+
+$\int\limits_a^b \parl{\gamma'} = \int\limits_{t_0}^{t_1} + \ldots + \int\limits_{t_{n - 1}}^{t_n}$
+
+$m_k(t_k - t_{k - 1}) \leq \int\limits_{t_{k - 1}}^{t_k} \parl{\gamma'(t)}dt \leq M_k(t_k - t_{k - 1})$
+
+$\sum\limits_{k = 1}^n m_k(t_k - t_{k - 1}) \leq \left[ \begin{gathered}
+    l(\gamma) \\
+    \int\limits_a^b \parl{\gamma'}
+\end{gathered} \right] \leq \sum\limits_{k = 1}^n M_k(t_k - t_{k - 1})$
+
+Докажем, что $\sum\limits_{k = 1}^m (M_k - m_k)(t_k - t_{k - 1}) \to 0$ если мелкость $\to 0$
+
+$M_k - m_k = (\sum\limits_{j = 1}^d (M^{(j)}_{[t_{k - 1}, t_k]})^2)^\frac{1}{2} - (\sum\limits_{j = 1}^d (m^{(j)}_{[t_{k - 1}, t_k]})^2)^\frac{1}{2} \leq (\sum\limits_{j = 1}^d (M^{(j)}_{[t_{k - 1}, t_k]} - m^{(j)}_{[t_{k - 1}, t_k]})^2)^\frac{1}{2}$
+
+$I \leq \sum\limits_{k = 1}^n (\sum\limits_{j = 1}^d (M^{(j)}_{[t_{k - 1}, t_k]} - m^{(j)}_{[t_{k - 1}, t_k]})^2)^\frac{1}{2}(t_k - t_{k - 1})$
+
+Зададим $M := |\gamma_j'(\eta_{jk})|$ и $m := |\gamma_j'(\zeta_{jk})|$
+
+$|\gamma_j'(\eta_{jk}) - \gamma_j'(\zeta_{jk})| \leq \omega_{\gamma_j'}(|\tau|)$
+
+Тогда та штука сверху $\leq \sum\limits_{k = 1}^n(\sum\limits_{j = 1}^d \omega^2_{\gamma_j'}(|\tau|))^\frac{1}{2}(t_k - t_{k - 1}) = (b - a) (\sum\limits_{j = 1}^d \omega^2_{\gamma_j'}(|\tau|))^\frac{1}{2} \leq \omega_{\gamma_j'}(|\tau|)$
+
+\newpage
+
+\todo Много лекций. Тут с 04/23
+
+\begin{defin}{Пространство $l^\infty(E)$}
+    $l^\infty(E) := \{f : E \to \R \text{ огр.}\}$
+
+    $\parl{f}_{l^\infty(E)} = \parl{f}_\infty := \sup\limits_{x \in E}|f(x)|$ норма
+\end{defin}
+
+\begin{defin}{Пространство $C(K)$}
+    $C(K) := \{f : K \to \R \text{ непр.}\}$
+
+    $\parl{f}_{C(K)} = \parl{f}_\infty := \max\limits_{x \in K}|f(x)|$ норма
+\end{defin}
+
+\begin{Remark}{}
+    \begin{enumerate}
+        \item $C(K) \subset l^\infty(K)$
+        \item $f_n \rightrightarrows f$ на $E \Leftrightarrow \parl{f_n - f}_\infty \to 0$
+    \end{enumerate}
+\end{Remark}
+
+\begin{theo}{}
+    $l^\infty(E)$ -- полное нормированное пространство
+\end{theo}
+
+\textit{Доказательство:}
+
+$f_n$ -- фундаментальная последовательность в $l\infty(E)$
+
+$\forall \varepsilon > 0 \exists N\ \forall n, m \geq N\ \sup\limits_{x \in E} |f_n(x) - f_m(x)| \parl{f_n - f_m}_\infty < \varepsilon$
+
+$\forall \varepsilon > 0 \exists N\ \forall n, m \geq N\ \forall x \in E \Rightarrow |f_n(x) - f_m(x)| < \varepsilon$
+
+$\Rightarrow  \exists f : E \to D : f_n \rightrightarrows f \Rightarrow \parl{f-n - f}_\infty \to 0$
+
+Осталось доказать, что $f \in l^\infty(E) \Leftrightarrow f$ -- ограничена
+
+$f_n \in l^\infty(E) \Rightarrow f_n$ -- ограничена. $\sup\limits{x \in E} |f_n(x) - f(x)| < 1$ НСНМ $\Rightarrow f_n - f$ -- ограничена $\Rightarrow f$ ограничена
+
+\begin{theo}{}
+    $f, f_n : E \to \R;\ a \in E,\ f_n \rightrightarrows f \text{ на } E$
+
+    Если $f_n$ непрерывна в $a$, то $f$ непрерывна в $a$
+\end{theo}
+
+\textit{Доказательство:}
+
+Возьмем $\varepsilon > 0$
+
+$f_n \toto f$ на $E \Rightarrow \exists n : \forall x \in E\ |f_n(x) - f(x)| < \varepsilon$
+
+$|f(x) - f(a)| \leq |f(x) - f_n(x)| + |f_n(x) - f_n(a)| + |f_n(a) - f(a)| < 2\varepsilon + |f_n(x) - f_n(a)| = (*)$
+
+Но $f_n$ непрерывна в $a \Rightarrow \exists \delta > 0 : \forall x \in E\ |x - a| < \delta \Rightarrow |f_n(x) - f_n(a)| < \varepsilon$
+
+$(*) < 3\varepsilon \Rightarrow f$ -- непрерывна в $a$
+
+\begin{theo}{Следствие (теорема Стокса-Зайделя)}
+    $f, f_n : E \to \R;\ f_n \toto f$ на $E$
+
+    Если $f_n$ -- непрерывна, то $f$ -- непрерывна
+\end{theo}
+
+\begin{theo}{}
+    $C(K)$ -- полное нормированное пространство ($K$ -- компакт)
+\end{theo}
+
+\textit{Доказательство:}
+
+$C(K)$ -- замкнутое подпространство $l^\infty(K)$
+
+Подпространство, т.к. непрерывная на компакте функция ограничена
+
+Замкнутость -- теорема Стокса-Зайделя
+
+\begin{defin}{Поточечная сходимость}
+    $u_n : E \to \R$ функциональный ряд $\sum\limits_{k = 1}^\infty u_k(x)$
+
+    Поточечно сходится, если $\forall x \in E\ \sum\limits_{k = 1}^\infty u_k(x)$ -- сходится
+\end{defin}
+
+\begin{defin}{Равномерная сходимость}
+    $u_n : E \to \R$ функциональный ряд $\sum\limits_{k = 1}^\infty u_k(x)$
+
+    Равномерная сходимость $S_n(x) := \sum\limits_{k = 1}^n u_k(x)$ если $S_n$ равномерно сходится
+\end{defin}
+
+\begin{theo}{Критерий Коши для равномерной сходимости ряда}
+    $u_n : E \to \R$ 
+    
+    Ряд $\sum\limits_{k = 1}^\infty u_k(x)$ равномерно сходится на $E \Leftrightarrow \forall \varepsilon > 0\ \exists N\ \forall n, m \geq N\ \forall x \in E \Rightarrow |\sum\limits_{k = n + 1}^m u_k(x)| < \varepsilon$
+\end{theo}
+
+\textit{Доказательство:}
+
+$\sum\limits_1^\infty u_k(x)$ равномерно сходится на $E \Leftrightarrow S_n$ равномерно сходится на $E \Leftrightarrow \forall \varepsilon > 0 \exists N\ \forall n, m \geq N\ \forall x \in E\ |S_n(x) - S_m(x)| = |\sum\limits_{k = n + 1}^m u_k(x)| < \varepsilon$
+
+\begin{defin}{}
+    Пусть $\sum\limits_1^\infty u_k(x)$ сходится поточечно
+
+    $r_n(x) := \sum\limits_{k = n + 1}^\infty u_k(x)$ -- остаток ряда (все называют хвостом)
+\end{defin}
+
+\begin{theo}{}
+    \begin{enumerate}
+        \item Ряд $\sum u_k(x)$ равномерно сходится на $E \Leftrightarrow r_n \toto 0$ на $E$
+        \item (Необходимое условие сходимости) Ряд $\sum u_k(x)$ равномерно сходится на $E \Rightarrow u_k \toto 0$ на $E$
+    \end{enumerate}
+\end{theo}
+
+\textit{Доказательство:}
+
+\begin{enumerate}
+    \item $S(x) := \sum\limits_{k = 1}^\infty u_k(x)$, $S_n(x) := \sum\limits_{k = 1}^n u_k(x) \Rightarrow r_n = S - S_n$
+
+    Ряд равномерно сходится $\Leftrightarrow S_n \toto S$ на $E \Leftrightarrow r_n = S - S_n \toto 0$ на $E$
+
+    \item $S_n \toto S$ на $E \Rightarrow u_n = S_n - S_{n - 1} \toto S - S = 0$ на $E$
+\end{enumerate}
+
+\begin{Remark}{}
+    Если найдутся $x_n \in E : u_n(x_n) \not\to 0$, то $\sum u_k(x)$ не может сходиться равномерно на $E$ (будет противорече=ие $u_n \toto 0$ на $E$)
+\end{Remark}
+
+\begin{Example}{}
+    $\sum\limits x^n$ поточечно сходится на $(0, 1)$, но равномерной сходимости нет
+\end{Example}
+
+\begin{Remark}{}
+    Расходимость ряда $u_n(x_n)$ ничего не дает 
+\end{Remark}
+
+\begin{theo}{Признак сравнения}
+    $u_n, v_n : E \to \R$ и $|u_n(x)| \leq v_n(x)\ \forall n\ \forall x \in E$
+
+    Если $\sum\limits_{n = 1}^\infty v_n(x)$ сходится равномерно на $E$, то $\sum\limits_{n = 1}^\infty u_n(x)$ сходится равномерно на $E$
+\end{theo}
+
+\textit{Доказательство:}
+
+Критерий Коши
+
+$\sum v_n(x)$ равномерно сходится $\Rightarrow \forall \varepsilon > 0\ \exists N\ \forall m > n \geq N\ \forall x \in E\ |\sum\limits_{k = n + 1}^m v_k(x)| < \varepsilon$, но логично $|\sum u_k(x)| \leq \sum |u_k(x)| \leq \sum v_k(x) \Rightarrow \sum u_k(x)$ тоже сходится равномерно на $E$
+
+\begin{theo}{Следствие}
+    Если $\sum |u_n(x)|$ равномерно сходится на $E$, то $\sum u_n(x)$ тоже равномерно сходится на $E$
+\end{theo}
+
+\textit{Доказательство:}
+
+$v_n(x) := |u_n(x)|$ 
+
+\begin{theo}{Следствие (признак Вейерштрасса)}
+    Если $|u_n(x)| \leq a_n\ \forall n\ \forall x \in E$ и ряд $\sum a_n$ сходится, то $\sum u_n(x)$ равномерно сходится на $E$
+\end{theo}
+
+\textit{Доказательство:}
+
+$v_n(x) := a_n$
+
+\begin{Example}{}
+    $\sum \frac{\sin(nx)}{n^2}$ -- равномерно сходится на $\R$
+
+    $a_n := \frac{1}{n^2}$ -- сходится и признак Вейерштрасса
+\end{Example}
+
+\begin{Remark}{}
+    Абсолютная и равномерная сходимость про разное
+
+    \begin{Example}{}
+        \begin{enumerate}
+            \item $\sum x^n$ на $(-1, 1)$ сходится абсолюьтно, но не равномерно
+            \item $\sum \frac{(-1)^n}{n}$ сходится равномерно, но не абсолютно
+            \item Бывает ряд $\sum u_n(x)$ сходящийся равномерно, абсолютно, но $\sum |u_n(x)|$ сходится неравномерно
+        \end{enumerate}
+    \end{Example}
+\end{Remark}
+
+\begin{defin}{}
+    $f_n : E \to \R$ -- равномерно ограничена на $E$, если $\exists M : |f_n(x)| \leq M\ \forall n\ \forall x \in E$
+\end{defin}
+
+\begin{theo}{}
+    Равномерная ограниченность на равномерно стремящуюся к нулю -- равномерно стремится к 0
+\end{theo}
+
+\textit{Доказательство:}
+
+$|g_n(x)| \leq M$ и $f_n \toto 0$ на $E \Rightarrow \sup\limits_{x \in E} |f_n(x)| \toinfty 0 \Rightarrow \sup\limits_{x \in E} |f_n(x)g_n(x)| \leq M\sup\limits_{x \in E} |f_n(x)| \to 0$
+
+\begin{theo}{Признак Дирихле}
+    $a_n, b_n : E \to \R$. Если 
+
+    \begin{enumerate}
+        \item $|\sum\limits_1^n a_k(x)| \leq K\ \forall x \in E\ \forall n$
+        \item $b_n \toto 0$ на $E$
+        \item $b_n(x)$ монотонна при любом фиксированном $x \in E$
+    \end{enumerate}
+
+    Тогда $\sum\limits_1^\infty a_n(x)b_n(x)$ равномерно сходится на $E$
+\end{theo}
+
+\textit{Доказательство:}
+
+$A_n := \sum\limits_1^n a_k(x)$. Признак Абеля $\Rightarrow \sum\limits_1^n a_kb_k = A_n b_n + \sum\limits_1^{n - 1} A_k (b_k - b_{k + 1})$
+
+Надо доказать, что $A_n b_n$ и $\sum\limits_1^{n - 1} A_k (b_k - b_{k + 1})$ сходятся равномерно
+
+$A_nb_n \toto 0$, т.к. $A_n$ равномерно ограничена и $b_n \toto 0$
+
+Проверим равномерную сходимость ряда $\sum A_k(x)(b_k(x) - b_{k + 1}(x))$
+
+$|A_k(x)(b_k(x) - b_{k + 1}(x))| \leq K |b_k(x) - b_{k + 1}(x)|\ \forall x\ \forall k$
+
+Надо доказать, что $\sum |b_k(x) - b_{k + 1}(x)|$ сходится равномерно
+
+$S_n(x) := \sum\limits_1^n |b_k(x) - b_{k + 1}(x)| = |\sum\limits_1^n (b_k(x) - b_{k + 1}(x))| = |b_1(x) - b_{n + 1}(x)| \toto |b_1(x)|$ на $E$
+
+Следовательно $S_n$ равномерно сходятся
+
+\begin{theo}{Следствие (признак Лейбница)}
+    $b_n : E \to \R$. Если
+
+    \begin{enumerate}
+        \item $b_n \toto 0$ на $E$
+        \item $b_n(x)$ -- монотонна при любом фиксированном $x \in E$
+    \end{enumerate}
+
+    Тогда ряд $\sum (-1)^{n-1}b_n(x)$ равномерно сходится на $E$
+\end{theo}
+
+\begin{Example}{}
+    $\sum \frac{(-1)^{n-1}x^n}{n}$ -- на $(0, 1)$ сходится абсолютно
+
+    $\sum |\frac{(-1)^{n-1}x^n}{n}| = \sum \frac{x^n}{n}$ сходится по признаку Даламбера 
+
+    Сходится равномерно по признаку Лейбница: $b_n(x) := \frac{x^n}{n} \toto 0$, т.к. $\sup = \frac{1}{n}$
+
+    Но ряд $\sum \frac{x_n}{n}$ не сходится равномерно 
+
+    Возьмем $\varepsilon = \frac{1}{2}\ \sum\limits_{n + 1}^{2n} \frac{x^k}{k} \to \sum \frac{1}{k} > \frac{1}{2}$
+\end{Example}
+
+\begin{theo}{Признак Абеля}
+    $a_n, b_n : E \to \R$. Если
+
+    \begin{enumerate}
+        \item $\sum\limits_1^\infty a_n(x)$ сходится равномерно на $E$
+        \item $b_n$ -- равномерно ограничены 
+        \item $b_n(x)$ -- монотонна при любом фиксированном $x \in E$
+    \end{enumerate}
+
+    Тогда $\sum\limits_1^\infty a_n(x)b_n(x)$ равномерно сходится на $E$
+\end{theo}
+
+\textit{Доказательство:}
+
+$A_n := \sum\limits_1^n a_k(x);\ A := \sum\limits_1^\infty a_k(x)$ и $\alpha_n := A - A_n = \sum\limits_{n + 1}^\infty a_k(x)$
+
+$\sum\limits_1^n a_kb_k = A_nb_n + \sum\limits_1^{n - 1} A_k(b_k - b_{k + 1}) = (A - \alpha_n)b_n + \sum\limits_1^{n - 1} (A - \alpha_n)(b_k - b_{k + 1}) = Ab_n - \alpha_nb_n + \\ + A\sum\limits_1^{n - 1}(b_k - b_{k + 1}) - \sum\limits_1^{n - 1} \alpha_k(b_k - b_{k + 1}) = Ab_1 - \alpha b_n - \sum\limits_1^{n - 1} \alpha_k(b_k - b_{k + 1})$
+
+$\alpha_nb_n \toto 0$ на $E$, т.к. $\alpha_n \toto 0$ и $b_n$ -- равномерно ограничена
+
+Осталось доказать, что ряд $\sum\limits_1^\infty \alpha_k(b_k - b_{k + 1})$ сходится равномерно. Проверим для этого ряда условие из критерия Коши
+
+Возьмем $\varepsilon > 0$. $b_n$ равномерно ограничена $\Rightarrow |b_n(x)| \leq M\ \forall x \in E\ \forall n$
+
+$\exists N\ \forall n \geq N\ \forall x \in E\ |\alpha_n(x)| < \varepsilon$ (т.к. $\alpha_n \toto 0$ на $E$)
+
+Рассмотрим $m > n \geq N$ и $|\sum\limits_{k = n + 1}^m \alpha_k(x) (b_k(x) - b_{k + 1}(x))| \leq |\sum\limits_{k = n + 1}^m |\alpha_k(x)| \cdot |b_k(x) - b_{k + 1}(x)| < \\ < \varepsilon \sum\limits_{k = n + 1}^m |b_k(x) - b_{k + 1}(x)| = \varepsilon |\sum\limits_{n + 1}^m (b_k(x) - b_{k + 1}(x))| = \varepsilon |b_{n + 1}(x) - b_{m + 1}(x)| \leq \varepsilon (|b_{n + 1}(x)| + |b_{m + 1}(x)|) \leq 2\varepsilon M$
+
+\begin{theo}{Признак Дини}
+    $u_n \in C(K), u_n \geq 0, S(x) := \sum u_n(x)$
+
+    Если $S \in C(K)$, то ряд равномерно сходится на $K$
+\end{theo}
+
+\textit{Доказательство:}
+
+$S_n := \sum\limits_{k = 1}^n u_k;\ r_n := S - S_n = \sum\limits_{n + 1}^\infty u_k \in C(K)$
+
+Хотим проверить, что $r_n \toto 0$ на $K$. $r_1 \geq r_2 \geq r_3 \geq \ldots$
+
+Надо доказать, что $\forall \varepsilon\ \exists n : \forall m \geq n\ \forall x \in K \Rightarrow |r_m(x)| < \varepsilon$
+
+Достаточно проверить, что $\forall \varepsilon\ \exists n : \forall x \in K \Rightarrow r_n(x) < \varepsilon$
+
+От противного. Зафиксируем $\varepsilon > 0$. Тогда $\forall n\ \exists x_n \in K : r_n(x_n) \geq \varepsilon$
+
+Выберем сходящуюся подпоследовательность $x_{n_k} \to x_* \in K$
+
+$\varepsilon \leq r_{n_k}(x_{n_k}) \leq r_{m}(x_{n_k})$ при $m \leq n_k \Rightarrow r_1(x_{n_k}) \geq \varepsilon$
+
+$\varepsilon \leq r_m(x_{n_k}) \to r_m(x_*)$, т.к. $r_m$ непрерывна в $x_* \Rightarrow r_m(x_*) \geq \varepsilon\ \forall m \Rightarrow r_m(x_*) \not\to 0 \Rightarrow$ ряд $\sum u_n(x_*)$ расходится. Противоречие 
+
+\subsection{\S 6. Свойства равносильности сходящихся последовательностей и рядов}
+
+\begin{theo}{}
+    $f_n, f : E \to \R$, $a$ -- предельная точка $E$, $\R \ni b_n := \lim\limits_{x \to a} f_n(x)$ и $f_n \toto f$ на $E$. Тогда пределы $\lim b_n$ и $\lim\limits_{x \to a} f(x)$ существуют конечны и равны. Т.е. $\lim\limits_{n \to \infty} b_n = \lim\limits_{x \to a} f(x)$
+\end{theo}
+
+\textit{Доказательство:}
+
+$f_n \toto f$ на $E \Rightarrow \forall \varepsilon > 0\ \exists N\ \forall m, n \geq N\ \forall x \in E \Rightarrow |f_n(x) - f_m(x)| < \varepsilon$ и $|f_n(x) - f(x)| \to |b_n - b_m|$ при $x \to a$
+
+Следовательно $\forall m, n \geq N \Rightarrow |b_n - b_m| \leq \varepsilon \Rightarrow b_n$ -- фундаментальная числовая последовательность $\Rightarrow$ существует конечный $\lim b_n =: b$
+
+Надо доказать, что $\lim\limits_{x \to a} f(x) = b$
+
+$|f(x) - b| \leq |f(x) - f_n(x)| + |f_n(x) - b_n| + |b_n - b|$
+
+$\exists N_1\ \forall x \in E\ \forall n \geq N_1 \Rightarrow |f_n(x) - f(x)| < \varepsilon$
+
+$\exists N_2\ \forall n \geq N_2 \Rightarrow |b_m - b| < \varepsilon$
+
+Возьмем $n = \max\{N_1, N_2\}$
+
+Знаем что $\lim\limits_{x \to a} f_n(x) = b_n \Rightarrow \exists \delta > 0\ \forall |x - a| < \delta\ \Rightarrow |f_n(x) - b_n| < \varepsilon$
+
+Это $\delta$ и возьмем 
+
+\newpage
+
+\textit{05/14}
+
+\subsection{Разложение элементарных функций в ряд Тейлора}
+
+\begin{Reminder}{}
+    \begin{enumerate}
+        \item $e^x = \sum\limits_{n = 0}^\infty \frac{x^n}{n!}\ \forall x \in \R$
+        \item $\cos{x} = \sum\limits_{n = 0}^\infty (-1)^n \frac{x^{2n}}{(2n)!}\ \forall x \in \R$
+        \item $\sin{x} = \sum\limits_{n = 0}^\infty (-1)^n \frac{x^{2n + 1}}{(2n + 1)!}\ \forall x \in \R$
+    \end{enumerate}
+\end{Reminder}
+
+\begin{Reminder}{}
+    Ряды $\sum\limits_{n = 0}^\infty \frac{z^n}{n!};\ \sum\limits_{n = 0}^\infty \frac{(-1)^n z^{2n}}{(2n)!};\ \sum\limits_{n = 0}^\infty \frac{(-1)^n z^{2n + 1}}{(2n + 1)!}$ сходятся $\forall z \in \C$
+\end{Reminder}
+
+\begin{defin}{}
+    $\exp{z} := \sum\limits_{n = 0}^\infty \frac{z^n}{n!}$
+
+    $\cos{z} := \sum\limits_{n = 0}^\infty (-1)^n \frac{z^{2n}}{(2n)!}$
+
+    $\sin{z} := \sum\limits_{n = 0}^\infty (-1)^n \frac{z^{2n + 1}}{(2n + 1)!}$
+\end{defin}
+
+\begin{Remark}{}
+    \begin{enumerate}
+        \item $\cos(-z) = \cos{z};\ \sin(-z) = -\sin{z};\ \exp(-z) = \exp{z}$
+        \item Формула Эйлера: $\exp{z} = \cos{z} + i\sin{z}$
+        \item $\cos{z} = \frac{\exp(iz) + \exp(-iz)}{2};\ \sin{z} = \frac{\exp(iz) - \exp(-iz)}{2i}$
+        
+        \begin{Exercise}{}
+            \begin{enumerate}
+                \item Доказать, что $\sin^2{z} + \cos^2{z} = 1\ \forall z \in \C$
+                \item $\exp{z} \cdot \exp{w} = \exp(z + w)\ \forall z, w \in \C$
+            \end{enumerate}
+        \end{Exercise}
+    \end{enumerate}
+\end{Remark}
+
+\begin{Remark}{}
+    \begin{enumerate}
+        \item $\ln(1 + x) = \sum\limits_{n = 1}^\infty \frac{(-1)^{n - 1} x^n}{n}$ при $|x| < 1$
+        
+        \textit{Доказательство:} 
+        
+        $(\ln(1 + x))' = \frac{1}{1 + x};\ \ln(1 + x) = \int\limits_0^x \frac{1}{1 + t}dt = \int\limits_0^x \sum\limits_{n = 0}^\infty (-1)^n t^n dt = \sum\limits_{n = 0}^\infty (-1)^n \int\limits_0^x t^n dt = \\ = \sum\limits_{n = 0}^\infty (-1)^n \frac{x^{n + 1}}{n + 1}$
+
+        \item $\arctg{x} = \sum\limits_{n = 0}^\infty (-1)^n \frac{x^{2n + 1}}{2n + 1}$ при $|x| < 1$
+        
+        \textit{Доказательство:}
+
+        $\arctg{x} = \int\limits_0^x \frac{dt}{1 + t^2} = \int\limits_0^x \sum\limits_{n = 0}^\infty (-1)^n t^{2n} dt = \sum\limits_{n = 0}^\infty (-1)^n \int\limits_0^x t^{2n} dt = \sum\limits_{n = 0}^\infty (-1)^n \frac{x^{2n + 1}}{2n + 1}$
+
+        \begin{theo}{Следствие}
+            $\frac{\pi}{4} = 1 - \frac{1}{3} + \frac{1}{5} - \frac{1}{7} + \frac{1}{9} - \frac{1}{11} + \ldots$
+        \end{theo}
+
+        \textit{Доказательство:}
+
+        Ряд $f(x) := \sum\limits_{n = 0}^\infty (-1)^n \frac{x^{2n + 1}}{2n + 1}$ сходится при $x = 1$
+
+        Тогда по теореме Абеля $f(1) = \lim\limits_{x \to 1_-} f(x) = \lim\limits_{x \to 1_-} \arctg{x} = \frac{\pi}{4}$
+    \end{enumerate}
+\end{Remark}
+
+\begin{defin}{Нисходящая факториальная степень}
+    $p^{\underline{n}} := p(p - 1)(p - 2) \ldots (p - n + 1)$
+\end{defin}
+
+\begin{Remark}{}
+    \begin{enumerate}
+        \item $n! = n^{\underline{n}}$
+        \item $C_n^k = \frac{n^{\underline{k}}}{k!}$
+        \item $p^{\underline{n + 1}} + np^{\underline{n}} = p \cdot p^{\underline{n}}$
+    \end{enumerate}
+\end{Remark}
+
+\begin{theo}{}
+    \begin{enumerate}
+        \item Ряд $\sum\limits_{n = 0}^{\infty} \frac{p^{\underline{n}}}{n!} x^n$ сходится при $|x| < 1$
+        \item Если $f(x)$ это его сумма, то $(1 + x)f'(x) = pf(x)$
+        \item $f(x) = (1 + x)^p$, т.е. $(1 + x)^p = \sum\limits_{n = 0}^\infty \frac{p^{\underline{n}}}{n!} x^n$ при $|x| < 1$
+    \end{enumerate}
+\end{theo}
+
+\textit{Доказательство:}
+
+\begin{enumerate}
+    \item Проверим абсолютную сходимость по признаку Даламбера
+    
+    $\frac{p^{\underline{n + 1}}}{(n + 1)!} x^{n + 1} : \frac{p^{\underline{n}}}{n!} x^n = \frac{p - n}{n + 1} x \toinfty -x$
+
+    \item $(1 + x)f'(x) = (1 + x)\sum\limits_{n = 0}^\infty \frac{p^{\underline{n}}}{n!} nx^{n - 1} = (1 + x)\sum\limits_{n = 0}^\infty \frac{p^{\underline{n + 1}}}{n!} x^n = \sum\limits_{n = 0}^\infty \frac{p^{\underline{n + 1}}}{n!} x^n + \sum\limits_{n = 0}^\infty \frac{p^{\underline{n + 1}}}{(n + 1)!} x^{n + 1} = \\ = \sum\limits_{n = 0}^\infty \frac{p^{\underline{n + 1}}}{n!}x^n + \sum\limits_{n = 0}^\infty \frac{p^{\underline{n}}}{n!} nx^n = \sum\limits_{n = 0}^\infty \frac{p \cdot p^{\underline{n}}}{n!} x^n = pf(x)$
+    
+    \item Проверим, что $(1 + x)^{-p}f(x) = 1$
+    
+    $((1 + x)^{-p}f(x))' = -p(1 + x)^{-p-1}f(x) + (1 + x)^{-p}f'(x) = (1 + x)^{-p-1}(-pf(x) + (1 + x)f'(x)) = (1 + x)^{-p-1} \cdot 0 = 0$
+\end{enumerate}
+
+\begin{Example}{Частный случай}
+    $p = -\frac{1}{2}$
+
+    $\frac{1}{\sqrt{1 + x}} = \sum\limits_{n = 0}^\infty \frac{(-1/2)^{\underline{n}}}{n!} x^n = \sum\limits_{n = 0}^\infty \frac{(-1)^{n}(2n - 1)!!}{2^n n!} x^n = \sum\limits_{n = 0}^\infty \frac{C_{2n}{n}}{4^n} x^n$
+\end{Example}
+
+\begin{Remark}{}
+    \begin{enumerate}
+        \item[6.] $\arcsin{x} = \sum\limits_{n = 0}^\infty \frac{C_{2n}{n}}{4^n} \cdot \frac{x^{2n + 1}}{2n + 1}$ при $|x| < 1$
+        
+        $\arcsin{x} = \int\limits_0^x \frac{dt}{\sqrt{1 - t^2}} = \int\limits_0^x \sum\limits_{n = 0}^\infty \frac{C_{2n}^n}{4^n}t^{2n}dt = \sum\limits_{n = 0}^\infty \frac{C_{2n}^n}{4^n} \cdot \frac{x^{2n + 1}}{2n + 1}$
+    \end{enumerate}
+\end{Remark}
+
+\section{Глава n. Функции многих переменных}
+
+\subsection{\S 1. Дифференцируемые отображения}
+
+\begin{defin}{Дифференциал функции}
+    $f : E \to \R;\ E \subset{\R^n};\ a \in \Int{E}$. $f$ дифференцируема в точке $a$, если существует такое линейное отображение $T : \R^n \to \R^m$, что $f(a + h) = f(a) + Th + o(\parl{h})$ при $h \to 0$
+
+    Обозначение: $d_af$
+\end{defin}
+
+\begin{Remark}{}
+    Если $f$ дифференцируема в точке $a$, то $T$ определено однозначно
+\end{Remark}
+
+\textit{Доказательство:}
+
+Зафиксируем $h \in \R^n;\ t \in \R \to 0$
+
+$\frac{f(a + th) - f(a)}{t} = \frac{T(th) + o(\parl{th})}{t} = \frac{tTh + to(1)}{t} = Th + o(1) \xrightarrow[t \to 0]{} Th$
+
+\begin{defin}{Матрица Якоби}
+    Матрица оператора $T$ называется матрицей Якоби функции $f$ в точке $a$
+
+    Обозначается $f'(a)$
+\end{defin}
+
+\begin{Remark}{}
+    Если $f$ дифференцируема в точке $a$, то $f$ непрерывна в точке $a$
+
+    $f(a + h) = f(a) + Th + o(\parl{h}) \xrightarrow[h \to 0]{} f(a)$
+\end{Remark}
+
+\begin{Example}{Важный частный случай}
+    $m = 1;\ f : E \to \R;\ E \subset \R^n$
+
+    $f$ дифференцируема в точке $a \Leftrightarrow$ сущесвтует вектор $V \in \R^n : f(a + h) = f(a) + \q{V, h} + o(\parl{h})$ при $h \to 0$
+\end{Example}
+
+\begin{defin}{}
+    Этот вектор $V$ называется градиентом функции $f$ в точке $a$
+
+    Обозначается $grad f(a)$ или $\nabla f(a)$
+\end{defin}
+
+\begin{Example}{}
+    \begin{enumerate}
+        \item $f(x) = const$
+        
+        $f(a + h) = f(a)$, т.е. $T \equiv 0$ и $o(\parl{h}) \equiv 0$
+
+        \item Линейное отображение, т.е. $f(x + y) = f(x) + f(y)$
+        
+        $f(a + h) = f(a) + f(h)$, т.е. $Th = f(h)$ и $o(\parl{h}) \equiv 0$
+    \end{enumerate}
+\end{Example}
+
+\begin{defin}{Координатные функции}
+    $f : E \to \R; E \subset \R^n$
+
+    $f = \begin{pmatrix}
+        f_1 \\
+        \vdots \\
+        f_n 
+    \end{pmatrix};\ f_1 \ldots f_n : E \to \R$ -- координатные функции
+\end{defin}
+
+\begin{theo}{}
+    $f : E \to \R^m;\ a \in \Int E$. Тогда дифференцируемость $f$ в точке $a$ равносильна дифференцируемости в точке $a$ всех ее координатных функций
+\end{theo}
+
+\textit{Доказательство:}
+
+\begin{itemize}
+    \item[$\Rightarrow$] $f(a + h) = f(a) + Th + \alpha(h)\parl{h}$, где $\alpha(h) \to 0$ при $h \to 0$
+    
+    Запишем равенство покоординатно: $f_k(a + h) = f_k(a) + T_kh + \alpha_k(h)\parl{h}$
+
+    $T_k$ -- линейное отображение $: \R^n \to \R;\ \alpha_k(h) \to 0$ при $h \to 0$
+
+    \item[$\Leftarrow$] Запишем дифф. $f_k : f_k(a + h) = f_k(a) + T_kh + \alpha_k(h)\parl{h}$, где $\alpha_k(h) \to 0$ при $h \to 0$
+    
+    Соберем их в равенство для векторов
+
+    $f(a + h) = f(a) + Th + \alpha(h)\parl{h}$. Надо понять, что $\alpha(h) \to 0$ при $h \to 0$
+
+    Это следует из равносильности покоординатной сходимости и сходимости по норме 
+\end{itemize}
+
+\begin{theo}{Следствие}
+    Строки матрицы Якоби для $f$ -- градиенты координатных функций
+
+    $f'(a) = \begin{pmatrix}
+        \nabla f_1(a) \\
+        \vdots \\
+        \nabla f_m(a)
+    \end{pmatrix}$
+\end{theo}
+
+\begin{defin}{Производная по направлению}
+    $\parl{h} = 1;\ f : E \to \R;\ E \subset \R^n;\ a \in \Int E$
+
+    $\frac{\partial f}{\partial h}(a) := \lim\limits_{t \to 0;\ t \in \R} \frac{f(a + th) - f(a)}{t}$
+\end{defin}
+
+\begin{Remark}{}
+    $g(t) := f(a + th) \Rightarrow \frac{\partial f}{\partial h}(a) = g'(0)$
+\end{Remark}
+
+\begin{theo}{}
+    $f : E \to \R; E \subset \R^n;\ a \in \Int E;\ f$ -- дифференцируема в точке $a;\ \parl{h} = 1$
+
+    Тогда $\frac{\partial f}{\partial h}(a) = d_af(h) = \q{\nabla f(a), h}$
+\end{theo}
+
+\begin{theo}{Слествие}
+    \begin{enumerate}
+        \item Экстремальное свойство градиента 
+        
+        $f : E \to \R;\ E \subset \R^n;\ a \in \Int E;\ f$ -- дифференцируема в точке $a$ и $\nabla f(a) \neq 0$
+
+        Тогда $\forall h \in \R^n : \parl{h} = 1 \Rightarrow |\frac{\partial f}{\partial h}(a)| \leq \parl{\nabla f(a)}$ и равенство достигается $\Leftrightarrow \\ \Leftrightarrow h = \pm \frac{\nabla f(a)}{\parl{\nabla f(a)}}$
+    \end{enumerate}
+\end{theo}
+
+\textit{Доказательство:}
+
+$|\frac{\partial f}{\partial h}(a)| = |\q{\nabla f(a), h}| \leq \parl{\nabla f(a)} \cdot \parl{h} = \parl{\nabla f(a)}$
+
+Равенство $\Leftrightarrow$ векторы сонаправлены
+
+\begin{defin}{Частная производная}
+    $f : E \to \R;\ a \in E;\ E \subset \R^n$
+
+    $e_k = \begin{pmatrix}
+        0 \\
+        \vdots \\
+        1 \\
+        \vdots \\
+        0
+    \end{pmatrix}$ -- $k$-я позиция
+
+    Обозначения: $f_{x_k}';\ \partial_k f;\ \frac{\partial f}{\partial x_k};\ D_k f$
+
+    $f_{x_k}' = \frac{\partial f}{\partial e_k}(a)$
+\end{defin}
+
+\begin{Example}{}
+    $f(x, y) = x^y$
+
+    $\frac{\partial f}{\partial x} = \lim\limits_{h \to 0} \frac{f(x + k, y) - f(x, y)}{h}$, т.е. $y$ -- параметр, а дифференцирование по $x$
+
+    $\frac{\partial f}{\partial x} = y \cdot x^{y - 1}$
+
+    $\frac{\partial f}{\partial y} = \lim\limits_{h \to 0} \frac{f(x, y + h) - f(x, y)}{h}$, т.е. $x$ -- параметр, а дифференцирование по $y$
+
+    $\frac{\partial f}{\partial y} = x^y \cdot \ln{x}$
+\end{Example}
+
+\begin{theo}{Следствие}
+    \begin{enumerate}
+        \item[2.] $\grad{f}{x_k}(a) = \q{\nabla f, e_k}$, т.е. $\nabla f(a) = (\grad{f}{x_1}(a), \grad{f}{x_2}(a) \ldots \grad{f}{x_k}(a))$
+        \item[3.] $f : E \to \R^m;\ E \in \R^n;\ a \in \Int E;\ f$ -- дифференцируема в точке $a$
+        
+        Тогда $f'(a) = \begin{pmatrix}
+            \grad{f_1}{x_1}(a) & \ldots & \grad{f_1}{x_n}(a) \\
+            \vdots & \ddots & \vdots \\
+            \grad{f_m}{x_1}(a) & \ldots & \grad{f_m}{x_n}(a)
+        \end{pmatrix}$
+    \end{enumerate}
+\end{theo}
+
+\begin{theo}{Линейность}
+    $f, g : E \to \R;\ E \subset \R^n;\ a \in \Int E;\ f, g$ -- дифференцируемы в точке $a$
+
+    Тогда $f + g$ и $\lambda f$ -- дифференцируемы в точке $a$ и $d_a(f + g) = d_a f + d_a g;\ d_a(\lambda f) = \lambda d_a f$
+
+    $(f + g)'(a) = f'(a) + g'(a);\ (\lambda f)'(a) = \lambda f'(a)$
+\end{theo}
+
+\textit{Доказательство:}
+
+Посмотрите запись...
+
+\begin{theo}{Дифференцирование композиции}
+    $f : D \to \R^n; g : E \to \R^l;\ D \subset \R^n;\ E \subset \R^l;\ a \in \Int D;\ f(D) \subset E;\ f(a) \in \Int E; f$ -- дифференцируема в точке $a$ и $g$ -- дифференцируема в точке $f(a)$
+
+    Тогда $g \circ f$ -- дифференцируема в точке $a$ и $d_a(g \circ f) = d_{f(a)} g \circ d_a f$ и $(g \circ f)'(a) = \\ = g'(f(a)) \cdot f'(a)$
+\end{theo}
+
+\textit{Доказательство:}
+
+$f(a + h) = f(a) + d_a f(h) + \alpha(h)\parl{h}$ и $\alpha(h) \to 0$ при $h \to 0$
+
+$b := f(a);\ g(b + k) = g(b) + d_b g(k) + \beta(k)\parl{k}$ и $\beta(k) \to 0$ при $k \to 0$
+
+Возьмем $k = d_af(h) + \alpha(h)\parl{h} \to 0$ при $h \to 0$
+
+$f(a + h) = b + k$
+
+$g(f(a + h)) = g(b + k) = g(b) + d_b g(k) + \beta(k)\parl{k} = g(f(a)) + d_b g(d_af(h)) + \parl{h}d_bf(\alpha(h)) + \beta(k)\parl{k}$
+
+$d_b g(d_af(h))$ -- линейное отображение 
+
+$d_bf(\alpha(h)) \to d_bf(0) = 0 \Rightarrow \parl{h}d_bf(\alpha(h)) = o(\parl{h})$
+
+$\frac{\beta(k)\parl{k}}{\parl{h}} \xrightarrow{?} 0$
+
+$\parl{k} = \parl{d_af(h) + \alpha(h)\parl{h}} \leq \parl{d_af(h)} + \parl{\alpha(h)\parl{h}} \leq \parl{d_af} \cdot \parl{h} + \parl{\alpha(h)} \cdot \parl{h} \to 0 \Rightarrow \\ \Rightarrow$ ограничено 
+
+\begin{theo}{}
+    $E \subset \R^n;\ a \in \Int E;\ f : E \to \R^m;\ \lambda : E \to \R;\ f, \lambda$ -- дифференцируемы в точке $a$
+
+    Тогда $\lambda f$ -- дифференцируема в точке $a$ и $d_a(\lambda f)(h) = d_a\lambda(h)f(a) + \lambda(a)d_a f(h)$
+\end{theo}
+
+\textit{Доказательство:}
+
+$f(a + h) = f(a) + d_a f(h) + \alpha(h)\parl{h}$ и $\alpha(h) \to 0$ при $h \to 0$
+
+$\lambda(a + h) = \lambda(a) + d_a\lambda(h) + \beta(h)\parl{h}$ и $\beta(h) \to 0$ при $h \to 0$
+
+\newpage
+
+$\lambda(a + h)f(a + h) = \lambda(a)f(a) + \lambda(a)d_af(h) + d_a\lambda(h)f(a) + d_a\lambda(h)d_af(h) + \beta(h)\parl{h}f(a) + \lambda(a)\alpha(h)\parl{h} + \\ + d_af(h)\alpha(h)\parl{h} + \beta(h)\parl{h}d_af(h) + \alpha(h)\beta(h)\parl{h}^2$
+
+Много что $\to 0$ или $o(\parl{h})$
+
+$\parl{d_a\lambda(h)d_af(h)} = |d_a\lambda(h)| \cdot \parl{d_af(h)} \leq \parl{d_a\lambda} \cdot \parl{h} \cdot \parl{d_af} \cdot \parl{h} = o(\parl{h})$
+
+Первое слагаемое останется чистым, 2 и 3 -- линейное отображение
+
+\begin{theo}{}
+    $f, g : E \to \R^m;\ E \subset \R^n;\ a \in \Int E;\ f, g$ -- дифференцируемы в точке $a$
+
+    Тогда $\q{f, g}$ -- дифференцируемо в точке $a$ и $d_a\q{f, g}(h) = \q{d_a f(h), g(a)} + \q{f(a), d_a g(h)}$
+\end{theo}
+
+\textit{Доказательство:}
+
+$\q{f, g} = \sum\limits_{k = 1}^m f_k g_k;\ f_kg_k$ -- дифференцируемы в точке $a$ и $d_a(f_kg_k)(h) = d_a f_k(h)g_k(a) + f_k(a)d_a g_k(h)$
+
+И проссумируем
+
+\subsection{\S 2. Непрерывная дифференцируемость}
+
+\begin{theo}{}
+    $f : E \to \R;\ E \subset \R^n;\ a \in \Int E$, все частные производные функции $f$ существуют в окрестности точки $a$ и непрерывны в точке $a$
+
+    Тогда $f$ дифференцируема в точке $a$
+\end{theo}
+
+\textit{Доказательство:}
+
+Надо показать, что $f(a + h) = f(a) + \q{\nabla f(a), h} + o(\parl{h})$ при $h \to 0$
+
+$R(h) := f(a + h) - f(a) - \sum\limits_{k = 1}^n \grad{f}{x_k}(a)h_k$. Надо доказать, что $R(h) = o(\parl{h})$ при $h \to 0$
+
+$b_k := \begin{pmatrix}
+    a_1 + h_1 \\
+    \vdots \\
+    a_k + h_k \\
+    a_{k + 1} \\
+    \vdots \\
+    a_n
+\end{pmatrix};\ F_k(t) := f(b_{k - 1} + th_ke_k);\ \begin{cases}
+    F_k(0) = f(b_{k - 1}) \\
+    F_k(1) = f(b_k)
+\end{cases};\ b_n = a + h;\ b_0 = a$
+
+$f(a + h) - f(a) = F_n(1) - F_1(0) = \sum\limits_{k = 1}^n \left( F_k(1) - F_k(0) \right) = \sum\limits_{k = 1}^n F'_k(\Theta_k)$, где $\Theta_k \in (0, 1)$. \\ $= \sum\limits_{k = 1}^n \grad{f}{x_k}(b_{k - 1} + \Theta_kh_ke_k)h_k$
+
+$F_k(t) = f(a_1 + h_1, \ldots, a_{k - 1} + h_{k - 1}, a_k + th_k, a_{k + 1}, \ldots, a_n) \Rightarrow F_k'(t) = \grad{f}{x_k}(b_{k - 1} + th_ke_k) \cdot h_k$
+
+$|R(h)| = |\sum\limits_{k = 1}^n \left( \grad{f}{x_k}(c_k) - \grad{f}{x_k}(a) \right)h_k| \leq \left( \sum\limits_{k = 1}^n\left( \grad{f}{x_k}(c_k) - \grad{f}{x_k}(a)\right)^2\right)^\frac{1}{2} \cdot \left( \sum\limits_{k = 1}^n h_k^2 \right)^\frac{1}{2}$
+
+Осталось понять, что $\sum\limits-{k = 1}^n \left( \grad{f}{x_k}(c_k) - \grad{f}{x_k}(a)\right)^2 \xrightarrow[h \to 0]{} 0$
+
+$c_k \to a$ при $h \to 0$ и $\grad{f}{x_k}$ непрерывна в точке $a$
+
+\begin{Remark}{}
+    \begin{enumerate}
+        \item $f(a + h_1e_1) = f(a) + \grad{f}{x_1}(a) h_1 + o(h_1)$ 
+        
+        Без непрерывности $\grad{f}{x_1}$ в точке $a$ доказательство тоже проходит
+
+        \item Дифференцирование в точке не дает даже существование частных производных в окрестности 
+        
+        $f(x, y) = \begin{cases}
+            x^2 + y^2 \text{ если одно из чисел рационально} \\
+            0
+        \end{cases}$
+
+        $f(x, y) = O(x^2 + y^2) = f(0, 0) + 0 + o(\sqrt{x^2 + y^2})$
+
+        Но функция не является непрерывной при $(x, y) \neq (0, 0)$ и у нее нет частных производный ни в какой точке, отличной от $(0, 0)$
+    \end{enumerate}
+\end{Remark}
+
+\begin{defin}{}
+    $f$ непрерывно дифференцируема в точке $a$, если $f$ дифференцируема в окрестности точки $a$ и $\parl{d_xf - d_af} \xrightarrow[x \to a]{} 0$
+\end{defin}
+
+\begin{theo}{}
+    $f : E \to \R^m;\ E \subset \R^n;\ a \in \Int E$. Тогда 
+
+    $f$ непрерывно дифференцируема в точке $a \Leftrightarrow f$ дифференцируема в окрестности $a$ и все частные производные всех координатных функций непрерывны в точке $a$
+\end{theo}
+
+\textit{Доказательство:}
+
+\begin{itemize}
+    \item[$\Leftarrow$] $\parl{d_xf - d_af}^2 \leq \sum\limits_{k = 1}^m \sum\limits_{j = 1}^n \left( \grad{f_k}{x_j}(x) - \grad{f_k}{x_j}(a) \right)^2 \xrightarrow[x \to a]{} 0$
+    \item[$\Rightarrow$] $|\grad{f_k}{x_j}(x) - \grad{f_k}{x_j}(a)| \leq \underbrace{\parl{d_xf(e_k) - d_af(e_k)}}_{= f'(x)e_k - f'(a)e_k} = \parl{\left(d_xf - d_af\right)(e_k)} \leq \parl{d_xf - d_af} \cdot \parl{e_k}$
+\end{itemize}
+
+\begin{theo}{}
+    Непрерывная дифференцируемость сохраняется при линейной комбинации скалярный произведений, композиций 
+\end{theo}
+
+\textit{Доказательство:}
+
+См. лекцию, доказательство на словах 
+
+\subsection{\S 3. Частные производные высших порядков}
+
+\begin{nota}{Обозначения}
+    $\grad{^2f}{x_i \partial x_j} := \grad{}{x_i}\left(\grad{f}{x_j}\right)$
+
+    $f''_{x_jx_i} := \left(f'_{x_j}\right)'_{x_i}$
+
+    Если существует $\grad{^rf}{x_{i_k} \ldots \partial{x_{i_1}}}$ в окрестности точки $a$, то у нее можно рассмотреть производну, т.е. $\grad{^{r + 1}}{x_{i{k + 1}} \ldots \partial{x_{i_1}}}$
+\end{nota}
+
+\begin{Remark}{}
+    Всего частных производных порядка $r$ будет $n^r$
+\end{Remark}
+
+\begin{Example}{}
+    $f(x, y) = x^y;\ f'_x = yx^{y - 1};\ f'_y = x^y \ln{x}$
+
+    $f''_{xx} = \left(yx^{y - 1}\right)'_x = y(y - 1)x^{y - 2};\ f''_{yy} = \left(x^y \ln{x}\right)'_y = x^y \left(\ln{x}\right)^2$
+
+    $f_{xy}'' = x^{y - 1} + yx^{y - 1}\ln{x};\ f_{yx}'' = yx^{y - 1} \ln{x} + x^{y - 1}$
+\end{Example}
+
+\begin{Example}{Когда все плохо}
+    $f(x, y) = \begin{cases}
+        \frac{x^2 - y^2}{x^2 + y^2} \cdot xy & (x, y) \neq (0, 0) \\
+        0 & (x, y) = (0, 0)
+    \end{cases}$
+
+    $\underset{(x, y) \neq (0, 0)}{f'_x(x, y)} = \frac{(3x^2y - y^3)(x^2 + y^2) - 2x(x^3y - xy^3)}{(x^2 + y^2)^2} = \frac{3x^4y + 3x^2y^3 - x^2y^3 - y^5 - 2x^4y + 2x^2y^3}{(x^2 + y^2)^2} = \frac{x^4y + 4x^2y^3 - y^5}{(x^2 + y^2)^2}$
+
+    $f'_x(0, 0) = \lim\limits_{h \to 0} \frac{f(h, 0) - f(0, 0)}{h} = \lim\limits_{h \to 0} \frac{0 - 0}{h} = 0$
+
+    $f''_{xy}(0, 0) = \lim\limits_{h \to 0} \frac{f'_x(0, h) - f'_x(0, 0)}{h} = \lim\limits_{h \to 0} \frac{1}{h} \cdot \frac{-h^5}{h^4} = -1$
+
+    Но $f''_{yx}(0, 0) = 1 \neq f''_{yx}(0, 0)$
+\end{Example}
+
+\begin{theo}{}
+    $f : E_{\subset \R^2} \to \R;\ (x_0, y_0) \in \Int E$
+
+    Частные производные $f'_x, f'_y$ и $f''_{xy}$ существует в окрестности $(x_0, y_0)$ и $f''_{xy}$ непрерывна в точке $(x_0, y_0)$
+    
+    Тогда существует $f''_{yx}(x_0, y_0)$ и $f''_{xy}(x_0, y_0) = f''_{yx}(x_0, y_0)$
+\end{theo}
+
+\textit{Доказательство:}
+
+$\varphi(s) := f(s, y_0 + k) - f(s, y_0);\ \psi(t) := f'_x(x_0 + \Theta h, t)$
+
+$\varphi(x_0 + h) - \varphi(x_0) = h \cdot \varphi'(x_0 + \Theta h) = h\left(f'_x(x_0 + \Theta h, y_0 + k) - f'_x(x_0 + \Theta h, y_0)\right) = h\left(\psi(y_0 + k) - \psi(y_0)\right) =\ = hk\psi'(y_0 + \tilde{\Theta}k) = hk \cdot \underbrace{f''_{xy}(x_0 + \Theta h, y_0 + \tilde{\Theta}k)}_{f''_{xy}(x_0, y_0) + \alpha(h, k);\ \alpha(h, k) \xrightarrow[(h, k) \to 0]{} 0}$
+
+$\frac{\varphi(x_0)}{k} = \frac{f(x_0, y_0 + k) - f(x_0, y_0)}{k} \xrightarrow[k \to 0]{} f'_y(x_0, y_0)$
+
+$\frac{\varphi(x_0 + h)}{k} = \frac{f(x_0 + h, y_0 + k) - f(x_0 + h, y_0)}{k} \xrightarrow[k \to 0]{} f'_y(x_0 + h, y_0)$
+
+$|\frac{1}{k} \cdot \frac{\varphi(x_0 + h) - \varphi(x_0)}{h} - f''_{xy}(x_0, y_0)| < \varepsilon$ при $(h, k)$ близким к 0 $\Rightarrow |\frac{f'_y(x_0 + h, y_0) - f'_y(x_0, y_0)}{h} - f''_{xy}(x_0, y_0)| \leq \varepsilon$ при малых $h \Rightarrow \lim\limits_{h \to 0} \frac{f'_y(x_0 + h, y_0) - f'_y(x_0, y_0)}{h} = f''_{xy}(x_0, y_0)$
+
+\begin{Exercise}{}
+    Доказать, что если $f'_x$ и $f'_y$ определны в окрестности $(x_0, y_0)$ и дифференцируемы в этой точке, то $f''_{xy}(x_0, y_0) = f''_{yx}(x_0, y_0)$
+\end{Exercise}
+
+\begin{defin}{$r$-гладкость}
+    $f : D_{\subset \R^n} \to \R;\ D$ -- открытое 
+
+    $f$ -- $r$ раз непрерывно дифференцируема ($= r$-гладкая), если все ее частные производные до $r$-го порядка включительно существуют и непрерывны
+
+    Обозначение: $C^r(D)$
+\end{defin}
+
+\begin{theo}{}
+    $f : D \to \R;\ D$ -- открытое $\subset \R^n;\ f \in C^r(D)$
+
+    $(i_1 \ldots i_r)$ -- перестановка $(j_1 \ldots j_r)$. Тогда $\grad{^rf}{x_{i_1} \ldots \partial x_{i_r}} = \grad{^rf}{x_{j_1} \ldots \partial x_{j_r}}$ 
+\end{theo}
+
+\textit{Доказательство:}
+
+Любая перестановка может быть получена последовательным выполнением транспозиций. Поэтому достаточно доказать теорему для транспозиций
+
+$\underset{=(i_1 \ldots i_r)}{(j_1 \ldots j_{k - 1}, j_{k + 1}, j_k, j_{k + 2} \ldots j_r)}$
+
+$g(x) := \grad{^{r - k - 1}f}{x_{j_{k + 2}} \ldots \partial x_{j_r}}$
+
+$\underset{\text{из предыдущей теоремы}}{\grad{^2g}{x_{j_k} \partial x_{j_{k + 1}}} = \grad{^2g}{x_{j_{k + 1}} \partial x_{j_k}}} \Rightarrow 
+\underbrace{\grad{^{k - 1}}{x_{j_1} \ldots \partial x_{j_{k + 1}}}\left(\grad{^2g}{x_{j_k} \partial x_{j_{k - 1}}}\right)}_{= \grad{^rf}{x_{j_1} \ldots \partial x_{j_r}}} = 
+\underbrace{\grad{^{k - 1}}{x_{j_1} \ldots \partial x_{j_{k - 1}}}\left(\grad{^2g}{x_{j_{k + 1}} \partial x_{j_k}}\right)}_{= \grad{^rf}{x_{j_1} \ldots \partial x_{j_r}}}$
+
+\begin{defin}{Мультииндексы}
+    $k = (k_1 \ldots k_n);\ k_1 \ldots k_n$ -- неотрицательные целые числа 
+
+    $k! := k_1!\ldots k_n!;\ h^k := h_1^{k_1} \ldots h_n^{k_n};\ h \in \R^n$
+\end{defin}
+
+\begin{defin}{Высота мультииндекса}
+    $|k| := k_1 + \ldots + k_n$
+
+    $f^{(k)} := \frac{\partial^{|k|}f}{(\partial x_1)^{k_1} \ldots (\partial x_n)^{k_n}} = \grad{^{|k|}f}{^{k_1}x_1 \ldots \partial^{k_n}x_n}$
+\end{defin}
+
+\begin{defin}{Полиномиальный (мультиномиальный) коэффициент}
+    ${|k| \choose k_1 \ldots k_n} = \frac{|k|!}{k_1! \ldots k_n!} = \frac{|k|!}{k!}$
+
+    Это количество способов покрасить $|k|$ шариков в $n$ цветов так, чтобы было $k_1$ шариков первого цвета, $k_2$ шариков второго цвета итд 
+\end{defin}
+
+\begin{lem}{}
+    $f : D \to \R;\ f \in C^r(D);\ D$ -- открытое $\subset \R^n;\ [x, x + h] \subset D$
+
+    $F(t) := f(x + th);\ F : [0, 1] \to \R$
+
+    Тогда $F \in C^r[0, 1]$ и $F^{(l)}(t) = \sum\limits_{|k| = l}{l \choose k_1 \ldots k_n}f^{(k)}(x + th)h^k$ 
+\end{lem}
+
+\newpage 
+
+\textit{Доказательство:}
+
+$g : D \to \R;\ g \in C^1(D);\ G(t) := g(x + th)$
+
+$G'(t) = g'(x + th) \cdot \left(x + th\right)'_t = \left(g'_{x_1}(x + th) \ldots g'_{x_n}(x + th)\right)\begin{pmatrix}
+    h_1 \\
+    \vdots \\
+    h_n
+\end{pmatrix} = \sum\limits_{j = 1}^n g'_{x_j}(x + th)h_j$
+
+$t \to x + th = \begin{pmatrix}
+    x_1 + th_1 \\
+    \vdots \\
+    x_n + th_n
+\end{pmatrix}$
+
+Тогда $F^{(l)}(t) = \sum\limits_{i_l = 1}^n \sum\limits_{i_{l - 1} = 1}^n \ldots \sum\limits_{i_1 = 1}^n \grad{^lf}{x_{i_l} \ldots \partial x_{i_1}}(x + th)h_{i_l} \ldots h_{i_1} = (*)$
+
+$k := \left(\#\{j : i_j = 1\}, \ldots, \#\{j : i_j = n\}\right)$ -- мультииндекс
+
+$(*) = \sum\limits_{|k| = l} f^{(k)}(x + th)h^k{l \choose k_1 \ldots k_n} = \sum\limits_{|k| = l} \frac{l!}{k!}f^{(k)}(x + th)h^k$ -- запись покороче
+
+\begin{theo}{Многомерная формула Тейлора с остатком в форме Лагранжа}
+    $D \in \R^n$ открытое; $f \in C^{r + 1}(D); f : D \to \R;\ [a, x] \subset D;\ h := x - a$
+
+    Тогда существует $\Theta \in (0, 1)$ такое, что 
+
+    $f(x) = \sum\limits_{|k| \leq r} \frac{f^{(k)}(a)}{k!}h^k + \sum\limits_{|k| = r + 1} \frac{f^{(k)}(a + \Theta h)}{k!}h^k$
+\end{theo}
+
+\textit{Доказательство:}
+
+$F(t) := f(a + th)$. По лемме $F \in C^{r + 1}[0, 1]$
+
+Тогда $f(x) = f(a + h) = F(1) = \sum\limits_{i = 1}^r \frac{F^{(i)}(0)}{i!} \cdot 1^i + \frac{F^{(r + 1)}(\Theta)}{(r + 1)!} = (*)$ для некоторого $\Theta \in (0, 1)$
+
+$(*) = \sum\limits_{i = 1}^r \frac{1}{i!}\sum\limits_{|k| = i} \frac{i!}{k!}f^{(k)}(a)h^k + \frac{1}{(r + 1)!} \sum\limits_{|k| = r + 1} \frac{(r + 1)!}{k!}f^{(k)}(a + \Theta h)h^k$ и посокращать дроби 
+
+\begin{defin}{Многочлен Тейлора степени $r$ в точке $a$ для функции $f$}
+    $\sum\limits_{|k| \leq r} \frac{f^{(k)}(a)}{k!}(x - a)^k$
+\end{defin}
+
+\begin{theo}{Многомерная формула Тейлора с остатком в форме Пеано}
+    $f \in C^r(D);\ f : D \to \R;\ D$ -- открытое $\subset \R^n;\ a \in D$
+
+    Тогда при $x \to a$
+
+    $f(x) = \sum\limits_{|k| \leq r} \frac{f^{(k)}(a)}{k!}(x - a)^k + o(\parl{x - a}^r)$
+\end{theo}
+
+\textit{Доказательство:}
+
+$h := x - a$
+
+$f(x) = \sum\limits_{|k| \leq r - 1} \frac{f^{(k)}(a)}{k!}(x - a)^k + \sum\limits_{|k| = r} \frac{f^{(k)}(a + \Theta(x - a))}{k!}(x - a)^k = \sum\limits_{|k| \leq r} \frac{f^{(k)}(a)}{k!}h^k + \underbrace{\sum\limits_{|k| = r} \frac{f^{(k)}(a + \Theta h) - f^{(k)}(a)}{k!}h^k}_{\stackrel{?}{=} o(\parl{h}^r)}$
+
+$\frac{|h^k|}{\parl{h}^r} \leq 1$, где $r = |k|;\ \frac{|h_1^{k_1} \ldots h_n^{k_n}|}{\parl{h}^{k_1 + \ldots + k_n}} \leq 1$
+
+Осталось понять, что $\frac{f^{(k)}(a + \Theta h) - f^{(k)}(a)}{k!} \xrightarrow[h \to 0]{} 0$ -- это из непрерывности $f^{(k)}$
+
+\end{document}

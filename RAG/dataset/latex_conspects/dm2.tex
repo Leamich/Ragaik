@@ -1,0 +1,895 @@
+\documentclass[12pt]{article}
+\usepackage{config}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{subfiles}
+\pgfplotsset{compat=1.18}
+
+\begin{document}
+
+\tableofcontents
+\newpage
+
+\begin{flushright}
+    Конспект Шорохова Сергея
+
+    Если нашли опечатку/ошибку - пишите @le9endwp
+\end{flushright}
+
+\section{План на 3 модуль (или 2 сем...)}
+
+\begin{enumerate}
+    \item Множества
+    \item ЧУМ
+    \item Исчисление высказываний
+    \item Исчисление предикатов
+    \item Теория кодирования
+\end{enumerate}
+
+Почитать можно А. Х. Шеня
+
+\section{Множества}
+
+\begin{enumerate}
+    \item $x \in A;\ y \not \in A$
+    \item Арифметика множеств: $\bigcup, \bigcap, \backslash, \triangle$
+    \item $\varnothing$
+    \item $A = \{ a, b, c \};\ B = \{d\} \bigcup A$
+    \item $A \subset B \Leftrightarrow \forall x \in A \Rightarrow x \in B$
+\end{enumerate}
+
+\begin{Remark}{}
+    Чисто синтаксически вот такой бред: $\{ \varnothing, \{ \varnothing \}, \{ \varnothing, \{ \varnothing \} \} \}$ имеет смысл
+\end{Remark}
+
+$X$ -- множество: $X \neq \varnothing$. Рассмотрим $x \in X$
+
+$Term(x)$ -- проблема, потому что мы не знаем, к каким характеристикам обращаемся и вообще не понятно, что мы выбрали
+
+Спасают аксиомы ZFC
+
+\begin{defin}{Равномощность}
+    $A, B$ -- равномощны $\Leftrightarrow \exists f : A \rightarrow B$ -- биекция
+
+    А что с бесконечностями? Давайте возьмем функцию $f : N \rightarrow 2N$
+
+    Хотя множество четных чисел -- подмножество всех, но они равномощны, т.к. $f$ -- биекция
+\end{defin}
+
+\begin{defin}{Характеристическая функция}
+    $X$ -- множество. Есть $\chi : X \rightarrow \{0, 1\}$, т.е. $\chi(x) = \begin{cases}
+        1,\ x \in X \\
+        0,\ x \not\in X
+    \end{cases}$ -- характеристическая функция
+\end{defin}
+
+А пусть $X \subset Y$
+
+\begin{itemize}
+    \item произведение характеристических функций $X$ и $Y$ -- это характеристическая функция $X \bigcap Y$
+    \item $1 - \chi(x)$ -- характеристическая функция дополнения $X$
+    \item $max(\chi_X(x), \chi_Y(x))$ -- характеристическая функция $X \bigcup Y$
+    \item $|X| = \sum\limits_{x \in Y} \chi_X(x)$
+\end{itemize}
+
+\begin{Example}{}
+    Возьмем $2^N;\ B = \{ 0, 1 \}$ и $B^\infty$
+
+    Равномощны ли они? Берем $x \in 2^N$, теперь $b_i = \begin{cases}
+        1,\ i \in x \\
+        0,\ i \not\in x
+    \end{cases}$
+\end{Example}
+
+\begin{defin}{Счетное множество}
+    $X$ -- счетное, если $X$ равномощно $N$
+\end{defin}
+
+\begin{Example}{}
+    Например, множество целых чисел счетно, т.к. $x \in Z \Rightarrow \begin{cases}
+        2x,\ x \geq 0 \\
+        -2x + 1,\ x < 0
+    \end{cases}$
+\end{Example}
+
+\begin{propos}{}
+    \begin{enumerate}
+        \item $X$ -- счетно и $Y \subset X \Rightarrow Y$ или счетно, или конечно
+        \item $X$ -- бесконечно. Тогда $\exists Y$ -- счетное: $Y \subset X$
+        \item $X_1, \ldots X_n \ldots$ -- конечные или счетные. Тогда $\bigcup X_i$ -- конечное или счетное
+    \end{enumerate}
+\end{propos}
+
+\begin{Proof}{}
+
+\begin{enumerate}
+    \item $X$ -- счетно, т.е. соответствует последовательности $\{x_1, \ldots x_n \ldots\} = \xi$
+    
+    Возьмем $\xi \cdot \chi(Y)$. Т.е. что-то типа $\{ 0, 0 \ldots x_{i_1}, 0 \ldots x_{i_2}, 0 \ldots \}$ который равносилен $y_1, y_2, \ldots y_n \ldots = Y$
+
+    В свою очередь эта штука либо конечна, либо счетна, т.к. счетен $X$
+
+    \item Просто выбираем по 1 элементу из $X$. Если они кончатся на каком-то шаге -- $X$ не бесконечно
+    
+    \item Рисуем табличку. Берем элемент (1, 1), потом (1, 2), потом (2, 1), потом (1, 3) и так далее. То есть по диагоналям. Так переберем вообще все элементы (если не понятно, погуглите метод Кантора)
+\end{enumerate}
+
+\end{Proof}
+
+\begin{Exercise}{}
+    В качестве следствия попробуйте построить явную биекцию между множеством рациональных чисел и натуральных
+\end{Exercise}
+
+\begin{theo}{}
+    $A$ -- бесконечно, $B$ -- нбчс, т.е. $B$ -- конечно или счетно
+
+    $A \bigcup B$ равномощно $A$
+\end{theo}
+
+\textit{Доказательство:}
+
+$\exists Y \subset A$ -- счетное
+
+$Y$ и $Y \bigcup B$ -- равномощны
+
+$A \bigcup B = (A \backslash Y) \bigcup (Y \bigcup B)$
+
+$A = Y \bigcup (A \backslash Y)$
+
+Биекция между $Y$ и $Y \bigcup B$ сущесвтует, значит $A$ и $A \bigcup B$ равномощны
+
+\begin{Example}{}
+    $[0; 1]$ и $B^\infty$. Равномощны ли? Да. Последовательность единиц и нулей -- это бинпоиск числа
+
+    Проблема: $0,(9) = 1,(0)$
+
+    $b_1 \ldots b_k, 1, 1, 1, 1, (1)$
+
+    $(b_1 \ldots b_k) + 1$
+
+    $R \bigcup [0, 1] \sim B^{\infty}$ и $R \bigcup [0, 1] \sim [0, 1] \Rightarrow [0, 1] \sim B^{\infty}$
+\end{Example}
+
+\begin{Example}{}
+    $[0, 1] \sim [0, 1] \times [0, 1]$
+
+    $0, a_1a_2 \ldots a_k \ldots$
+
+    $0, a_1a_3a_5 \ldots$ и $0, a_2a_4a_6 \ldots$
+
+    \begin{Exercise}{}
+        Проблема та же, что и в прошлом примере, но число уязвимых моментов кратно больше. Почините
+    \end{Exercise}
+\end{Example}
+
+\begin{theo}{Кантор-Бернштейн}
+    $A, B;\ A_1 \subset A;\ B_1 \subset B$
+
+    $A_1 \sim B, B_1 \sim A \Rightarrow A \sim B$
+\end{theo}
+
+\begin{Proof}{}
+
+$A$ имеет мощность не больше $B$. Существует какое-то отображение. Нужна его биективность. А где-то по пути может докажем еще и полный порядок
+
+$f: A \rightarrow B_1$ -- биекция
+
+$g : B \rightarrow A_1$ -- еще одна биекция
+
+Заметим, что $g(f(A)) = A_2$ -- биекция, более того этот процесс можно продолжить до бесконечности 
+
+То есть имеем $A \supset A_1 \supset A_2 \ldots$ и $A \sim A_2 \sim A_4 \ldots$ и $A_1 \sim A_3 \sim A_5 \sim \ldots$
+
+Возьмем просто много вложенных $C$-шек таких, что $C \rightarrow C_2 \rightarrow C_4 \ldots$ и $C_1 \rightarrow C_3 \ldots$ при какой-то биекции $h$
+
+Как построить биекцию из $C_6$ в $C_7$? Положим $D_i = C_i \setminus C_{i + 1}$. Тогда $C_0 = D_0 \bigcup D_1 \bigcup D_2 \ldots$
+
+При этом $C_1 = D_1 \bigcup D_2 \bigcup D_3 \ldots$
+
+$D_2 = C_2 \setminus C_3;\ D_0 = C_0 \setminus C_1$. Ну тогда $C_2 = D_2 \bigcup C_3$ и $C_0 = D_0 \bigcup C_1$
+
+При этом биекция $h$ все еще существует. Можем сопоставить $D_{2k} \rightarrow D_{2(k + 1)}$, а $D_{2k + 1} \rightarrow D_{2k + 1}$, т.е. построить биекцию между $C_0$ и $C_1$. Победа
+
+Явная биекция: $q(x) = \begin{cases}
+    x, x \in D_{2i + 1} \\
+    h(x), x \in D_{2i}
+\end{cases}$
+
+\end{Proof}
+
+\begin{theo}{Теорема Кантора}
+    $B^{\inf}$ -- не счетно
+\end{theo}
+
+\begin{Proof}{}
+
+Построили последовательность типа 
+
+\begin{enumerate}
+    \item $a_1, a_2 \ldots$
+    \item $b_1, b_2 \ldots$
+    \item $c_1, c_2 \ldots$
+\end{enumerate}
+
+Ну возьмем еще одну последовательность $a_1, b_2, c_3 \ldots$ -- она будет отличаться от всех предыдущих как минимум в одном элементе. Значит $B^{\inf}$ не счетно
+
+\end{Proof}
+
+\begin{theo}{Обобщенная теорема Кантора}
+    $\forall X,\ X \not\sim 2^X$
+\end{theo}
+
+\begin{Proof}{}
+
+Пусть $\exists \varphi : X \rightarrow 2^X$ -- биекция
+
+$Z = \{ x | x \not\in \varphi(x) \}$
+
+$Z \subset X$
+
+$\not\exists z : \varphi(z) = Z \Rightarrow z \not\in Z \Rightarrow z \in Z$
+
+\end{Proof}
+
+\begin{theo}{Следствие}
+    $|2^X| > |X|$
+
+    $\N, 2^{\N}, 2^{2^{\N}}, \ldots$
+
+    $\aleph_0, \aleph_1, \ldots$
+\end{theo}
+
+\begin{Remark}{}
+    Почему не существует множества всех множеств?
+
+    Пусть существует и называется $U$
+
+    Посмотрим на $U$ и $2^U$
+
+    По Кантору-Бернштейну $U \sim 2^U$, но по теореме Кантора $|U| < |2^U|$ ???? 
+\end{Remark}
+
+\begin{theo}{}
+    $A$ и $B$ -- множества
+
+    $|A \cup B| = |A| + |B| - |A \cap B|$ при $|A|, |B| < + \infty$
+
+    Если же $|A| = + \infty$, а $|B| < + \infty$, то $|A \cup B| = |A|$
+
+    Что если $|A| = + \infty$ и $|B| = + \infty$? Скажем, НУО $|A| \leq |B|$, тогда $|A \cup B| = |B|$
+
+\begin{Remark}{}
+    Вообще мы умеем еще и $|A \times B|$, но там разница будет только в конечных множествах
+\end{Remark}
+
+    Есть так же и возведение в степень. С нбчс работа очевидна, а вот с не нбчс уже не так просто
+
+    Что такое $|A|^{|B|}$? Такое описать нормально не получится
+
+    \begin{defin}{}
+        Нечто абстрактное и <<умозрительное>> -- $\aleph$
+
+        Так, например, $\aleph + n = \aleph$ и $\aleph \cdot n = \aleph$
+    \end{defin}
+\end{theo}
+
+\begin{defin}{$\geq$}
+    $X$ -- множество
+    
+    <<$\geq$>> $\subset X \times X$
+
+    \begin{enumerate}
+        \item $\forall x \in X \Rightarrow x \geq x$
+        \item $\forall x, y, z : x \geq y,\ y \geq z \Rightarrow x \geq z$
+        \item $\forall x, y : x \neq y,\ x \geq y \Rightarrow \overline{y \geq x}$
+        \item[$\tilde{3}$] $\forall x, y \in X : x \geq y,\ y \geq x \Rightarrow x = y$
+    \end{enumerate}
+\end{defin}
+
+\begin{theo}{Порядок}
+    Заведем отношение $\geq$. Если оно существует для всех пар множества, то это порядок, иначе -- частичный порядок
+
+    Заметим, что он нестрогий. Для строгого нужно добавить проверку на равенство
+\end{theo}
+
+\begin{defin}{Частично упорядоченное множество}
+    $(X, \geq_X)$ -- ЧУМ
+\end{defin}
+
+\begin{Example}{}
+    Взяли $\N$ и степенной порядок, т.е.
+
+    $a, b \in \N;\ \exists x \in N\ (x > 1)\ : \begin{cases}
+        a = x^k \\
+        b = x^m
+    \end{cases}$
+
+    $a \geq b \Leftrightarrow k \geq m$
+\end{Example}
+
+\begin{defin}{Индуцированный порядок}
+    Рассмотрим $Y \subset X$. Если пользоваться тем же отношением порядка на $Y \times Y$, то можно смотреть на $\geq_Y = (\geq_X) \cap (Y \times Y)$ -- индуцированный порядок
+\end{defin}
+
+\begin{Remark}{}
+    Можно и на $X \times Y$ ввести $\geq_{X \times Y} : (x, y) \geq (a, b) \Leftrightarrow \left[ \begin{gathered}
+        x \geq a \\
+        \begin{cases}
+            x < a \\
+            y \geq b
+        \end{cases}
+    \end{gathered} \right.$
+
+    Такой порядок называется лексикографическим (покоординатным), что в целом то же, что и $(X, \geq_X) + (Y, \geq_Y)$
+\end{Remark}
+
+\begin{defin}{Наибольший и максимальный элемент}
+    $x \in X$ -- наибольший элемент $\Leftrightarrow \forall y \in X : y < x$
+
+    $x \in X$. Если $\not\exists y \in X : y > x$, то $x$ -- максимальный элемент
+
+    \begin{Remark}{}
+        Наибольший элемент -- всегда максимальный, но не наоборот
+    \end{Remark}
+\end{defin}
+
+\begin{defin}{Изоморфизм}
+    $(X, \geq_X) \sim (Y, \geq_Y)$ -- изоморфизм, если $\exists f : X \rightarrow Y$ -- биекция, сохраняющая порядок
+\end{defin}
+
+Что можно сказать про $(\mathbb{R}, \geq_\mathbb{R})$? Можно построить биекцию $x \mapsto x + 1$ -- это автоморфизм
+
+А что с $\R_+, \geq_{\R_+}$? Тут уже не получится построить автоморфизм (т.к. из луча $(0, +\infty)$ уйдем в луч $(1, +\infty)$)
+
+\begin{Remark}{}
+    Из существования биекции не следует существование автоморфизма
+
+    Берем $X, Y;\ h : X \to Y$ -- биекция
+
+    И $\forall x, y \in X : x \geq y \Rightarrow h(x) \geq h(y)$
+
+    Смотрим на $\mathbb{Z}, \mathbb{Q}$. Пусть $\exists h : \mathbb{Z} \to \mathbb{Q}$ 
+
+    Рассмотрим двойку и тройку
+
+    $\not\exists x \in \mathbb{Z} : 2 < x < 3$
+
+    $h(2) = y_2;\ h(3) = y_3$
+
+    $h^{-1}(\frac{y_2 + y_3}{2}) = x$
+
+    Целого числа между 2 и 3 нет, но по биекции оно есть
+\end{Remark}
+
+\begin{defin}{Плотность}
+    $x$ -- плотная точка, если
+
+    $\begin{cases}
+        \forall y < x\ \exists z : y < z < x \\
+        \forall y > x\ \exists z : x < z < y
+    \end{cases}$
+\end{defin}
+
+\begin{Example}{}
+    Возьмем множество $\{0, \frac{1}{2}, \frac{1}{3}, \ldots \frac{1}{n} \ldots\}$. В нем плотная точка -- только 0
+\end{Example}
+
+\begin{theo}{}
+    $X$ -- всюду плотное (нет соседних элементов), счетное, без наибольшего и наименьшего элемента
+
+    Это значит, что $X \cong \mathbb{Q}$
+\end{theo}
+
+\begin{Proof}{}
+
+Возьмем $n$ точек из $X$ и $n$ точек из $\mathbb{Q}$. Построим между ними изоморфизм
+
+Теперь нам нужен изоморфизм из $n + 1$ отрезков из $X$ в $n + 1$ отрезок множества $\mathbb{Q}$. Далее идем рекурсивно
+
+Получим для точки что-то типа системы стягивающихся отрезков
+
+\end{Proof}
+
+\begin{Exercise}{}
+    Попробуйте придумать явный изоморфизм между $\mathbb{Q}$ и $\mathbb{Q} \cap (0, 1)$
+\end{Exercise}
+
+\begin{Remark}{}
+    $x \to x + 1$ -- автоморфизм $\mathbb{Z}$
+
+    $h(\N) \neq \N$
+
+    Пусть есть изоморфизм $g(\mathbb{Z}) \to \N$
+
+    Применим прошлую функцию и получим $h(g(\mathbb{Z})) \to h(\N)$
+
+    Но $g(h(\mathbb{Z})) = g(\mathbb{Z}) = \N$, а $h(\N) \neq \N$
+\end{Remark}
+
+\begin{nota}{}
+    $\forall m < n;\ A(m)$ -- истина $\Rightarrow A(n)$ (если $A(0)$)
+\end{nota}
+
+\begin{theo}{}
+    $X$ -- ЧУМ
+
+    \begin{enumerate}
+        \item $\forall Y \subset X;\ \exists \min Y$
+        \item $\not\exists x_1, x_2 \ldots x_n \ldots : x_1 > x_2 > x_3 > \ldots > x_n \ldots$
+        \item Для $X$ работает принцип индукции
+    \end{enumerate}
+\end{theo}
+
+\begin{Remark}{}
+    Переформулируем 3 пункт: $A$ -- какое-то произвольное свойство, тогда
+
+    $(\forall x(\forall y(y < x) \Rightarrow A(y)) \Rightarrow A(x)) \Rightarrow \forall x\ A(x)$
+\end{Remark}
+
+\begin{Proof}{}
+
+
+\begin{itemize}
+    \item[$2 \Rightarrow 1$] Пусть $\exists Y :$ в $Y$ нет минимального элемента
+    
+    Рассмотрим $X_1 \in Y \Rightarrow \exists x_2 < x_1 \Rightarrow \exists x_3 < x_2 \ldots$
+
+    \item[$1 \Rightarrow 2$] очев 
+    
+    \item[$1 \Rightarrow 3$] Пусть $Y \neq \varnothing;\ \forall y \in Y\ \overline{A}(y)$
+    
+    $X \setminus Y = A(x)$
+
+    $\exists y_0 = \min Y \Rightarrow \forall x < y_0\ A(x)$
+
+    Тут что-то было
+
+    \item[$3 \Rightarrow 1$] Пусть $\exists Y : \not\exists \min Y$
+    
+    $A(x) \sim x \notin Y$
+
+    Смотрим на какой-то $x \in Y$. $\forall y < x\ A(y)$
+
+    Дословно: если для какого-то $x$ выполнялось бы условие выше, то $x$ был минимальным, а минимального нет, значит $x$ нет
+\end{itemize}
+
+\end{Proof}
+
+
+\begin{rem}{Необоснованная индукция}
+    Это примеры, когда индукцию мы использовали, но что-то не так
+
+    \begin{enumerate}
+        \item Графы
+        \item Китайская теорема об остатках
+    \end{enumerate}
+
+    Что не так? На самом деле, например, в КТО мы опирались не на $\N$, а на $\N \times \N$. Надо доказать, что оно фундированное, тогда использование индукции обосновано
+\end{rem}
+
+\begin{Proof}{}
+
+$\langle a_1, b_1 \rangle < \langle a_2, b_2 \rangle \Leftrightarrow \left[ \begin{gathered}
+    a_1 < a_2 \\
+    \begin{cases}
+        a_1 = a_2 \\
+        b_1 < b_2
+    \end{cases}
+\end{gathered} \right.$
+
+Рассмотрим $A \subset X$
+
+$A_1 := \{ a | \langle a, b \rangle \in A \}$
+
+$A_1 \subset \N \Rightarrow \exists a_1$ -- наименьший элемент $A_1$
+
+$B_1 := \{b | \langle a_1, b \rangle \in A\}$
+
+$B_1 \subset \N \Rightarrow \exists b_1$ -- наименьший элемент $B_1$
+
+Иными словами, в $A$ есть элемент $\langle a_1, b_1 \rangle$. Про него мы знаем, что все остальные элементы из $A$ либо больше его по первой координате, либо равны с ним по первой и больше по второй
+
+Значит $\langle a_1, b_1 \rangle$ -- наименьший, а тогда $A$ -- фундированное
+
+\end{Proof}
+
+\begin{Remark}{}
+    Это работает для $\N^k\ \forall k \in \N$
+\end{Remark}
+
+\begin{theo}{}
+    А что с $\N + \N$?
+
+    Возьмем их как $x_1 \ldots x_n \ldots$ и $y_1 \ldots y_n \ldots$. Далее $\forall x_i\ \forall y_i\ x_i < y_i$
+
+    Давайте докажем, что это множество тоже фундированное
+\end{theo}
+
+\begin{Proof}{}
+
+Пусть $\exists a_1 \ldots a_n \ldots \in \N + \N : a_1 > a_2 > \ldots > a_n > \ldots$
+
+Возьмем $b_1 \ldots b_n \ldots \in \N_1$
+
+$\langle a_1 \ldots a_n \ldots \rangle \setminus \langle b_1 \ldots b_n \ldots \rangle$ -- бесконечное количество
+
+\end{Proof}
+
+
+\begin{Example}{Где используется?}
+    Например, если хотим две разных индукции про одно и то же множество
+\end{Example}
+
+\begin{defin}{Упорядоченное множество}
+    $X$ -- фундированное, $\rho$ -- линейный порядок
+
+    $(X, \rho)$ -- (вполне) упорядоченное множество, а $\rho$ в таком случае -- полный порядок
+\end{defin}
+
+\begin{theo}{Свойства}
+    \begin{enumerate}
+        \item $\forall x \in X\ \exists y \in X : y > x$ и $\not\exists z : y > z > x$
+        \item Если $A \subset X$ и $A$ ограниченное, то у него есть наибольший элемент (супремум достижим)
+        
+        А правда ли это? Смотрите попытку доказать
+    \end{enumerate}
+\end{theo}
+
+\begin{Proof}{}
+
+\begin{enumerate}
+    \item На уровне очев 
+    \item $\forall A \subset X : A$ -- ограничено 
+    
+    $\exists u = \sup A$
+
+    $\exists a = \min \{ x | x > A \}$
+
+    А потом оказалось, что вообще нет. Возьмем $\N + \N$. Ноль второго подмножество будет больше любого элемента первого, но недостижим в нем
+\end{enumerate}
+
+\end{Proof}
+
+\begin{Exercise}{}
+    Построить вполне упорядоченное множество для рациональных чисел (нужен порядок, гарантирующий фундированность)
+\end{Exercise}
+
+Начнем обозначать элементы какого-то множества как $0, 1, 2 \ldots$. Получили отображение на натуральный ряд. Если множество конечно, то процесс оборвется, иначе получим в точности натуральный ряд
+
+Более того, можем вполне делать $\omega_1, \omega_1 + 1, \omega_1 + 2 \ldots$. А можем еще и $\omega_2, \omega_2 + 1, \omega_2 + 2 \ldots$
+
+\begin{defin}{Начальный отрезок}
+    $A$ -- вполне упорядоченное множество
+
+    Пусть $A = B \sqcup C$. При этом $\forall b \in B\ \forall c \in C\ b < c$
+
+    Тогда $B$ -- начальный отрезок $A$
+\end{defin}
+
+\begin{nota}{Свойства:}
+    \begin{enumerate}
+        \item Начальный отрезок -- вполне упорядоченное множество
+        \item Начальный отрезок начального отрезка -- начальный отрезок
+        \item Если рассмотрим $\{B | B \text{ -- начальный отрезок } A\}$, то это множество упорядочено по включению
+    \end{enumerate}
+\end{nota}
+
+\begin{defin}{Трансфинитная индукция}
+    У нас есть индукция с шагом $n \to n + 1$, что в целом равносильно рекурсивному доказательству вида $A_{n + 1} \leftarrow A_n$ + замкнуть какой-то базой
+
+    А что если попытаться сделать $A_x \leftarrow A_{[0, x_1]};\ x_1 < x$?
+
+    Индукция, которую получим из такой рекурсии будет трансфинитной 
+\end{defin}
+
+\begin{theo}{Теорема Цермело}
+    На любом множестве можно ввести такое отношение порядка, что множество станет вполне упорядоченным
+\end{theo}
+
+\begin{Remark}{}
+    Доказывается она как эквивалентная аксиоме выбора
+\end{Remark}
+
+\section{Логика и исчисление высказываний}
+
+\begin{defin}{Высказывание}
+    Любому высказыванию можем сопоставить ровно один элемент из множества 
+    
+    $\{T, F\} =: B$ -- истина или ложь
+\end{defin}
+
+\begin{tabular}{cc|c|c}
+    $A$ & $B$ & $A \lor B$ & $A \land B$ \\
+    \hline
+    1 & 1 & 1 & 1 \\
+    1 & 0 & 1 & 0 \\
+    0 & 1 & 1 & 0 \\
+    0 & 0 & 0 & 0
+\end{tabular}
+
+\begin{defin}{Пропозициональная формула}
+    $A$ -- пропозициональная формула
+
+    \begin{enumerate}
+        \item $x_i$ -- пропозициональная переменная $\Rightarrow A$ -- пропозициональная формула
+        \item $A$ -- пропозициональная формула $\Rightarrow \overline{A}$ -- пропозициональная формула
+        \item $A, B$ -- пропозициональные формулы $\Rightarrow (A \lor B), (A \land B), (A \rightarrow B), (A \Leftrightarrow B)$ -- пропозициональные формулы
+    \end{enumerate}
+\end{defin}
+
+\begin{defin}{Тавтология}
+    Формула, которая истинна при любых значениях переменных
+\end{defin}
+
+\begin{Example}{}
+    $A \lor \overline{A}$ 
+\end{Example}
+
+\begin{Remark}{}
+    Все хорошо только если $A$ -- пропозициональная переменная. Если это формула, то нужно аккуратно доказывать тавтологичность
+
+    Попробуем доказать
+\end{Remark}
+
+\begin{Proof}{}
+
+$A = \overline{B}$
+
+Получили $\overline{B} \lor \overline{\overline{B}}$. Попали в рекурсию
+
+\newpage
+
+$x_1 \ldots x_n$ -- переменные на $B$
+
+$f : B^n \to B$
+
+$f(x_1 \ldots x_n)$
+
+\end{Proof}
+
+
+\begin{defin}{Полный набор связок}
+    Набор связок называется полным, если с его помощью можно выразить любую функцию
+\end{defin}
+
+\begin{Example}{}
+    Система связок $\{\land, \lor\}$ -- неполная, т.к. нет способа получить $f(0 \ldots 0) \mapsto 1$
+\end{Example}
+
+\begin{lem}{Лемма об однообразности разбора}
+    $\forall A$ -- пропозициональная формула : $A$ -- не пропозициональная переменная 
+    
+    $\exists!$ представление в виде $\left[ \begin{gathered}
+        B \lor C \\
+        B \land C \\
+        B \to C \\
+        \overline{B}
+    \end{gathered} \right.$
+\end{lem}
+
+\begin{defin}{Скобочный итог}
+    $c_1 \ldots c_k$
+
+    Скобочный итог($i$) = $N_\text{откр}(i) - N_\text{закр}(i)$
+\end{defin}
+
+\begin{defin}{Полная система связок}
+    Система связок в пропозициональных формулах называется полной, если с ее помощью можно выразить любую пропозициональную формулу
+\end{defin}
+
+$x_1 \ldots x_n$ -- переменные
+
+$f(0 \ldots 0) = f_1$
+
+$f(0 \ldots 0 1) = f_2$
+
+$f(1 \ldots 1) = f_{2^n}$
+
+$(\overline{x_1} \land \overline{x_2} \land \ldots \land \overline{x_n})$ -- истинно только если подставили все нули
+
+$(\overline{x_1} \land \overline{x_2} \land \ldots \land x_n)$ -- истинно только если подставили все нули, кроме последнего
+
+Делаем так вплоть до $(x_1 \ldots x_n)$
+
+Теперь скажем, что берем $n$-ую скобку только если $f_n$ -- истина. Объединяем все через $\lor$
+
+\begin{defin}{КНФ}
+    Можем $\begin{pmatrix}
+        x_1 & \ldots & x_k & f \\
+        0 & \ldots & 0 & f_1 \\
+        0 & \ldots & 1 & f_2 \\
+        \ldots & \ldots & \ldots & \ldots \\
+        1 & \ldots & 1 & f_{2^n}
+    \end{pmatrix}$
+    
+    Если $f_i = 1$, то берем $x_1 \land x_2 \land \overline{x_3} \ldots \land x_k$ (если $x_i = 0$, то берем $\overline{x_i}$)
+    
+    Делаем $\bigvee$ по всем $i$ таким, что $f_i = 1$
+    
+    Это конъюнктивная нормальная форма
+\end{defin}
+
+\begin{defin}{Моном}
+    $\bigwedge x_i$ -- моном
+\end{defin}
+
+\begin{defin}{Полином Жегалкина}
+    Если сделаем моном на $\oplus$, то получим полином Жегалкина
+\end{defin}
+
+\begin{theo}{}
+    Любую булеву функцию можно представить в виде полинома Жегалкина
+\end{theo}
+
+\begin{Proof}{}
+
+$\overline{A} = A \oplus 1$
+
+$A \lor B = A \oplus B \oplus (A \land B)$
+
+$A \land B = AB$ -- это можно честно перемножить
+
+\end{Proof}
+
+\begin{theo}{Критерий Поста}
+    Система связок полна $\Leftrightarrow$ она не входит ни в один из 5 классов:
+
+    \begin{enumerate}
+        \item Монотонные функции
+        
+        Есть функция $f$, она монотонная, если 
+        
+        $a_1 \ldots a_k \geq b_1 \ldots b_k \Leftrightarrow f(a_1 \ldots a_k) \geq f(b_1 \ldots b_k)$
+
+        \item Функции, сохраняющие 0
+        \item Функции, сохраняющие 1
+        \item Линейные функции 
+        \item Самодвойственные функции
+        
+        $f(\overline{x_1} \ldots \overline{x_k}) = \overline{f(x_1 \ldots x_k)}$
+    \end{enumerate}
+\end{theo}
+
+\begin{Proof}{}
+
+$f$ -- не сохраняет 0
+
+$f(0 \ldots 0) = 1$
+
+$f(1 \ldots 1) = \left[ \begin{gathered}
+    0 \\
+    1
+\end{gathered} \right.$
+
+$g$ -- не сохраняет 1
+
+$g(0 \ldots 0) = \left[ \begin{gathered}
+    0 \\
+    1
+\end{gathered} \right.$
+
+$g(1 \ldots 1) = 1$
+
+$h(1, 0 \ldots 0) = 0$
+
+$h(0, 0 \ldots 0) = 1$
+
+То есть даже из двух констант умеем получать отрицание
+
+$P(x_1 \ldots x_k)$ -- нелинейная
+
+НУО $P(x_1 \ldots x_k) = x_1x_2A(x_3 \ldots x_k) \oplus x_1B(x_3 \ldots x_k) \oplus x_2C(x_3 \ldots x_k) \oplus D(x_3 \ldots x_k)$
+
+Зафиксируем набор $\alpha = x_3 \ldots x_k : A(\alpha) = 1$
+
+$P(x_1, x_2, \alpha) = \begin{cases}
+    x_1x_2 \\
+    x_1x_2 \oplus x_1 \\
+    x_1x_2 \oplus x_2 \\
+    x_1x_2 \oplus x_1 \oplus x_2 \\
+    x_1x_2 \oplus 1 \\
+    x_1x_1 \oplus x_1 \oplus 1 \\
+    x_1x_2 \oplus x_2 \oplus 1 \\
+    x_1x_2 \oplus x_1 \oplus x_2 \oplus 1
+\end{cases}$
+
+А тут уже есть и $\land$, и $\lor$, значит есть полная система связок, значит доказали
+
+\end{Proof}
+
+\begin{defin}{}
+    $C_b(f)$ -- минимальный размер схемы элементов из $B$ для вычисления $f$
+\end{defin}
+
+\begin{Remark}{}
+    $\exists \lambda$
+
+    $C_{B_1}(f) \leq \lambda C_{B_2}(f)$
+
+    $C_{B_2}(f) \leq \lambda C_{B_1}(f)$
+\end{Remark}
+
+\begin{nota}{}
+    $X = x_1 \ldots x_k$
+
+    $Y = y_1 \ldots y_k$ (НУО равны, иначе к меньше в начало докидаем нули)
+
+    Хотим функцию Compare. Какого она может быть размера?
+\end{nota}
+
+\begin{theo}{Список аксиом}
+    \begin{enumerate}
+        \item $A \to (B \to A)$
+        \item $(A \to (B \to C)) \to ((A \to B) \to (A \to C))$
+        \item $(A \land B) \to A$
+        \item $(A \land B) \to B$
+        \item $A \to (B \to (A \land B))$
+        \item $A \to (A \lor B)$
+        \item $B \to (A \lor B)$
+        \item $(A \to C) \to ((B \to C) \to ((A \lor B) \to C))$
+        \item $\neg A \to \overline{A}$
+        \item $(A \to B) \to ((A \to \neg B) \to \neg A)$
+        \item $A \lor \neg A$
+    \end{enumerate}
+\end{theo}
+
+\begin{Remark}{}
+    К этому набору аксиом (являющихся тавтологиями) добавим правило вывода -- modus ponens. Таким образом получим всю теорию исчисления высказываний
+\end{Remark}
+
+\begin{theo}{Теорема о корректности исчисления высказываний}
+    Любая теорема является тавтологией
+\end{theo}
+
+\begin{Proof}{}
+
+Для доказательства нужно доказать, что это все действительно тавтологии + доказать правило вывода
+
+\end{Proof}
+
+\begin{Exercise}{}
+    Доказать, что все это тавтологии
+\end{Exercise}
+
+\begin{theo}{Теорема о полноте исчисления высказываний}
+    Любая тавтология является теоремой исчисления высказываний
+\end{theo}
+
+\begin{lem}{}
+    $D$ -- некоторая формула $\Rightarrow (D \to D)$ -- теорема
+\end{lem}
+
+\begin{defin}{Вывод}
+    $\Gamma$ -- некоторое множество формул
+
+    Вывод из $\Gamma$ -- конечная последовательность формул, все они 
+
+    \begin{enumerate}
+        \item Аксиомы
+        \item Элементы $\Gamma$
+        \item Получены из предыдущих по правилу вывода
+    \end{enumerate}
+\end{defin}
+
+\begin{defin}{Выводимость}
+    $\Gamma \vdash A$ -- $A$ выводима из $\Gamma$, т.е. является в ней последней формулой
+
+    Если $\Gamma = \varnothing$, то пишут просто $\vdash A$
+\end{defin}
+
+\begin{lem}{Лемма о дедукции}
+    $\Gamma \vdash A \to B \Leftrightarrow \Gamma \cup \{A\} \vdash B$
+\end{lem}
+
+\begin{Proof}{}
+
+\begin{itemize}
+    \item[$\Rightarrow$] $\Gamma \cup \{A\} \vdash A \to B$
+    
+    $\Gamma \cup \{A\} \vdash A$. Тогда по MP $\Gamma \cup \{A\} \vdash B$
+\end{itemize}
+
+\end{Proof}
+
+
+\end{document}

@@ -1,0 +1,828 @@
+<div class="flushright" markdown="1">
+
+Конспект Шорохова Сергея
+
+Если нашли опечатку/ошибку - пишите @le9endwp
+
+</div>
+
+
+## §0. Методы математического доказательства
+
+1.  Индукция
+
+    1.  База индукции
+
+    2.  Индукционное предположение
+
+    3.  Индукционный переход
+
+    $P_1, P_2 \ldots P_n$
+
+    - 1 аксиома индукции
+
+      $\begin{cases}
+                  P_1 \text{-- истина} \\
+                  \forall i P_i \rightarrow P_{i_1}
+              \end{cases}$ $\Rightarrow \forall i$ $P_i$ - истина
+
+    - 2 аксиома индукции
+
+      $\begin{cases}
+                  P_1 \text{-- истина} \\
+                  \forall i P_1 \ldots P_i \rightarrow P_{i+1}
+              \end{cases}$ $\Rightarrow \forall i$ $P_i$ - истина
+
+2.  "От противного"
+
+    $A \rightarrow B$ $\overline{B} \rightarrow \overline{A}$
+
+3.  Полный перебор
+
+4.  Прямой вывод
+
+    $A \rightarrow B \rightarrow C \rightarrow D$, от $A$ к $D$
+
+5.  Контрпример
+
+6.  Комбинаторное доказательство (сведение к известной задаче)
+
+7.  Двусторонние оценки
+
+    $\begin{cases}
+            A \geq B \\
+            B \geq A
+        \end{cases}$ $\Rightarrow A = B$
+
+8.  Оценка + пример
+
+9.  Дедукция + рекурсия
+
+    $A \rightarrow B \rightarrow C \rightarrow D$, от $D$ к $A$
+
+10. Принцип Дирихле
+
+    Биективное отображение для множеств разного размера оставит "лишние"
+    элементы в одном из них
+
+11. Инвариант
+
+    **Ex**. Доказательство баланса красно-черного дерева
+
+12. Доказательство эквивалентных утверждений
+
+    $A \rightarrow B \rightarrow C \rightarrow D \rightarrow A$
+
+## §1. Множества
+
+**Def.** $|A|$ - мощность множества (количество элементов в множестве
+
+$A \bigcap B = \emptyset \Rightarrow |A \bigcup B| = |A| + |B|$
+
+- $A_1 \ldots A_n$
+
+  $\forall i \neq j$ $A_i \bigcap A_j = \emptyset$
+
+  $|\bigcup\limits_{i = 1}^{n} A_i| = \sum\limits_{i=1}^{n} |A_i|$
+
+- $A_1 \ldots A_n$
+
+  $|\mathop{\times}\limits_{i=1}^{n} A_i| = \prod\limits_{i=1}^{n} |A_i|$
+
+**Def.** $|A \bigcup B| = |A| + |B| - |A \bigcap B|$ - правило
+включения-исплючения
+
+
+Доказательство
+
+$A = (A \backslash B) \bigcup (A \bigcap B)$
+
+$|A| = |A \backslash B| + |A \bigcap B|$
+
+$|B| = |B \backslash A| + |A \bigcap B|$
+
+$|A| + |B| = |A \backslash B| + |A \bigcap B| + |B \backslash A| + |A \bigcap B| = |(A \backslash B) \bigcup (A \bigcap B) \bigcup (B \backslash A)| = |A \bigcup B| + |A \bigcap B|$
+
+------------------------------------------------------------------------
+
+**Дома** обобщение для произвольного $n$
+
+$|A \bigcup B \bigcup C| = |A| + |B| + |C| - |A \bigcap B| - |A \bigcap C| - |B \bigcap C| + |A \bigcap B \bigcap C|$
+
+------------------------------------------------------------------------
+
+$L = \{ A, C, G, T\}$
+
+$|L^k| = |L|^k = 4^k$
+
+$\begin{cases}
+    f(n) = n \cdot f(n-1) \\ 
+    f(0) = 1
+\end{cases}$ – количество перестановок
+
+$n(n-1)\ldots(n-k+1) = A_n^k = \frac{n!}{(n-k)!} = C_n^k \cdot k!$
+
+$C_n^k = {n \choose k} = \frac{A_n^k}{k!} = \frac{n!}{k!(n-k)!}$
+
+$(a + b)^n = (a + b)(a + b) \ldots (a + b) = \sum\limits_{i=0}^n c_i a^i b^{n-i} = \sum\limits_{i=0}^n C_n^i a^i b^{n-i}$
+
+Если представить $a_1, a_2 \ldots a_n$ как двоичное число или из
+$(1 + 1)^n = \sum\limits_{i=0}^n C_n^i \cdot 1^i \cdot 1^{n-i} = \sum\limits_{i=0}^n C_n^i$
+
+Тогда $\sum\limits_{i=0}^n C_n^i = 2^n$
+
+Дома найти $\sum\limits_{k=0}^n (-1)^k C_n^k$
+
+Посчитаем рекуррентно:
+
+В $a_1 \ldots a_n$ $a_1$ либо берем, либо не берем
+
+- Если берем, то $C_{n-1}^{k-1}$
+
+- Если не берем, то $C_{n-1}^k$
+
+Значит $C_n^k = C_{n-1}^{k-1} + C_{n-1}^k$
+
+Другое доказательство:
+$C_{n-1}^k + C_{n-1}^{k-1} = \frac{(n-1)!}{k!(n-1-k)!} + \frac{(n-1)!}{(k-1)!(n-k)!} = \frac{(n-1)!}{(k-1)!(n-1-k)!}(\frac{1}{k} + \frac{1}{n-k}) = \frac{(n-1)!}{(k-1)!(n-1-k)!} \cdot \frac{n}{k(n-k)} = \frac{n!}{k!(n-k)!} = C_n^k$
+
+Воспользоваться суммой можно из [треугольника
+Паскаля](https://ptri1.tripod.com/ptreal1r.gif). Его можно представить и
+в виде квадрата. Тогда можем посчитать $C_n^i$ за $i(n-i+1) - (n+1)$, по
+формуле только $n!$ считали бы $lgn \cdot n$
+
+**Свойства:**
+
+1.  $C_n^0 = C_n^n = 1$
+
+2.  $C_n^i = C_n^{n-i}$
+
+    $\frac{n!}{k!(n-k)!} = \frac{n!}{(n-n+k)!(n-k)!}$
+
+**Задача**
+
+Пусть есть $n$ книг и $k$ полок. Способов разделить на полки (=
+поставить $k-1$ перегородок)
+$\frac{(n+1)(n+2) \ldots (n+k-1)}{(k-1)!} = \frac{A_{n+k-1}^{k-1}}{(k-1)!} = C_{n+k-1}^{k-1}$
+
+**Def.** Отношения $A, B$ $\rho \subset A \times B$
+
+$a \rho b$ $\forall a \in A, b \in B$, если $(a, b) \in \rho$
+
+**Свойства:**
+
+1.  $\forall a \in A$ $a \rho a$ - рефлексивность
+
+2.  $\forall a, b \in A$ $a \rho b \Rightarrow b \rho a$ -
+    симметричность
+
+3.  $\forall a, b, c \in A$ $\begin{cases}
+            a \rho b \\
+            b \rho c
+        \end{cases} \Rightarrow a \rho c$ - транзитивность
+
+Если выполняются все 3, то это оношение эквивалентности. Все элементы
+разобьются на классы эквивалентности
+
+$A, B$;
+$f: A \rightarrow B \Leftrightarrow \forall a \in A \exists b \in B:(a, b) \in f$
+
+**Def.**
+
+Пусть $A$ - позиции в слове, $B$ - символы алфавита
+
+Количество отображений - количество строк длины $|A|$
+
+$f(a) = f(b) \Rightarrow a = b$ - инъективность
+
+$\forall b \in B \exists a \in A: f(a) = b$ - сюръективность
+
+Если $f: A \rightarrow B$ - биективно, то $|A| = |B|$, при этом
+количество биекций - количество перестановок
+
+Количество инъекций - $A_n^k$
+
+$A, B$ – конечные множества
+
+Отображение – правило, сопоставляющее $a \in A$ $b \in B$, т.е.
+
+$f: A \rightarrow B$
+
+$\forall x \in A$ $\exists y : f(x) = y$
+
+$\begin{gathered}
+    (x, f(x)) \\
+    x \in A; y = f(x) \in B
+\end{gathered}$ – график отображений
+
+$|B|^{|A|}$ – количество отображений
+
+$Im(M) = \{ f(x) | x \in M\}$ – образ $M$
+
+Виды отображений:
+
+- Инъективные
+
+  $f(x_1) = f(x_2) \Rightarrow x_1 = x_2$
+
+  $|Im(A)| = |A|$
+
+  На $|B|$ позиций $|A|$ элементов
+
+  $A_{|B|}^{|A|}$ – количество отображений
+
+- Сюръективные
+
+  $\forall y \in B \exists x \in A: f(x) = y$
+
+  $Im(A) = B$
+
+  $\forall y \in B$; $P_y = \{ x | f(x) = y\} \neq \emptyset$
+
+  $Im(P_y) = \{y\}$
+
+  $\hat{S} (n, k)$ – количество сюръективных отображений
+  $A \rightarrow B, |A| = n, |B| = k$
+
+$k^n = \sum\limits^k_{i=0} (\hat{S}(n, i) \cdot C_k^i)$
+
+$\begin{cases}
+    f_0, f_1 \ldots; g_0, g_1 \ldots \\
+    f_k = \sum\limits_i C_k^i g_i
+\end{cases}$ $\Rightarrow g_i = \sum\limits_i^k (-1)^{k-i} C_k^i f_i$,
+если докажем, получим $\hat{S}(n,k) = \sum (-1)^{k-i} C_k^i k^i$
+
+**Доказательство**
+
+TODO, из-за отсутствия практик пока не доказываем
+
+$\frac{\hat{S}(n,k)}{k!} = S(n,k)$ – число Стирлинга первого рода
+
+$k$ предметов (множество $X$), $n$ ящиков (множество $Y$)
+
+| X | Y | Произвольно | $\leq 1$ | $\geq 1$ |
+|:--:|:--:|:--:|:--:|:--:|
+| Различимы | Различимы | $k^n$ | $A_k^n$ | $\hat{S}(n, k)$ |
+| Неразличимы | Различимы | $C_{n+k}^k$ | $C_k^n$ | $C_{k-1}^{n-1}$ |
+| Различимы | Неразличимы | $B(n, k)$ | $\begin{gathered} 0, k > n \\ 1, k \leq n \end{gathered}$ | $S(n, k)$ |
+
+$B(n, k) = \sum\limits_i^n S(i, k)$
+
+# Рекуррентные соотношения
+
+$f_{n+m} = a_0f_n + a_1f_{n+1} + \ldots a_{m-1}f_{n+m-1}$
+
+$f_0 \ldots f_{n-1}$
+
+Прогой рекурсия удобно преображается в динамику (без проги нет)
+
+**Числа Фиббоначи:** $f_{n+2} = f_{n+1} + f_n$
+
+$f_0 = 0\ f_1 = 1$
+
+Явная формула (сложно):
+$\frac{1}{\sqrt{5}}((\frac{1 + \sqrt{5}}{2})^n - (\frac{1 - \sqrt{5}}{2})^n)$
+
+**Доказательство**
+
+База $n = 0, 1$ – верно
+
+Переход $n \rightarrow n + 1$
+
+$f_{n+2} = \frac{1}{\sqrt{5}}((\frac{1 + \sqrt{5}}{2})^n(\frac{1 + \sqrt{5}}{2} + 1) - (\frac{1 - \sqrt{5}}{2})^n(\frac{1 - \sqrt{5}}{2} + 1))$
+
+$\frac{3 + \sqrt{5}}{2} = (\frac{1 + \sqrt{5}}{2})^2 = \frac{1 + 5 + 2 \sqrt{5}}{4}$
+
+$f_n = \lambda^n;\ \lambda \neq 0$
+
+$\lambda^{n+m} = a_0\lambda^n \ldots a_{m-1}\lambda^{n+m-1}$
+
+$\lambda^m = a_0 + \ldots + a_{m-1}\lambda^{m-1}$
+
+$\lambda_{1\ldots n} =$
+
+$f_n = c_1\lambda_1^n + c_2\lambda_2^n \ldots c_m\lambda_m^n$ –
+характеристическое уравнение
+
+**На примере чисел Фиббоначи**
+
+$\lambda^2 = \lambda + 1$
+
+$\lambda^2 - \lambda - 1 = 0$
+
+$\lambda_{1, 2} = \frac{1 \pm \sqrt{1 + 4}}{2}$
+
+$f_n = c_1\lambda_1^n + c_2\lambda_2^n$
+
+$\begin{cases}
+    c_1 + c_2 = 0 \\
+    c_1(\frac{1 + \sqrt{5}}{2}) + c_2(\frac{1 - \sqrt{5}}{2}) = 1
+\end{cases}$
+
+$c_2 = -c_1$
+
+$c_1(\frac{1 + \sqrt{5}}{2} - \frac{1 - \sqrt{5}}{2}) = 1$
+
+$c_1 = \frac{1}{\sqrt{5}};\ c_2 = -\frac{1}{\sqrt{5}}$
+
+Корней не всегда $n$
+
+Для $f_{n+2} = 4f_{n+1} - 4f_n$ неправда (корни кратные)
+
+Что делать?
+
+Дифференцируем!
+
+$(n+m)\lambda^{n+m-1} = a_0n\lambda^{n-1} \ldots a_{m-1}(n+m-1)\lambda^{n+m-2}$
+
+$c_1\lambda_1^n + c_2n\lambda_2^{n-1}$ – может быть решением
+
+$\lambda_{1,2} = 2$
+
+$c_12^n + c_22^{n-1}n$
+
+$\begin{cases}
+    c_1 + 0 = 0 \\
+    c_1\cdot 2 + c_2 \cdot 2^0 \cdot 1 = 1
+\end{cases} \Rightarrow \begin{cases}
+    c_1 = 0 \\
+    c_2 = 1
+\end{cases}$
+
+Ответ: $2^{n-1} \cdot n$
+
+А что если корней нет вовсе?
+
+$f_{n+2} = 4f_{n+1} - 5f_n$
+
+$\lambda^2 - 4\lambda + 5 = 0$
+
+$\lambda_{1,2} = 2 \pm \sqrt{2^2 - 5} = 2 \pm i$
+
+Корни вида $c_1\lambda_1^n + c_2\lambda_2^n$ будут удовлетворять
+равенству, но в комплексных числах
+
+Из $f_n = c_1\lambda_1^n + c_2\lambda_2^n$ мнимая часть будет $= 0$
+
+$a \pm bi = 2(\cos{\alpha} + i\sin{\alpha}) = r \cdot e^{i\alpha}$
+
+$c_12^n \cos{\alpha}^2 + c_22^n\sin{\alpha}^2$
+
+$\frac{e^{i\alpha} + e^{-i\alpha}}{2} = \frac{\cos{\alpha} + i\sin{\alpha}}{2} + \frac{\cos{\alpha} - i\sin{\alpha}}{2} = \cos{\alpha}$
+
+$(\cos{\alpha} + i\sin{\alpha})^n = (e^{i\alpha})^n = e^{in\alpha} = \cos{n\alpha} + i\sin{n\alpha}$
+
+$c_1\cos{n\alpha} + c_2\sin{n\alpha}$
+
+$\lambda_{1,2} = 2 \pm \sqrt{2^2 - 5} = 2 \pm i = \sqrt{5}(\frac{2}{\sqrt{5}} \pm \frac{i}{\sqrt{5}})$
+
+$\alpha = a2\cos{\frac{2}{\sqrt{5}}}$
+
+$c_1\cos{n\alpha} + c_2\sin{n\alpha}$
+
+$f_n = a_1f_{n-1} + a_2f_{n-2} + 2^n$
+
+$\lambda_{1,2}$
+
+$f_n = c_1\lambda_1^n + c_2\lambda_2^n + K(n)$
+
+$K(n) - K(n-1) \cdot a_1 - K(n-2) \cdot a_2 = 2^n$
+
+$K(n) = W \cdot 2^n$
+
+$W \cdot 2^n - W \cdot 2^{n-1} \cdot a_1 - W \cdot 2^{n-2} \cdot a_2 = 2^n$
+
+$4W - 2a_1W - a_2W = 4$
+
+# Теория вероятностей
+
+## Классическая вероятность
+
+$P(\omega_i) = P_i$
+
+$P_i = \frac{|\text{успех}|}{\Omega}$
+
+**Свойства:**
+
+1.  $\sum P_i = 1;\ P(\Omega) = 1$
+
+2.  $A, B : A \bigcap B = \emptyset;\ P(A \bigcup B) = P(A) + P(B)$
+
+3.  $P(\Omega \backslash A) = 1 - P(A)$
+
+4.  $A \subseteq B;\ P(A) \leq P(B)$
+
+5.  $0 \leq P(A) \leq 1$
+
+**Def.** Случайность – разультат конкретных воздействий, влияние которых
+мы не можем объяснить
+
+## Частотный способ определения вероятности
+
+На определенном периоде считаем вероятность, на следующем периоде (их
+много) ситуация $\sim$ та же
+
+**Def.** Условная вероятность:
+$P(A|B) = \frac{P(A \bigcap B)}{P(B)};\ P \neq 0$
+
+**Def.** $A$ не зависит от $B$ если $P(A|B) = P(A)$
+
+**Def.** Незавитсимость совокупности:
+$P(A_{i_1} \ldots A_{i_k}) = \sqcap P(A_{i_j})$
+
+## Общее определение вероятности
+
+$\Omega$ – множетсво элементарных исходов
+
+$F$ – множество событий
+
+$P : F \rightarrow R$ – функция вероятности
+
+$F \subset 2^\Omega$
+
+1.  $\Omega \in F$
+
+2.  $\omega \in F \Rightarrow \Omega \backslash \omega = \overline{\omega} \in F$
+
+3.  $\omega_1, \omega_2 \in F \Rightarrow \omega_1 \bigcup \omega_2 \in F$
+
+4.  $\omega_1 \ldots \omega_n \ldots \in F \Rightarrow \bigcup\limits_{i=1}^\infty \omega_i \in F$
+
+Если выполняются 1-3 – это алгебра
+
+Если выполняются 1, 2, 3’ – это $\sigma$-алгебра
+
+1.  $P(\Omega) = 1$
+
+2.  $P(\omega) \geq 0$
+
+3.  $P(\bigcup \omega_i) = \sum P_i$, если
+    $\omega_i \bigcap \omega_j = 0$
+
+Как следствие:
+
+- $\omega \bigcup \overline{\omega} = \Omega$
+
+- $1 = P(\omega \bigcup \overline{\omega}) = P(\omega) + P(\overline{\omega})$
+
+- $P(0) = 0$
+
+**Def.** $(\Omega, F, P)$ – вероятностное пространство
+
+**Def.** Формула полной вероятности
+
+Пусть $\Omega = \Omega_1 \sqcap \Omega_2 \ldots \sqcap \Omega_n$
+
+$P(A) = P(A | \Omega_1) \cdot P(\Omega_1) + \ldots + P(A | \Omega_n) \cdot P(\Omega_n)$
+
+$A = A \bigcap \Omega = (A \bigcap \Omega_1) \bigcup \ldots \bigcup (A \bigcap \Omega_n)$
+
+$P(A | \Omega_1) = \frac{P(A \bigcap \Omega_1)}{P(\Omega_1)}$
+
+**Th.** Теорема (формула) Байеса
+
+$A, B$
+
+$P(A | B) = \frac{P(B|A) \cdot P(A)}{P(B)}$
+
+Для $x_i$:
+
+$p$ – успех; $1 - p$ – неудача
+
+$M_n(k) = P$(ровно $k$ успехов)
+
+$x_1 \ldots x_n$
+
+$M_n(K) = {n \choose k} p^k (1-p)^{n-k}$
+
+$M_n(0), M_n(1), \ldots M_n(n)$
+
+$M_n(a, b) = \sum\limits_{k=a}^b {n \choose k} p^k (1-p)^{n-k}$
+
+$\frac{M_n(k)}{M_n(k+1)} = \frac{{n \choose k} p^k (1-p)^{n-k}}{{n \choose k + 1} p^{k+1} (1-p)^{n-k-1}} = \frac{1-p}{p} \cdot \frac{\frac{n!}{k!(n-k)!}}{\frac{n!}{(k+1)!(n-k-1)!}} = \frac{1-p}{p} \cdot \frac{k+1}{n-k}$
+
+$\frac{(1-p)(k+1)}{p(n-k)} > 1$
+
+$(1-p)(k+1) > pn - pk$
+
+$1 - p + k - kp > pn - pk$
+
+$1 - p + k > pn$
+
+$k > pn - (1-p)$
+
+**Th.** Теорема Пуассона
+
+$\lambda = np$
+
+$\lambda = const$ при $n \rightarrow \infty$
+
+$M_n(k) \approx \frac{\lambda^k}{k!} e^{-\lambda}$
+
+Почему?
+
+$M_n(k) = \frac{n!}{k!(n-k)!} p^k (1-p)^{n-k} = \frac{1}{k!} \cdot n \cdot (n-1) \cdot \ldots \cdot (n-k+1) \cdot p^k \cdot (1-p)^{n-k} = \frac{1}{k!} (1 - \frac{1}{n}) \ldots (1 - \frac{k-1}{n}) \cdot \\ \cdot n^k \cdot p^k \cdot (1-p)^{n-k} = \frac{\lambda^k}{k!} e^{-\lambda}$
+
+Здесь используется
+$(1-p)^{n-k} = (1 - \frac{\lambda}{n})^{n-k} = \frac{(1 - \frac{\lambda}{n})^n}{(1 - \frac{\lambda}{n})^k} \rightarrow e^{-\lambda}$
+
+**Th.** Локальная теорема Муавра-Лапласа
+
+$P_n(k);\ x_n = \frac{k -np}{\sqrt{np(1-p)}}$. Пусть при
+$\begin{gathered}
+    n \rightarrow \\
+    k \rightarrow
+\end{gathered} \infty;\ x_k$ не ограничена
+
+$\sqrt{np(1-p)} \cdot P_n(k) \approx \frac{1}{\sqrt{\lambda \pi}} e^{-\frac{x_n^2}{2}}$
+
+$k! \approx \sqrt{2\pi k} (\frac{k}{e})^k$ – формула Стирлинга
+
+$ln(1+z) = z - \frac{z^2}{2} + o(z^2)$
+
+$|\frac{k-np}{\sqrt{np(1-p)}}| < c \Rightarrow k < np \pm \sqrt{np(1-p)} \cdot c$
+
+$q = 1 - p$
+
+$k = np + \sqrt{npq} \cdot x_n$
+
+$\frac{k}{np} = 1 + \sqrt{\frac{q}{np}} x_n \rightarrow 1$
+
+$n-k = n - np - \sqrt{npq} x_n = nq - \sqrt{npq} x_n$
+
+$\frac{n-k}{nq} = 1 - \sqrt{\frac{p}{nq}} x_n \rightarrow 1$
+
+$k - n \rightarrow - \infty$
+
+$a^b = e^{lna \cdot b}$
+
+$\sqrt{npq} \cdot P_n(k) = \sqrt{npq} \cdot \frac{n!}{(n-k)!k!}p^kq^{n-k} \approx \frac{1}{\sqrt{2\pi}} \cdot \frac{\sqrt{n}n^n}{\sqrt{n-k}(n-k)^{n-k}\sqrt{k}k^k} p^k q^{n-k} \sqrt{npq} = \frac{1}{\sqrt{2\pi}} (\frac{np}{k})^k(\frac{nq}{n-k})^{n-k}\sqrt{\frac{np}{k}}\sqrt{\frac{nq}{n-k}} \approx$
+
+$\approx \frac{1}{\sqrt{2\pi}} (\frac{k}{np})^{-k}(\frac{n-k}{nq})^{k-n} = \frac{1}{\sqrt{2\pi}} (1 + \frac{\sqrt{q}x_n}{\sqrt{np}})^{-k}(1 - \frac{\sqrt{p}x_n}{\sqrt{nq}})^{k-n} = \frac{1}{\sqrt{2\pi}} exp(-k \cdot ln(1 + \frac{\sqrt{q}x_n}{\sqrt{np}}) \cdot exp(-(n-k) \cdot ln(1 - \frac{\sqrt{p}x_n}{\sqrt{nq}}) =$
+
+$= \frac{1}{\sqrt{2\pi}} exp(-k(\frac{\sqrt{q}x_n}{\sqrt{np}} - \frac{qx^2_n}{2np}(1 + o(1))) - (n-k)( - \frac{\sqrt{p}x_n}{\sqrt{nq}} - \frac{px^2_n}{2nq}(1 + O(1)))) = \frac{1}{\sqrt{2\pi}}exp(-x_n^2(1 - (\frac{1}{2} + o(1)))) =$
+
+$= \frac{1}{\sqrt{2\pi}}e^{\frac{-x_n^2}{2} + o(x_n^2)}$
+
+$x_n(\frac{-k\sqrt{q}}{\sqrt{np}} + \frac{(n-k)\sqrt{p}}{\sqrt{nq}}) = x_n \frac{-kq + (n-k)p}{\sqrt{npq}} = x_n \frac{np -k}{\sqrt{npq}} = -x_n^2$
+
+$\frac{kq}{2np}(1 + o(1)) + \frac{(n - k)p}{2nq}(1 + o(1)) = \frac{1}{2}(q(1 + \ldots x_n)(1 + o(1)) + p(1 - \ldots x_n)(1 + o(1))) = \frac{1}{2}(p + q)(1 + o(1))$
+
+$P_n(k_1, k_2)$
+
+$a_n = \frac{k_1-np}{\sqrt{npq}};\ P_n = \frac{k_2 - np}{\sqrt{npq}}$
+
+$\lim{((P_n(k_1, k_2) - \frac{1}{\sqrt{2\pi}})\int e^{\frac{-x^2}{2}}} dx) = 0$
+
+При броске кубика множество элементарных исходов – количество точек на
+верхней грани, количество очков за бросок мы ставим самостоятельно
+(иногда исходя из количества точек, но не обязательно)
+
+$\xi : F \rightarrow R$ на $(\Omega, F, P)$
+
+$\xi(\text{выпала 1}) = \{1, 2, 1, -2, -1 \ldots\}$
+
+$\{x | \xi(x) = t \in R\} \rightarrow P(\xi = t) = P_\xi(t)$
+
+| $t$ | $t_1$ | $t_2$ … | $t_k$ |
+|:---:|:-----:|:-------:|:-----:|
+| $P$ | $P_1$ | $P_2$ … | $P_k$ |
+
+$F_\xi(t) = P(\xi < t)$
+
+$\begin{cases}
+    \lim\limits_{t \rightarrow - \infty}{F_\xi(t)} = 0 \\
+    \lim\limits_{t \rightarrow + \infty}{F_\xi(t)} = 1
+\end{cases}$
+
+| $\xi_i$ | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 |
+|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|
+| $P_i$ | $\frac{1}{36}$ | $\frac{2}{36}$ | $\frac{3}{36}$ | $\frac{4}{36}$ | $\frac{5}{36}$ | $\frac{6}{36}$ | $\frac{5}{36}$ | $\frac{4}{36}$ | $\frac{3}{36}$ | $\frac{2}{36}$ | $\frac{1}{36}$ |
+
+Сумма чисел на кубике
+
+$F_\xi(t) = P(\{\xi < t\})$
+
+Плотность – $f_\xi(t) : \int\limits_{-\infty}^t f_\xi(x)dx = F_\xi(t)$
+
+$f_\xi(t) = F_\xi'(t)$
+
+При $t > q$ $F_\xi(t) - F_\xi(q) = \int\limits_q^t f_\xi(x) dx$
+
+$U[a, b];\ f_{U[a,b]}(t) = \left[ \begin{gathered}
+    0,\ t \not\in [a, b] \\
+    c,\ t \in [a, b]
+\end{gathered} \right.$
+
+$l = \frac{1}{b-a}$
+
+$\frac{c}{1 + (x - \Theta)^2}$ – распределение Коши
+
+**Совместное распределение**
+
+$\xi, \eta$ – с.в.
+
+$(\xi, \eta);\ P((\{\xi = k\}),(\{\eta = m\})) = P){km}$
+
+|       |   $k_1$   |  …  |   $k_n$    |
+|:-----:|:---------:|:---:|:----------:|
+| $m_1$ | $P_{1,1}$ |  …  | $P_{1, n}$ |
+|   ⋮   |           |     |            |
+
+
+$\forall k, m;\ P_{km} = P(\xi = k) \cdot P(\eta = m)$
+
+$E_\xi = \sum\limits_{i=1}^n k_i p_i$
+
+$E_{c\xi} = \sum\limits_{i=1}^n (c k_i)p_i = c\sum\limits_{i=1}^n k_i p_i = c E_\xi$
+
+$E_{\xi + c} = \sum\limits_{i=1}^n (k_i + c) p_i = \sum\limits_{i=1}^n k_i p_i + \sum\limits_{i=1}^n c p_i = E_\xi + c$
+
+$E_{\xi + \eta} = E_\xi + E_\eta$ – упражнение на дом
+
+$E_{\xi\eta} \neq E_\xi \cdot E_\eta$, правда если $\xi$ и $\eta$
+независимы
+
+$E_\xi = \int\limits_{-\infty}^{+\infty} xf_\xi(x)dx = \int\limits_{-\infty}^{+\infty} xdF(x)$
+
+$E_{\xi\eta} = \sum\limits_{i=1}^n\sum\limits_{j=1}^l k_im_jp_{ij} = \sum\limits{i=1}^n \sum\limits_{j=1}^l k_ip_i m_jq_j = \sum(k_ip_i(\sum(m_jq_j))) = E_\eta \sum k_ip_i = E_\eta \cdot E_\xi$
+
+$E(\xi - E_\xi)^2 =: D_\xi$
+
+$D_{c\xi} = c^2 D_\xi$
+
+$d_{\xi + \eta} \neq D_\xi + D_\eta$, верно только в случае
+независимости $\xi$ и $\eta$
+
+**Def.** $E_{\xi^k}$ – $k$-ый момент
+
+**Def.** $E_{|xi^k|}$ – $k$-ый абсолютный момент
+
+**Def.** $E_{(\xi - E_\xi)^k}$ – $k$-ый центральный момент
+
+$cov(\xi, \eta) = E_{(\xi - E_\xi)(\eta - E_\eta)} = E_{\xi\eta - \xi E_\eta - \eta E_\xi + E_{\xi\eta}} = E_{\xi\eta} - E_\xi \cdot E_\eta - E_\eta \cdot E_\xi + E_\xi \cdot E_\eta = E_{\xi\eta} - E_\xi \cdot E_\eta$
+
+**Def.** $r(\xi, \eta) = \frac{cov(\xi, \eta)}{\sqrt{D_\xi D_\eta}}$ –
+коэффициент корреляции
+
+$E(\xi - E_\xi) = 0$
+
+$r(\alpha\xi + x; \beta\eta + y) = r(\xi;\eta) \cdot sign(\alpha\beta)$
+
+$-1 \leq r(\xi, \eta) \leq 1$
+
+## Производящие и характеристические функции
+
+|   0   |   1   |  2 …  |
+|:-----:|:-----:|:-----:|
+| $p_0$ | $p_1$ | $p_2$ |
+
+$\psi(z) = \sum z^kp_k = E z^k$
+
+$z \in \mathbb{C};\ |z| \leq 1$
+
+$\frac{d^k\psi}{dz^k}|_{z=0} = k!p_k$
+
+$\frac{d^k\psi}{dz^k}|_{z=1} = \sum\limits_{k = n}^{+ \infty} {k \choose n} \cdot z^{k-n} \cdot p_k |_{z = 1} = E(\xi(\xi - 1)(\xi - 2) \ldots (\xi - n + 1))$
+
+$\frac{d^k\psi}{dz^k} = E_{\xi^2 - \xi} = E_{\xi^2} - E_\xi$
+
+$\psi_{a\xi + b}(z) = z^b \cdot \psi_{\xi}(z^a)$
+
+$\psi_{\xi + \eta}(z) = \psi_\xi(z) \cdot \psi_\eta(z)$
+
+**Def.** $P(\xi = k) = \frac{e^{-\lambda}\lambda^k}{k!}$ – распределение
+Пуассона
+
+$\psi_\xi(z) = \sum\limits_{k=0}^{+\infty} e^{-\lambda} \frac{\lambda^k}{k!}z^k = e^{-\lambda} \sum\limits_{k=0}^{+\infty} \frac{(\lambda z)^k}{k!} = e^{-\lambda}e^{\lambda z} = e^{\lambda(z-1)}$
+
+$\lambda e^{\lambda(z-1)}|_{z=1} = \lambda$
+
+$D_\xi = E_{\xi^2} - E_\xi^2 = \lambda + \lambda^2 - \lambda^2 = \lambda$
+
+$\varphi(t) = Ee^{it\xi}$ – характеристическая функция
+
+$\varphi_{a\xi + b}(t) = e^{itb} \cdot \varphi_\xi(at)$
+
+$\varphi_{\xi + \eta}(t) = \varphi_\xi(t) \cdot \varphi_\eta(t)$
+
+$i^{-n}\frac{d^n\varphi(t)}{dt^n}|_{t=0} = E\xi^n$
+
+$f_{N_{0, 1}} = \frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}}$
+
+$\varphi_{N_{0, 1}}(t) = e^{-\frac{t^2}{2}}$
+
+$E_{N_{0, 1}} = 0$
+
+$D_{N_{0, 1}} = 1$
+
+Мы можем использовать характеристические уравнения для:
+
+- Рекуреннтных соотношений
+
+- Дифференциальных уравнений
+
+- Случайных процессов
+
+$\xi$ – с.в., $\xi \geq 0$
+
+$\forall \varepsilon > 0;\ P(\xi \geq \varepsilon) \leq \frac{E\xi}{\varepsilon}$
+– неравенство Маркова
+
+$\mathbb{1}(x) = \left\{ \begin{gathered}
+    1,\ x \in A \\
+    0,\ x \not\in A
+\end{gathered} \right.$
+
+$\mathbb{1}_{[0; \varepsilon]}(\xi) + \mathbb{1}_{[\varepsilon; +\infty)}(\xi) = 1$
+
+$E_\xi = E_{\xi \cdot 1} = E_{\xi \cdot \mathbb{1}_{[0; \varepsilon]}(\xi)} + E_{\xi \cdot \mathbb{1}_{[\varepsilon; +\infty)}(\xi)} \geq E_{\xi \cdot \mathbb{1}_{[\varepsilon; +\infty)}(\xi)} \geq \varepsilon \cdot P(\xi \geq \varepsilon)$
+
+$\xi$ – с.в., $D_\xi < +\infty$
+
+$\forall \delta\ P(|\xi - E\xi| \geq \delta) \leq \frac{D\xi}{\delta^2}$
+– неравенство Чебышева
+
+$P(|\xi - E\xi| \geq \delta) = P((\xi - E\xi)^2 \geq \delta^2) \leq \frac{E(\xi - E\xi)^2}{\delta^2} = \frac{D\xi}{\delta^2}$
+
+$\xi_1, \ldots \xi_n \ldots$ – пнорсв
+
+1.  $\xi_i \rightarrow \xi$ в среднекрадратичном смысле, если
+    $E(\xi_n - \xi)^2 \rightarrow 0$ при $n \rightarrow \infty$
+
+2.  $\xi_i \rightarrow \xi$ по вероятности, если
+    $P(|\xi_n - \xi| \geq \varepsilon) \rightarrow 0$ при
+    $n \rightarrow \infty$
+
+3.  $\xi_i \rightarrow \xi$ почти наверное, если
+    $P(\omega : \xi_n(\omega) \rightarrow \xi(\omega)) = 1$
+
+**Th.** ЗБЧ Чебышева
+
+$E_{\xi_i} = a;\ D_\xi < +\infty$
+
+$\overline{\xi_n} = \frac{1}{n} \sum\limits_{i=1}^n \xi_i$
+
+$\overline{\xi_n} \rightarrow E_\xi$ по всем пунктам. Это закон Больших
+чисел
+
+$N(M, \sigma^2)$ – нормальное распределение
+
+**Доказательство**
+
+Докажем только среднеквадратичную сходимость, остальное сложно, у нас
+лапки
+
+$E_{\overline{\xi_n}} = \frac{1}{n} E_{\sum \xi_i} = \frac{1}{n} \sum E_{\xi_i} = \frac{na}{n} = a$
+
+$E_{(\overline{\xi_n} - a)^2} = D_{\overline{\xi_n}} = \frac{1}{n} D_{\sum \xi_i} = \frac{1}{n} \sum D_{\xi_i} = \frac{D_{\xi_1}}{n} \rightarrow 0$
+
+**Th.** ЦПТ Ляпунова
+
+$S_n = \sum\limits_{i=1}^n \xi_i$
+
+$Z_n = \frac{S_n - na}{\sqrt{n\sigma^2}}$. $F_n = P(Z_n < x)$
+
+$\sup|F_n(x) - N_{0, 1}(x)| \rightarrow 0$. Другими словами
+$Z_n \sim N_{0, 1}$ при $n \rightarrow \infty$
+
+$S_n \sim N_{na, n\sigma^2}$ при $n \rightarrow \infty$
+
+$V$ – вершина $|V| < +\infty$
+
+$E = \{e_i\}$ – ребра
+
+$e_i = (V_i, V_j)$, $V_i, V_j \in V$
+
+$I : V \times E$
+
+$I(v, e)$ если $e = \left[ \begin{gathered}
+    (v, *) \\
+    (*, v)
+\end{gathered} \right.$
+
+$|V|$, $E \subset V \times V$
+
+1.  $e(V_1, V_2) \Rightarrow e(V_2, V_1)$
+
+2.  $\overline{e(V_1, V_1)}$
+
+$G = (V, E)$ – граф (бинарное отноешние смежности)
+
+|       | $V_1$ | $V_2$ | $V_3$ | $V_4$ | $V_5$ |
+|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|
+| $V_1$ |   0   |   1   |   1   |   0   |   0   |
+| $V_2$ |   1   |   0   |   1   |   0   |   0   |
+| $V_3$ |   1   |   1   |   0   |   1   |   1   |
+| $V_4$ |   1   |   0   |   1   |   0   |   0   |
+| $V_5$ |   0   |   0   |   1   |   0   |   0   |
+
+$S(V_i, V_j)$ существует, если существуют
+
+$V_i, E_{\alpha_1}, V_{\alpha_1}, E_{\alpha_2}, \ldots, E_{\alpha_{n-1}}, V_j$
+
+$\tilde{G}$ – подграф $G$
+
+$V_{\tilde{G}} \subset V_{G}$
+
+$\forall e \in E_{\tilde{G}} \Rightarrow e \in E_G$
