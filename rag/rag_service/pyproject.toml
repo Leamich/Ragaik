@@ -1,10 +1,11 @@
 [project]
 name = "rag-service"
 version = "0.1.0"
-description = "Add your description here"
+description = "RAG service of the project."
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "elasticsearch>=9.1.0",
+    "langchain>=0.3.27",
+    "langchain-elasticsearch>=0.3.2",
     "langgraph>=0.6.3",
 ]
