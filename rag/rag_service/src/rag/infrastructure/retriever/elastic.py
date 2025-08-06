@@ -41,7 +41,7 @@ class AsyncElasticsearchRetriever(DocumentStore):
         )
 
         self._ensemble_retriever = EnsembleRetriever(
-            retrievers=[bm25_retriever, vector_retriever],
+            retrievers=[vector_retriever, bm25_retriever],
             weights=[hybrid_alpha, 1 - hybrid_alpha],
         )
 
