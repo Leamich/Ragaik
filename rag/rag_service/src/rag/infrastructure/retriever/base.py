@@ -18,14 +18,6 @@ class DocumentStore(ABC):
         """
 
     @abstractmethod
-    async def aadd_document(self, document: Document) -> None:
-        """Add a document to the store.
-
-        Args:
-            document (Document): The document to add.
-        """
-
-    @abstractmethod
     async def aadd_documents(self, documents: list[Document]) -> None:
         """Add multiple documents to the store.
 
