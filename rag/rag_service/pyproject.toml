@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "langchain>=0.3.27",
+    "langchain-core>=0.3.72",
     "langchain-elasticsearch>=0.3.2",
     "langgraph>=0.6.3",
 ]
