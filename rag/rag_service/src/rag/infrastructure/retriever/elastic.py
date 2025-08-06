@@ -1,26 +1,52 @@
+""" "File with Elasticsearch DocumentSore implementation."""
+
+from langchain_elasticsearch import AsyncElasticsearchStore
+from langchain.retrievers import EnsembleRetriever
 from elasticsearch import AsyncElasticsearch
+from langchain_core.documents import Document
+from langchain_core.embeddings import Embeddings
+from .base import DocumentStore
 
-from rag.domain.document import Dcument
-from rag.infrastructure.retriever.base import Retriever
 
+class AsyncElasticsearchRetriever(DocumentStore):
+    """Elasticsearch DocumentSore implementation."""
 
-class AsyncElasticsearchRetriever(Retriever):
-    def __init__(self, client: AsyncElasticsearch, index: str) -> None:
-        self._client = client
-        self._index = index
+    def __init__(
+        self,
+        embeddings: Embeddings,
+        connection: AsyncElasticsearch,
+        index_name: str,
+        hybrid_alpha: float = 0.7,
+    ) -> None:
+        """Initialize Elasticsearch retriever with hybrid search.
 
-    async def retrieve(self, query: str, top_k: int = 5) -> list[Dcument]:
-        resp = await self._client.search(
-            index=self._index,
-            body={
-                "size": top_k,
-            },
-            # write your impl of ensambling
+        Args:
+            embeddings: Embeddings model
+            client: AsyncElasticsearch client
+            index: Name of the Elasticsearch index
+            hybrid_alpha: Weight for vector similarity vs BM25 (0.0 to 1.0)
+                         0.0 = pure BM25, 1.0 = pure vector search
+        """
+        self._store = AsyncElasticsearchStore(
+            es_connection=connection,
+            index_name=index_name,
+            embedding=embeddings,
         )
-        return [
-            {
-                "content": hit["_source"]["content"],
-                "metadata": hit["_source"].get("metadata", {}),
-            }
-            for hit in resp["hits"]["hits"]
-        ]
+
+        bm25_retriever = self._store.as_retriever(
+            retrieval_strategy=AsyncElasticsearchStore.BM25RetrievalStrategy()
+        )
+        vector_retriever = self._store.as_retriever(
+            retrieval_strategy=AsyncElasticsearchStore.ApproxRetrievalStrategy()
+        )
+
+        self._ensemble_retriever = EnsembleRetriever(
+            retrievers=[bm25_retriever, vector_retriever],
+            weights=[hybrid_alpha, 1 - hybrid_alpha],
+        )
+
+    async def ainvoke(self, query: str, top_k) -> list[Document]:
+        return await self._ensemble_retriever.ainvoke(query, top_k)
+
+    async def aadd_documents(self, documents: list[Document]) -> None:
+        await self._store.aadd_documents(documents)
