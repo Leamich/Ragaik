@@ -2,7 +2,7 @@
 from abc import ABC, abstractmethod
 from langchain_core.documents import Document
 
-class DocumentStore(ABC):
+class DocumentStoreAdapter(ABC):
     """Abstract interface for a document store."""
 
     @abstractmethod

@@ -1,5 +1,5 @@
-from .document_store import DocumentStore
+from .document_store_adapter import DocumentStoreAdapter
 
 __all__ = [
-    "DocumentStore"
+    "DocumentStoreAdapter"
 ]

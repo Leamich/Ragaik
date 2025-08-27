@@ -5,10 +5,10 @@ from langchain.retrievers import EnsembleRetriever
 from elasticsearch import AsyncElasticsearch
 from langchain_core.documents import Document
 from langchain_core.embeddings import Embeddings
-from ..adapters import DocumentStore
+from ..adapters import DocumentStoreAdapter
 
 
-class ElasticsearchDocumentStore(DocumentStore):
+class ElasticsearchDocumentStore(DocumentStoreAdapter):
     """Elasticsearch DocumentSore implementation."""
 
     def __init__(
