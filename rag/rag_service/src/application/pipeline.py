@@ -3,7 +3,7 @@ from elasticsearch import AsyncElasticsearch
 from langgraph.graph import StateGraph
 
 from rag.domain.document import Dcument
-from rag.infrastructure.retriever.elastic import AsyncElasticsearchRetriever
+from rag.infrastructure.retriever.elastic import ElasticsearchDocumentStore
 
 
 # instantiate once (could be injected)
@@ -15,7 +15,7 @@ class GrpahState(TypedDict):
 
 
 _elasetic = AsyncElasticsearch("dummy")
-_retriever: AsyncElasticsearchRetriever = AsyncElasticsearchRetriever(
+_retriever: ElasticsearchDocumentStore = ElasticsearchDocumentStore(
     _elasetic, index="dummy"
 )
 
