@@ -5,7 +5,7 @@ from langchain.retrievers import EnsembleRetriever
 from elasticsearch import AsyncElasticsearch
 from langchain_core.documents import Document
 from langchain_core.embeddings import Embeddings
-from .base import DocumentStore
+from ..adapters import DocumentStore
 
 
 class ElasticsearchDocumentStore(DocumentStore):
