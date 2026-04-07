@@ -1,12 +1,46 @@
-from fastapi import FastAPI
+from pathlib import Path
+from uuid import uuid4
+
+from contextlib import asynccontextmanager
+from fastapi import FastAPI, Request
 from starlette.middleware.sessions import SessionMiddleware
 from starlette.staticfiles import StaticFiles
 
 import RAG.config as config
+from .schema import ResponseWithImages
 
-from .application.routers.api.v1.api_v1 import api_v1_router
+from .domain.model_chat_service import ModelChatService
+from .domain.chunk_repo_ensemble import FaissAndBM25EnsembleRetriever
+from .domain.context_service import ContextService
+from .infrastructure.chunk_repository.bm25_chunk_repository import BM25ChunkRepository
+from .infrastructure.chunk_repository.faiss_chunk_repository import (
+    FaissChunkRepository,
+)
+from .infrastructure.ollama_llm_chat_adapter import OllamaLLMChatAdapter
 
-app = FastAPI()
+
+chat_service: ModelChatService
+
+
+@asynccontextmanager
+async def lifespan(_app: FastAPI):
+    global chat_service
+    chat_service = ModelChatService(
+        context_service=ContextService(
+            notes_repository=FaissAndBM25EnsembleRetriever(
+                faiss_repo=FaissChunkRepository(
+                    filename=Path(config.FAISS_CACHE_DIR)),
+                bm_repo=BM25ChunkRepository(
+                    filename=Path(config.BM25_CACHE_FILE)),
+            ),
+            photos_repository=FaissChunkRepository(
+                filename=Path(config.PHOTO_CONTEXT_CACHE))
+        ),
+        generator=OllamaLLMChatAdapter(),
+    )
+    yield
+
+app = FastAPI(lifespan=lifespan)
 
 app.add_middleware(
     SessionMiddleware,
@@ -15,6 +49,42 @@ app.add_middleware(
     max_age=60 * 60 * 24,  # 1 day
 )
 
-
-app.include_router(api_v1_router, prefix="/api/v1", tags=["v1"])
 app.mount("/api/v1/photos", StaticFiles(directory=config.PHOTO_DIR), name="photos")
+
+
+@app.post("/api/v1/query")
+def query(query: str, request: Request) -> ResponseWithImages:
+    """
+    Endpoint to handle queries.
+    """
+    # Here you would typically process the query and return a response.
+    # For now, we will just return the query as a placeholder.
+    if "session_id" not in request.session:
+        request.session["session_id"] = str(uuid4())
+
+    response, image_ids = chat_service.ask(
+        query, request.session["session_id"]
+    )
+    print(f"Session ID: {request.session['session_id']}")
+    return ResponseWithImages(text=response, image_ids=image_ids)
+
+
+@app.get("/api/v1/history")
+def get_history(request: Request) -> list[str]:
+    """
+    Endpoint to retrieve message history for a given session.
+    """
+    if "session_id" not in request.session:
+        return []
+
+    return chat_service.get_history(request.session["session_id"])
+
+
+@app.delete("/api/v1/history")
+def clear_history(request: Request) -> None:
+    """
+    Endpoint to clear message history for a given session.
+    """
+    if "session_id" in request.session:
+        chat_service.clear_history(request.session["session_id"])
+        del request.session["session_id"]
