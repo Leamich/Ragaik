@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from langchain.schema import Document
+from langchain_core.documents import Document
 
 
 class Chunker(ABC):
@@ -13,9 +13,18 @@ class Chunker(ABC):
         """Split a Document into a list of Chunk instances."""
         pass
     
+    async def achunk_many(self, documents: list[Document]) -> list[Document]:
+        """Split many Documents into a list of Chunk instances."""
+        res: list[Document] = [] #TODO: add async
+        for document in documents:
+            new_chunks = self.chunk(document)
+            res += new_chunks
+        
+        return res
+    
     def chunk_many(self, documents: list[Document]) -> list[Document]:
         """Split many Documents into a list of Chunk instances."""
-        res: list[Document] = []
+        res: list[Document] = [] #TODO: add async
         for document in documents:
             new_chunks = self.chunk(document)
             res += new_chunks

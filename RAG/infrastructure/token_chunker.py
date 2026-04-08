@@ -1,7 +1,7 @@
 from langchain_text_splitters.base import TokenTextSplitter
 from transformers import AutoTokenizer
-from langchain.schema import Document
-from .chunk_repository.chunker import Chunker
+from langchain_core.documents import Document
+from ..domain.port.chunker import Chunker
 
 
 class TokenChunker(Chunker):

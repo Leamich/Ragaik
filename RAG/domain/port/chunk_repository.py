@@ -1,29 +1,26 @@
-from typing import Any
+from pathlib import Path
 from abc import ABC, abstractmethod
+from typing import Generic, TypeVar
 
-from langchain.schema import Document
 
 
-class ChunkRepository(ABC):
+from langchain_core.documents import Document
+from langchain_core.retrievers import BaseRetriever
+
+RetriverType = TypeVar('RetriverType', bound=BaseRetriever)
+class ChunkRepository(ABC, Generic[RetriverType]):
     """
     Abstract base class for storing and querying chunks.
     """
+    retriever: RetriverType
 
     @abstractmethod
-    def add(self, document: Document) -> None:
-        """Add document to the store. Implementation defines handling."""
+    async def add_batch(self, documents: list[Document]) -> None:
+        """Add batch of documents to the store."""
         pass
 
+    
     @abstractmethod
-    def add_batch(self, documents: list[Document]) -> None:
-        """Add batch of documents to the store. Implementation defines handling."""
-        pass
-
-
-    @abstractmethod
-    def get_retriever(self) -> Any:
-        pass
-
-    @abstractmethod
-    def is_init(self)-> bool:
+    def store(self, path: Path) -> None:
+        """Store instance into a disk."""
         pass

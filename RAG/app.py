@@ -28,9 +28,9 @@ async def lifespan(_app: FastAPI):
     chat_service = ModelChatService(
         context_service=ContextService(
             notes_repository=FaissAndBM25EnsembleRetriever(
-                faiss_repo=FaissChunkRepository(
+                first_repo=FaissChunkRepository(
                     filename=Path(config.FAISS_CACHE_DIR)),
-                bm_repo=BM25ChunkRepository(
+                second_repo=BM25ChunkRepository(
                     filename=Path(config.BM25_CACHE_FILE)),
             ),
             photos_repository=FaissChunkRepository(
