@@ -2,8 +2,8 @@ from typing import Any
 
 from langchain.schema import Document
 
-from RAG.domain.chunk_repo_ensemble import FaissAndBM25EnsembleRetriever
-from RAG.infrastructure.chunk_repository.faiss_chunk_repository import FaissChunkRepository
+from RAG.retrivers.ensemble import FaissAndBM25EnsembleRetriever
+from RAG.retrivers._faiss_chunk_repository import FaissChunkRepository
 
 type Context = list[Document]
 

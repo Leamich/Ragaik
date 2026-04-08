@@ -5,10 +5,10 @@ from pathlib import Path
 from langchain_core.documents import Document
 from langchain_community.retrievers import BM25Retriever
 
-from ...domain.port.chunk_repository import ChunkRepository
-from ..token_chunker import TokenChunker
-from ...domain.port.chunker import Chunker
-from ...config import BM25_CACHE_FILE
+from .chunk_repository import ChunkRepository
+from ..infrastructure.token_chunker import TokenChunker
+from ..domain.port.chunker import Chunker
+from ..config import BM25_CACHE_FILE
 
 
 class BM25ChunkRepository(ChunkRepository[BM25Retriever]):
@@ -38,9 +38,11 @@ class BM25ChunkRepository(ChunkRepository[BM25Retriever]):
         self.retriever.k = top_k
         
 
-    def store(self, path: Path) -> None:
-        with open(path, "wb") as f:
-            pickle.dump(self.retriever, f)
+    async def store(self, path: Path) -> None:
+        def func() -> None:
+            with open(path, "wb") as f:
+                pickle.dump(self.retriever, f)
+        asyncio.create_task(asyncio.to_thread(func))
 
     async def add_batch(self, documents: list[Document]) -> None:
         new_chunks = await self._chunker.achunk_many(documents)

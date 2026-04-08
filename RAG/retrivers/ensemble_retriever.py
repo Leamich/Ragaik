@@ -1,17 +1,18 @@
 from typing import List
 import asyncio
+from pathlib import Path
 
-from langchain_classic.retrievers import EnsembleRetriever
+from langchain_classic.retrievers import EnsembleRetriever as LangchainEnsembleRetriever
 from langchain_core.documents import Document
 
-from ..infrastructure.chunk_repository.bm25_chunk_repository import BM25ChunkRepository
-from ..infrastructure.chunk_repository.faiss_chunk_repository import (
+from ._bm25_chunk_repository import BM25ChunkRepository
+from ._faiss_chunk_repository import (
     FaissChunkRepository,
 )
-from .port.chunk_repository import ChunkRepository
+from .chunk_repository import ChunkRepository
 
 
-class FaissAndBM25EnsembleRetriever(ChunkRepository[EnsembleRetriever]):
+class EnsembleRetriever(ChunkRepository[LangchainEnsembleRetriever]):
     """
     A class to manage a collection of chunk repositories.
     Supports lazy initialization if repositories are empty.
@@ -30,7 +31,7 @@ class FaissAndBM25EnsembleRetriever(ChunkRepository[EnsembleRetriever]):
         self._first_repo = first_repo
         self._second_repo = second_repo
 
-        self.retriever = EnsembleRetriever(
+        self.retriever = LangchainEnsembleRetriever(
             retrievers=[
                 self._first_repo.retriever,
                 self._second_repo.retriever,
@@ -48,3 +49,9 @@ class FaissAndBM25EnsembleRetriever(ChunkRepository[EnsembleRetriever]):
         Query both repositories and return the results.
         """
         return await self.retriever.ainvoke(query)
+    
+    async def store(self, path: Path) -> None:
+        await asyncio.gather(
+            asyncio.to_thread(self._first_repo.store, path / "retriever1"),
+            asyncio.to_thread(self._second_repo.store, path / "retriever2"),
+        )

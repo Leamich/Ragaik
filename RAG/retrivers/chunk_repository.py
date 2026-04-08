@@ -21,6 +21,6 @@ class ChunkRepository(ABC, Generic[RetriverType]):
 
     
     @abstractmethod
-    def store(self, path: Path) -> None:
+    async def store(self, path: Path) -> None:
         """Store instance into a disk."""
         pass

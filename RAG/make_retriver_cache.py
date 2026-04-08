@@ -4,7 +4,7 @@ from pathlib import Path
 from langchain_core.documents import Document
 
 import RAG.config as config
-from RAG.infrastructure.chunk_repository.faiss_chunk_repository import (
+from RAG.retrivers._faiss_chunk_repository import (
     FaissChunkRepository,
 )
 from .load import (

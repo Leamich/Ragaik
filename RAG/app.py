@@ -10,10 +10,9 @@ import RAG.config as config
 from .schema import ResponseWithImages
 
 from .domain.model_chat_service import ModelChatService
-from .domain.chunk_repo_ensemble import FaissAndBM25EnsembleRetriever
+from .retrivers import EnsembleRetriever
 from .domain.context_service import ContextService
-from .infrastructure.chunk_repository.bm25_chunk_repository import BM25ChunkRepository
-from .infrastructure.chunk_repository.faiss_chunk_repository import (
+from .retrivers._faiss_chunk_repository import (
     FaissChunkRepository,
 )
 from .infrastructure.ollama_llm_chat_adapter import OllamaLLMChatAdapter
@@ -27,12 +26,7 @@ async def lifespan(_app: FastAPI):
     global chat_service
     chat_service = ModelChatService(
         context_service=ContextService(
-            notes_repository=FaissAndBM25EnsembleRetriever(
-                first_repo=FaissChunkRepository(
-                    filename=Path(config.FAISS_CACHE_DIR)),
-                second_repo=BM25ChunkRepository(
-                    filename=Path(config.BM25_CACHE_FILE)),
-            ),
+            notes_repository=EnsembleRetriever(),
             photos_repository=FaissChunkRepository(
                 filename=Path(config.PHOTO_CONTEXT_CACHE))
         ),
