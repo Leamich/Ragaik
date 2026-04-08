@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 from langchain_core.documents import Document
 
-
+# TODO: specify batch_id and image_id
 class Chunker(ABC):
     """
     Abstract base class for splitting a Document into chunks.

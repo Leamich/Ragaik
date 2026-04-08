@@ -63,7 +63,7 @@ class OllamaLLMChatAdapter(LLMChatAdapter):
             f"Источник {i + 1}:\n{doc.page_content}" for i, doc in enumerate(contexts)
         )
 
-    def generate(
+    async def generate(
         self, query: str, contexts: list[Document], session_id: str | None = None
     ) -> str:
         context_block = self._format_contexts(contexts)

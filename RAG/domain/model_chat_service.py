@@ -1,5 +1,6 @@
-from .context_service import Context, ContextService
 from .port.llmchatadapter import LLMChatAdapter
+from ..retrivers import EnsembleRetriever
+
 
 
 class ModelChatService:
@@ -9,19 +10,18 @@ class ModelChatService:
 
     def __init__(
         self,
-        context_service: ContextService,
         generator: LLMChatAdapter,
+        EnsembleRetriever: EnsembleRetriever
     ) -> None:
         self._generator = generator
-        self._context_service = context_service
+        self._retriever = EnsembleRetriever
 
-    def ask(self, query: str, session_id: str) -> tuple[str, list[str]]:
+    async def ask(self, query: str, session_id: str) -> tuple[str, list[str]]:
         """Retrieve top_k chunks and generate a response."""
-        notes_context: Context = self._context_service.retrieve_textual_context(query)
-        photos_context: Context = self._context_service.retrieve_photo_context(query)
-        photo_ids = self._context_service.get_context_photo_ids(photos_context)
+        context = await self._retriever.query(query)
+        photo_ids = [doc.metadata["image_id"] for doc in context]
 
-        return self._generator.generate(query, notes_context, session_id), photo_ids
+        return self._generator.generate(query, context, session_id), photo_ids
 
     def get_history(self, session_id: str) -> list[str]:
         """Get message history for a given session."""

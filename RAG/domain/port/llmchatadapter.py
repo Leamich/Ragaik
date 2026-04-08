@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from langchain.schema import Document
+from langchain_core.documents import Document
 
 
 class LLMChatAdapter(ABC):
@@ -9,7 +9,7 @@ class LLMChatAdapter(ABC):
     """
 
     @abstractmethod
-    def generate(
+    async def generate(
         self, query: str, contexts: list[Document], session_id: str | None = None
     ) -> str:
         """Generate a response given a query and list of chunk contexts."""
