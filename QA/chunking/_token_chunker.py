@@ -1,9 +1,11 @@
+import hashlib
+
 from langchain_text_splitters.base import TokenTextSplitter
 from transformers import AutoTokenizer
 from langchain_core.documents import Document
-from ..domain.port.chunker import Chunker
+from ._chunker import Chunker
 
-
+#TODO: change tokenizer
 class TokenChunker(Chunker):
     """
     Recursive realization of Chunker using tokenizer compatible with multilingual-e5-large.
@@ -25,6 +27,9 @@ class TokenChunker(Chunker):
             chunk_overlap=int(self._CHUNK_SIZE / 10),
         )
 
-    def chunk(self, document: Document) -> list[Document]:
-        return self._text_splitter.split_documents([document])
+    def chunk(self, documents: list[Document]) -> list[Document]:
+        chunks = self._text_splitter.split_documents(documents)
+        for chunk in chunks:
+            chunk.metadata['chunk_id'] =  hashlib.sha256(chunk.page_content.encode('utf-8')).hexdigest()
+        return chunks
 

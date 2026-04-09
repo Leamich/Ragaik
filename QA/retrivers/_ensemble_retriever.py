@@ -6,10 +6,10 @@ from langchain_classic.retrievers import EnsembleRetriever as LangchainEnsembleR
 from langchain_core.documents import Document
 
 from ._bm25_chunk_repository import BM25ChunkRepository
-from ._faiss_chunk_repository import (
-    FaissChunkRepository,
-)
-from .chunk_repository import ChunkRepository
+from ._faiss_chunk_repository import FaissChunkRepository
+from ._chunk_repository import ChunkRepository
+from ..schema import Context
+
 
 
 class EnsembleRetriever(ChunkRepository[LangchainEnsembleRetriever]):
@@ -44,11 +44,11 @@ class EnsembleRetriever(ChunkRepository[LangchainEnsembleRetriever]):
         await asyncio.gather(self._first_repo.add_batch(documents),
                              self._second_repo.add_batch(documents))
 
-    async def query(self, query: str) -> list[Document]:
+    async def query(self, query: str) -> Context:
         """
         Query both repositories and return the results.
         """
-        return await self.retriever.ainvoke(query)
+        return set(await self.retriever.ainvoke(query))
     
     async def store(self, path: Path) -> None:
         await asyncio.gather(

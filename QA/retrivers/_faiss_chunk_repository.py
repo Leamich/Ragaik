@@ -7,9 +7,8 @@ from langchain_core.vectorstores import VectorStoreRetriever
 from langchain_community.vectorstores.utils import DistanceStrategy
 from langchain_huggingface import HuggingFaceEmbeddings
 
-from .chunk_repository import ChunkRepository
-from ..infrastructure.token_chunker import TokenChunker
-from ..domain.port.chunker import Chunker
+from ._chunk_repository import ChunkRepository
+from ..chunking import TokenChunker, Chunker
 
 from ..config import FAISS_CACHE_DIR
 
@@ -40,7 +39,7 @@ class FaissChunkRepository(ChunkRepository[VectorStoreRetriever]):
                 allow_dangerous_deserialization=True,
             )
         elif documents is not None:
-            chunks: list[Document] = self._chunker.achunk_many(
+            chunks: list[Document] = self._chunker.achunk(
                 documents)  # type: ignore
             self._vectorstore = FAISS.from_documents(
                 chunks, embedding=embedder, distance_strategy=strategy
@@ -50,14 +49,12 @@ class FaissChunkRepository(ChunkRepository[VectorStoreRetriever]):
                 "Either filename or documents must be provided. If you've passed filename, it's not valid")
         self.retriever = self._vectorstore.as_retriever(search_kwargs={"k": top_k})
 
-
-
     async def store(self, path: Path) -> None:
         def func() -> None:
             self._vectorstore.save_local(str(path))
         asyncio.create_task(asyncio.to_thread(func))
 
     async def add_batch(self, documents: list[Document]) -> None:
-        chunks = await self._chunker.achunk_many(documents)
+        chunks = await self._chunker.achunk(documents)
         asyncio.create_task(self._vectorstore.aadd_documents(chunks))
     

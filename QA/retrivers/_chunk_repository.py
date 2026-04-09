@@ -2,10 +2,9 @@ from pathlib import Path
 from abc import ABC, abstractmethod
 from typing import Generic, TypeVar
 
-
-
 from langchain_core.documents import Document
 from langchain_core.retrievers import BaseRetriever
+
 
 RetriverType = TypeVar('RetriverType', bound=BaseRetriever)
 class ChunkRepository(ABC, Generic[RetriverType]):

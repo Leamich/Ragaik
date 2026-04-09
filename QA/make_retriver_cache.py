@@ -3,8 +3,8 @@ from pathlib import Path
 
 from langchain_core.documents import Document
 
-import RAG.config as config
-from RAG.retrivers._faiss_chunk_repository import (
+import QA.config as config
+from QA.RAG.retrivers._faiss_chunk_repository import (
     FaissChunkRepository,
 )
 from .load import (

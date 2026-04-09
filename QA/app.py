@@ -1,40 +1,18 @@
-from pathlib import Path
+import asyncio
 from uuid import uuid4
 
-from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
 from starlette.middleware.sessions import SessionMiddleware
 from starlette.staticfiles import StaticFiles
 
-import RAG.config as config
+import QA.config as config
 from .schema import ResponseWithImages
 
-from .domain.model_chat_service import ModelChatService
-from .retrivers import EnsembleRetriever
-from .domain.context_service import ContextService
-from .retrivers._faiss_chunk_repository import (
-    FaissChunkRepository,
-)
-from .infrastructure.ollama_llm_chat_adapter import OllamaLLMChatAdapter
+from .graph import graph, get_image_ids, get_chat_history, ainvoke
+from .connectors import checkpointer
 
 
-chat_service: ModelChatService
-
-
-@asynccontextmanager
-async def lifespan(_app: FastAPI):
-    global chat_service
-    chat_service = ModelChatService(
-        context_service=ContextService(
-            notes_repository=EnsembleRetriever(),
-            photos_repository=FaissChunkRepository(
-                filename=Path(config.PHOTO_CONTEXT_CACHE))
-        ),
-        generator=OllamaLLMChatAdapter(),
-    )
-    yield
-
-app = FastAPI(lifespan=lifespan)
+app = FastAPI()
 
 app.add_middleware(
     SessionMiddleware,
@@ -47,7 +25,7 @@ app.mount("/api/v1/photos", StaticFiles(directory=config.PHOTO_DIR), name="photo
 
 
 @app.post("/api/v1/query")
-def query(query: str, request: Request) -> ResponseWithImages:
+async def query(query: str, request: Request) -> ResponseWithImages:
     """
     Endpoint to handle queries.
     """
@@ -56,22 +34,21 @@ def query(query: str, request: Request) -> ResponseWithImages:
     if "session_id" not in request.session:
         request.session["session_id"] = str(uuid4())
 
-    response, image_ids = chat_service.ask(
-        query, request.session["session_id"]
-    )
+    response, image_ids = asyncio.gather(ainvoke(query, graph, request.session["session_id"]),
+                                         get_image_ids(graph, request.session["session_id"]))
     print(f"Session ID: {request.session['session_id']}")
     return ResponseWithImages(text=response, image_ids=image_ids)
 
 
 @app.get("/api/v1/history")
-def get_history(request: Request) -> list[str]:
+async def get_history(request: Request) -> list[str]:
     """
     Endpoint to retrieve message history for a given session.
     """
     if "session_id" not in request.session:
         return []
-
-    return chat_service.get_history(request.session["session_id"])
+    # TODO: what type do we need?
+    return await get_chat_history(graph, request.session["session_id"])
 
 
 @app.delete("/api/v1/history")
@@ -80,5 +57,4 @@ def clear_history(request: Request) -> None:
     Endpoint to clear message history for a given session.
     """
     if "session_id" in request.session:
-        chat_service.clear_history(request.session["session_id"])
-        del request.session["session_id"]
+        await checkpointer.adelete_thread(thread_id=request.session["session_id"]) #TODO: maybe doesn't work
