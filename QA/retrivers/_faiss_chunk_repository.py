@@ -1,3 +1,4 @@
+#TODO: add faiss_gpu
 import asyncio
 from pathlib import Path
 

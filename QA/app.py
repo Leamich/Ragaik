@@ -1,5 +1,10 @@
 import asyncio
+from typing import Any
 from uuid import uuid4
+from contextlib import asynccontextmanager
+
+from langgraph.checkpoint.redis.aio import AsyncRedisSaver
+from langgraph.graph.state import CompiledStateGraph
 
 from fastapi import FastAPI, Request
 from starlette.middleware.sessions import SessionMiddleware
@@ -8,11 +13,19 @@ from starlette.staticfiles import StaticFiles
 import QA.config as config
 from .schema import ResponseWithImages
 
-from .graph import graph, get_image_ids, get_chat_history, ainvoke
-from .connectors import checkpointer
+from .graph import build_graph, get_image_ids, get_chat_history, ainvoke
 
+checkpointer: AsyncRedisSaver
+graph: CompiledStateGraph
 
-app = FastAPI()
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    global checkpointer, graph
+    async with AsyncRedisSaver.from_conn_string("redis://localhost:6379") as checkpointer:
+        await checkpointer.asetup()
+        graph = build_graph(checkpointer)
+        yield
+app = FastAPI(lifespan=lifespan)
 
 app.add_middleware(
     SessionMiddleware,
@@ -52,7 +65,7 @@ async def get_history(request: Request) -> list[str]:
 
 
 @app.delete("/api/v1/history")
-def clear_history(request: Request) -> None:
+async def clear_history(request: Request) -> None:
     """
     Endpoint to clear message history for a given session.
     """

@@ -6,12 +6,12 @@ from langgraph.graph.state import CompiledStateGraph
 from .config import (
     HYDE_PROMPT, MAIN_PROMPT
 )
-from .connectors import main_model, hyde_model, checkpointer
+from .connectors import main_model, hyde_model
 from .schema import State, Context
 from .retrivers import EnsembleRetriever
 
 #TODO: sometimes we want to remove some irrelevant context
-def build_graph() -> CompiledStateGraph:
+def build_graph(checkpointer) -> CompiledStateGraph:
     retriever = EnsembleRetriever()
     async def hydify(state: State) -> dict[str, str]:
         response = await hyde_model.ainvoke([
@@ -54,7 +54,7 @@ def build_graph() -> CompiledStateGraph:
     builder.add_edge("retrieve", "generate")
     builder.add_edge("generate", END)
 
-    graph = builder.compile(checkpointer=checkpointer) #TODO: maybe roble maybe not
+    graph = builder.compile(checkpointer=checkpointer)
     return graph
 
 
@@ -72,5 +72,3 @@ async def ainvoke(query, graph: CompiledStateGraph, session_id: str) -> str:
     response = await graph.ainvoke(query, config={"configurable": {"thread_id": session_id}})
     
     return response['messages'][0].text
-
-graph = build_graph()
